@@ -1,5 +1,6 @@
 # CEN3031
 Contributors:
-  Cody Hilliard
-  Jonathan Cannella
+  Timothy Beavers,
+  Jonathan Cannella,
+  Cody Hilliard,
   Elijah Lin
