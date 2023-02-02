@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
-func manin() {
-	fmt.Println(deck.ReturnDeckSize())
+func main() {
+	currDeck := deck.New()
+	fmt.Println(deck.GetCardIndex(currDeck, 0, "Heart"))
 }
