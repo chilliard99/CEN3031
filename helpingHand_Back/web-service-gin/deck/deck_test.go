@@ -17,3 +17,14 @@ func TestGetIndex(t *testing.T) {
 		t.Fatal("Wrong card index")
 	}
 }
+
+// Inputs a card and checks if it returns the appropriate name.
+func TestGetCardName(t *testing.T) {
+	tempdeck := deck.New()
+
+	//Using GetCardIndex to show the value and suit associated with the selected card
+	//val = 12, suit = "Club", card should have name "King of Clubs"
+	if deck.GetCardName(tempdeck[deck.GetCardIndex(tempdeck, 12, "Club")]) != "King of Clubs" {
+		t.Fatal("Wrong card name")
+	}
+}

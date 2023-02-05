@@ -11,6 +11,45 @@ type Card struct {
 //Define a deck as an array of cards
 type Deck []Card
 
+//Uses value and suit to return the name of the Card (i.e. "King of Clubs")
+func GetCardName(card Card) string {
+	value := ""
+
+	//Simple switch case to translate 0-12 to proper card names
+	switch card.val {
+	case 0:
+		value = "Ace"
+	case 1:
+		value = "Two"
+	case 2:
+		value = "Three"
+	case 3:
+		value = "Four"
+	case 4:
+		value = "Five"
+	case 5:
+		value = "Six"
+	case 6:
+		value = "Seven"
+	case 7:
+		value = "Eight"
+	case 8:
+		value = "Nine"
+	case 9:
+		value = "Ten"
+	case 10:
+		value = "Jack"
+	case 11:
+		value = "Queen"
+	case 12:
+		value = "King"
+	default:
+		value = "error"
+	}
+
+	return value + " of " + card.suit + "s"
+}
+
 //Create a new deck filling it with 52 cards: 4 suits, 13 cards each from 0 to 12
 func New() (deck Deck) {
 
