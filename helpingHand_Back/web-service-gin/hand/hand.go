@@ -8,8 +8,8 @@ import (
 
 // copied Card structure from deck.go for consistency
 type Card struct {
-	val  int
-	suit string
+	Val  int    `json:"val"`
+	Suit string `json:"suit"`
 }
 
 // defining hand as an array of cards separate from the deck
