@@ -1,14 +1,14 @@
 package hand
 
 import (
-	"fmt"
 	"math/rand"
+	"strconv"
 	"time"
 )
 
 // copied Card structure from deck.go for consistency
 type Card struct {
-	Val  int    `json:"val"`
+	Val  string `json:"val"`
 	Suit string `json:"suit"`
 }
 
@@ -23,13 +23,26 @@ func NewHand(handType string) *Hand {
 }
 
 // add a card to the hand if hand has less than 5 cards
-func AddCardHand(hand *Hand) {
+func AddCardHand(hand *Hand) string {
 	if len(hand.ActualHand) < 5 {
 		//get "random" value from time
 		rand.Seed(time.Now().UnixNano())
-		Number := rand.Intn(14)
+		NumberValue := rand.Intn(14)
+		Number := ""
 		SuitValue := rand.Intn(4)
 		Suit := ""
+		switch NumberValue {
+		case 0:
+			Number = "Ace"
+		case 11:
+			Number = "Jack"
+		case 12:
+			Number = "Queen"
+		case 13:
+			Number = "King"
+		default:
+			Number = strconv.Itoa(NumberValue + 1)
+		}
 		switch SuitValue {
 		case 0:
 			Suit = "Heart"
@@ -44,7 +57,8 @@ func AddCardHand(hand *Hand) {
 		}
 		card := Card{Number, Suit}
 		hand.ActualHand = append(hand.ActualHand, card)
+		return "successful"
 	} else {
-		fmt.Println("length of hand is already 5")
+		return "length of hand is already 5"
 	}
 }
