@@ -7,6 +7,7 @@ User Stories:
 Issues:
 
      front:
+     - Displaying Basic Cards, Card Selection feature, Add Angular Material
 
      back:
 
