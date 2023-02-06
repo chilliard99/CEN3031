@@ -30,14 +30,16 @@ func TestGetCardName(t *testing.T) {
 	}
 }
 
-// attempts to add more than 5 cards to the hand to check if it returns the error message.
+// Attempts to add more than 5 cards to the hand to check if it returns the error message.
 func TestHandAddOverflow(t *testing.T) {
 	temphand := hand.NewHand("None")
+	//First 5 adds should work without errors
 	hand.AddCardHand(temphand)
 	hand.AddCardHand(temphand)
 	hand.AddCardHand(temphand)
 	hand.AddCardHand(temphand)
 	hand.AddCardHand(temphand)
+	//Seeing if the returned string after attempting to add a 6th card is correct
 	if hand.AddCardHand(temphand) != "length of hand is already 5" {
 		t.Fatal("Card should not have been added")
 	}
