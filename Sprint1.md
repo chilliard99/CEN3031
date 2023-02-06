@@ -14,6 +14,7 @@ Issues:
 Completed:
 
      front:
+     - Add Angular Material
 
      back:
 
