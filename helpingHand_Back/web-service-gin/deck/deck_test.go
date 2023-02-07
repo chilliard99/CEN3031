@@ -2,6 +2,7 @@ package deck_test
 
 import (
 	"example/web-service-gin/deck"
+	"example/web-service-gin/hand"
 	"testing"
 )
 
@@ -26,5 +27,20 @@ func TestGetCardName(t *testing.T) {
 	//val = 12, suit = "Club", card should have name "King of Clubs"
 	if deck.GetCardName(tempdeck[deck.GetCardIndex(tempdeck, 12, "Club")]) != "King of Clubs" {
 		t.Fatal("Wrong card name")
+	}
+}
+
+// Attempts to add more than 5 cards to the hand to check if it returns the error message.
+func TestHandAddOverflow(t *testing.T) {
+	temphand := hand.NewHand("None")
+	//First 5 adds should work without errors
+	hand.AddCardHand(temphand)
+	hand.AddCardHand(temphand)
+	hand.AddCardHand(temphand)
+	hand.AddCardHand(temphand)
+	hand.AddCardHand(temphand)
+	//Seeing if the returned string after attempting to add a 6th card is correct
+	if hand.AddCardHand(temphand) != "length of hand is already 5" {
+		t.Fatal("Card should not have been added")
 	}
 }

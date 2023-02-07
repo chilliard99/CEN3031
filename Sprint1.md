@@ -10,6 +10,7 @@ User Stories:
 Issues:
 
      front:
+     - Displaying Basic Cards, Card Selection feature, Add Angular Material
 
      back:
      - Back-end Testing: Starting from scratch meant no testing structure, and so a basic project and data structure was needed to begin testing the code through Go.
@@ -18,6 +19,7 @@ Issues:
 Completed:
 
      front:
+     - Add Angular Material
 
      back:
      - Back-end Testing: A simple Deck struct and file was created with a function to return a hard-coded deck size. This was run through a Go test function with the appropriate passes and fails.
@@ -26,6 +28,7 @@ Completed:
 Not-Completed:
 
      front: 
-     - Light/Dark Mode Toggle: This was not completed since we are still building out the the user interface and we will add this feature later in the development process.
+     - Light/Dark Mode Toggle: This was not completed since we are sill building out the the user interface and we will add this feature later in the developmt process.
+     - Front end Back end connections: This one is in progress, as cody added the basic connection that we can build off of inorder to display data from the backend.
 
      back:
