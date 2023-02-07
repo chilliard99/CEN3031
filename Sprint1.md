@@ -15,6 +15,7 @@ Issues:
      back:
      - Back-end Testing: Starting from scratch meant no testing structure, and so a basic project and data structure was needed to begin testing the code through Go.
      - Card deck structure: A more complex data structure for storing cards in a deck with constructor and accessors functions would allow us to store a full deck of cards and sort through them or shuffle as you would with a real deck.
+     - Card names: To make the data more user-friendly and teach users more about the game, a function that inputs a card and returns its proper name would be good.
 
 Completed:
 
@@ -24,6 +25,7 @@ Completed:
      back:
      - Back-end Testing: A simple Deck struct and file was created with a function to return a hard-coded deck size. This was run through a Go test function with the appropriate passes and fails.
      - Card deck structure: Card and Deck structs were made with a deck constructor that would fill the deck with 52 cards, 13 for each of the 4 suits with no duplicates. Additionally an accessor function would return the index of a card in the deck array when provided with a card value int and a suit string. The test for the accessor function passed and failed when paired with correct and incorrect inputs respectively.
+     - Card names: A function was created to take the int value of a card and convert it into written word format as a string and concatenate it with the suit (i.e. "King of Clubs").
 
 Not-Completed:
 
