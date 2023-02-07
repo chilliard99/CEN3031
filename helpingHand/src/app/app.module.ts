@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatButtonModule } from '@angular/material/button'
 import {MatInputModule} from '@angular/material/input'; 
+import {MatCardModule} from '@angular/material/card';
 import {FormsModule} from '@angular/forms';
 
 @NgModule({
@@ -21,6 +22,7 @@ import {FormsModule} from '@angular/forms';
     MatButtonModule,
     HttpClientModule,
     FormsModule,
+    MatCardModule,
     MatInputModule
   ],
   providers: [],
