@@ -8,7 +8,7 @@ import (
 )
 
 type handPostRequest struct {
-	Val  int    `json:"val"`
+	Val  string `json:"val"`
 	Suit string `json:"suit"`
 }
 
