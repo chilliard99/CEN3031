@@ -60,7 +60,7 @@ func GetCardIndex(deck Deck, v int, s string) int {
 
 	//Probably better ways to throw errors, but setting it to Ace of Hearts seems safe for now
 	if index > 51 || v > 12 || v < 0 || suitMod > 3 {
-		fmt.Println("Invalid Suit Name")
+		fmt.Println("Invalid range (int 0-12, suit Heart/Diamond/Club/Spade)")
 		index = 0
 		return index
 	}
