@@ -98,7 +98,7 @@ func TestGetCardName(t *testing.T) {
 	//Using GetCardIndex to show the value and suit associated with the selected card
 	//val = 12, suit = "Club", card should have name "King of Clubs"
 	t.Log("\n")
-	t.Logf("Test #4: GetCardName")
+	t.Logf("Test #5: GetCardName")
 	t.Logf("Input of array, index provided by GetCardIndex with input deck, 12, \"Club\". Comparing to card name \"King of Clubs\"")
 
 	result := card.GetCardName(tempdeck[deck.GetCardIndex(tempdeck, 12, "Club")])
@@ -113,7 +113,7 @@ func TestPrintDeck(t *testing.T) {
 	tempdeck := deck.NewDeck()
 
 	t.Log("\n")
-	t.Logf("Test #5: PrintDeck")
+	t.Logf("Test #6: PrintDeck")
 	t.Logf("Input of deck, prints out full deck in order")
 
 	deck.PrintDeck(tempdeck)
