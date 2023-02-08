@@ -52,14 +52,14 @@ func GetCardIndex(deck Deck, v int, s string) int {
 	case "Spade":
 		suitMod = 3
 	default:
-		suitMod = 4
+		suitMod = 4 //this will make the next test fail
 	}
 
 	//formula for index
 	index := v + (suitMod * 13)
 
 	//Probably better ways to throw errors, but setting it to Ace of Hearts seems safe for now
-	if index > 51 {
+	if index > 51 || v > 12 || v < 0 || suitMod > 3 {
 		fmt.Println("Invalid Suit Name")
 		index = 0
 		return index
