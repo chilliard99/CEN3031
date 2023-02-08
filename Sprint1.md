@@ -10,8 +10,10 @@ User Stories:
 
      front:
      - As a front end dev, i want to use angular material which makes designing components easier, so we can speed up development and add more user features.
-     - 
-     -
+     - As a fronted developer I want to use Angular Material to display some card images on the page
+     - As a frontend dev, I want users to be able to select cards that they wish to add to a given hand so that the program holds some basic functionality.
+     - As a user I would like to be able to toggle light and dark themes
+     - As a frontend developer, I want to have a basic display so that we can ensure that Angular is set up correctly and further expand functionality.
   
      back:
      - As a back-end engineer, I want the most basic testing environment in Go so that we can begin testing our back-end implementations.
@@ -25,9 +27,12 @@ User Stories:
 Issues:
 
      front:
-     - Displaying Basic Cards 
-     - Card Selection feature 
+     - Displaying Basic Cards: Have a basic card displayed through an Angular material component.
+     - Card Selection feature: Allow users to a suit and value for a card and display that card.
      - Add Angular Material
+     - Implament Basic Back End Connection: Have some sort of communication between back and front end. 
+     - Light/Dark Mode Toggle: Allow the user to toggle between a light and dark mode on the page.
+     - Complete Front/Backend Connection: Allow complete transfer of card information between the front and back end. 
 
      back:
      - Back-end Testing: Starting from scratch meant no testing structure, and so a basic project and data structure was needed to begin testing the code through Go.
@@ -41,7 +46,9 @@ Issues:
 Completed:
 
      front:
-     - Add Angular Material: Angular material was added as a dependency for the project and we were able o display material components.
+     - Add Angular Material: Angular material was added as a dependency for the project and we were able to display material components.
+     - Implament Basic Back End Connection: A user can now use the two inputs and button to add to a hand in the back end.
+     - Display a Basic Card: We created a card and can display it on our page. 
 
      back:
      - Back-end Testing: A simple Deck struct and file was created with a function to return a hard-coded deck size. This was run through a Go test function with the appropriate passes and fails.
@@ -53,7 +60,8 @@ Not-Completed:
 
      front: 
      - Light/Dark Mode Toggle: This was not completed since we are sill building out the the user interface and we will add this feature later in the developmt process.
-     - Front end Back end connections: This one is in progress, as cody added the basic connection that we can build off of inorder to display data from the backend.
+     - Complete Front end Back end connections: This one is in progress, as cody added the basic connection that we can build off of inorder to display data from the backend.
+     - Card Selection Feature: This feature is only partially completed, a user can input a suit and value, but it does not interact with other elements in the frontend nor the backend. 
 
      back:
      - Storing past 5 hands for the front end: Not completed because this requires a separate data structure for storing all the hands as well as a connection between the front and back ends to display the past 5 hands.
