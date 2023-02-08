@@ -8,6 +8,9 @@ Code Demonstration:
 User Stories:
 
      front:
+     - As a front end dev, i want to use angular material which makes designing components easier, so we can speed up development and add more user features.
+     - 
+     -
   
      back:
      - As a back-end engineer, I want the most basic testing environment in Go so that we can begin testing our back-end implementations.
@@ -17,7 +20,9 @@ User Stories:
 Issues:
 
      front:
-     - Displaying Basic Cards, Card Selection feature, Add Angular Material
+     - Displaying Basic Cards 
+     - Card Selection feature 
+     - Add Angular Material
 
      back:
      - Back-end Testing: Starting from scratch meant no testing structure, and so a basic project and data structure was needed to begin testing the code through Go.
@@ -27,7 +32,7 @@ Issues:
 Completed:
 
      front:
-     - Add Angular Material
+     - Add Angular Material: Angular material was added as a dependency for the project and we were able o display material components.
 
      back:
      - Back-end Testing: A simple Deck struct and file was created with a function to return a hard-coded deck size. This was run through a Go test function with the appropriate passes and fails.
