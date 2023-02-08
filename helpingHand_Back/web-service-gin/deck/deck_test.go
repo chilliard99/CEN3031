@@ -1,6 +1,7 @@
 package deck_test
 
 import (
+	"example/web-service-gin/card"
 	"example/web-service-gin/deck"
 	"example/web-service-gin/hand"
 	"testing"
@@ -13,7 +14,7 @@ func TestGetIndex(t *testing.T) {
 	//5 of Hearts = 5 + (0 * 13) = 5
 	//7 of Diamonds = 7 + (1 * 13) = 20
 
-	tempdeck := deck.New()
+	tempdeck := deck.NewDeck()
 	if deck.GetCardIndex(tempdeck, 7, "Diamond") != 20 { //index will be the same as the value + (13 * the suit)
 		t.Fatal("Wrong card index")
 	}
@@ -21,11 +22,11 @@ func TestGetIndex(t *testing.T) {
 
 // Inputs a card and checks if it returns the appropriate name.
 func TestGetCardName(t *testing.T) {
-	tempdeck := deck.New()
+	tempdeck := deck.NewDeck()
 
 	//Using GetCardIndex to show the value and suit associated with the selected card
 	//val = 12, suit = "Club", card should have name "King of Clubs"
-	if deck.GetCardName(tempdeck[deck.GetCardIndex(tempdeck, 12, "Club")]) != "King of Clubs" {
+	if card.GetCardName(tempdeck[deck.GetCardIndex(tempdeck, 12, "Club")]) != "King of Clubs" {
 		t.Fatal("Wrong card name")
 	}
 }
