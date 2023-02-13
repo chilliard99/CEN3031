@@ -13,6 +13,33 @@ type Hand struct {
 	HandType   string   //i.e. straight, 4 of a kind, royal flush...
 }
 
+type Getter interface {
+	GetAll() []Card
+}
+
+type Adder interface {
+	Add(card Card)
+}
+
+// array of cards inputted by user
+type UserHand struct {
+	Cards []Card
+}
+
+func New() *UserHand {
+	return &UserHand{
+		Cards: []Card{},
+	}
+}
+
+func (r *UserHand) Add(card Card) {
+	r.Cards = append(r.Cards, card)
+}
+
+func (r *UserHand) GetAll() []Card {
+	return r.Cards
+}
+
 // Creating a new hand
 func NewHand(handType string) *Hand {
 	return &Hand{[]c.Card{}, handType}
