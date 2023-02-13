@@ -7,9 +7,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func HandGet(currentHand *hand.Hand) gin.HandlerFunc {
+func HandGet(currUserHand hand.Getter) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		results := currentHand.ActualHand
+		results := currUserHand.GetAll()
 		c.JSON(http.StatusOK, results)
 	}
 }

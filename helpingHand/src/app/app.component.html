@@ -1,4 +1,24 @@
-<mat-slide-toggle>Toggle me!</mat-slide-toggle>
+<div>
+    <div>
+        <div>Suit</div>
+        <input
+        [(ngModel)]="Suit"
+        type="text"
+        placeholder="Enter the suit">
+    </div>
+    <div>
+        <div>Value</div>
+        <input
+        [(ngModel)]="Val"
+        type="text"
+        placeholder="Enter the val">
+    </div>
+    <button (click)="addCard()">Add Card</button>
+</div>
+
+
+
+<!--<mat-slide-toggle>Toggle me!</mat-slide-toggle>
 <br class="removemelater">
 <div>
     <div>
@@ -15,13 +35,13 @@
 <button mat-raised-button (click)="addCard()">Add Card</button>
 
 <br class="removemelater">
-<!--<div *ngFor="let currentCard of currentHand">
+<div *ngFor="let currentCard of currentHand">
     <div>{{currentCard.Suit}} {{currentCard.Val}}</div>
-</div>-->
+</div>
 
 <mat-card>
     <mat-card-header>
         <mat-card-title>This is an example card</mat-card-title>
     </mat-card-header>
     <img mat-card-img width="350" height="500" src="../assets/cardexample.png" alt="An example of a card">
-</mat-card>
+</mat-card>-->
