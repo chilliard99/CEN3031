@@ -1,21 +1,16 @@
 package hand
 
 import (
+	//Imports card.go as c to prevent redundant card.Card or card.NewCard(int, string) every time a card is created
+	c "example/web-service-gin/card"
 	"math/rand"
-	"strconv"
 	"time"
 )
 
-// copied Card structure from deck.go for consistency
-type Card struct {
-	Val  string `json:"val"`
-	Suit string `json:"suit"`
-}
-
-// defining hand as an array of cards separate from the deck
+// Defining hand as an array of cards separate from the deck
 type Hand struct {
-	ActualHand []Card //the 5 cards in the hand
-	HandType   string //i.e. straight, 4 of a kind, royal flush...
+	ActualHand []c.Card //the 5 cards in the hand
+	HandType   string   //i.e. straight, 4 of a kind, royal flush...
 }
 
 type Getter interface {
@@ -45,31 +40,40 @@ func (r *UserHand) GetAll() []Card {
 	return r.Cards
 }
 
+// Creating a new hand
 func NewHand(handType string) *Hand {
-	return &Hand{[]Card{}, handType}
+	return &Hand{[]c.Card{}, handType}
 }
 
-// add a card to the hand if hand has less than 5 cards
-func AddCardHand(hand *Hand) string {
+// Checking the card at an index in the hand
+func CheckCardIndex(hand *Hand, index int) c.Card {
+	return hand.ActualHand[index]
+}
+
+// Add a specific card to the hand if hand has less than 5 cards ,for testing only
+func AddCardHandSpecific(hand *Hand, val int, suit string) string {
+	if val < 0 || val > 12 {
+		return "adding specific card: value is invalid"
+	} else if suit != "Heart" && suit != "Diamond" && suit != "Club" && suit != "Spade" {
+		return "adding specific card: suit is invalid"
+	} else {
+		if len(hand.ActualHand) < 5 {
+			hand.ActualHand = append(hand.ActualHand, c.NewCard(val, suit))
+			return "adding specific card: successful"
+		} else {
+			return "adding specific card: length of hand is already 5"
+		}
+	}
+}
+
+// Add a random card to the hand if hand has less than 5 cards
+func AddCardHandRandom(hand *Hand) string {
 	if len(hand.ActualHand) < 5 {
 		//get "random" value from time
 		rand.Seed(time.Now().UnixNano())
-		NumberValue := rand.Intn(14)
-		Number := ""
+		Number := rand.Intn(13)
 		SuitValue := rand.Intn(4)
 		Suit := ""
-		switch NumberValue {
-		case 0:
-			Number = "Ace"
-		case 11:
-			Number = "Jack"
-		case 12:
-			Number = "Queen"
-		case 13:
-			Number = "King"
-		default:
-			Number = strconv.Itoa(NumberValue + 1)
-		}
 		switch SuitValue {
 		case 0:
 			Suit = "Heart"
@@ -80,12 +84,12 @@ func AddCardHand(hand *Hand) string {
 		case 3:
 			Suit = "Spade"
 		default:
-			Suit = "Error when adding card to hand"
+			Suit = "Error when adding card to hand" //this should not ever be the value so if it is then an error has occured
 		}
-		card := Card{Number, Suit}
+		card := c.NewCard(Number, Suit)
 		hand.ActualHand = append(hand.ActualHand, card)
-		return "successful"
+		return "adding random card: successful"
 	} else {
-		return "length of hand is already 5"
+		return "adding random card: length of hand is already 5"
 	}
 }

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"example/web-service-gin/card"
 	"example/web-service-gin/hand"
 	"fmt"
 	"net/http"
@@ -9,7 +10,7 @@ import (
 )
 
 type handPostRequest struct {
-	Val  string `json:"val"`
+	Val  int    `json:"val"`
 	Suit string `json:"suit"`
 }
 
@@ -19,7 +20,7 @@ func HandPost(currUserHand hand.Adder) gin.HandlerFunc {
 		requestBody := handPostRequest{}
 		c.Bind(&requestBody)
 
-		item := hand.Card{
+		item := card.Card{
 			Val:  requestBody.Val,
 			Suit: requestBody.Suit,
 		}

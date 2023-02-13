@@ -10,10 +10,10 @@ import (
 )
 
 func main() {
-	currDeck := deck.New()
+	currDeck := deck.NewDeck()
 	fmt.Println(deck.GetCardIndex(currDeck, 0, "Heart"))
 	currentHand := hand.NewHand("initial")
-	hand.AddCardHand(currentHand)
+	hand.AddCardHandRandom(currentHand)
 	fmt.Println("current length of hand is: ")
 	fmt.Println(len(currentHand.ActualHand))
 	//user
