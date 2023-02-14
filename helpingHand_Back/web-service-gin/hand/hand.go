@@ -1,16 +1,21 @@
 package hand
 
 import (
-	//Imports card.go as c to prevent redundant card.Card or card.NewCard(int, string) every time a card is created
-	c "example/web-service-gin/card"
+	//"example/web-service-gin/card"
+	//"strconv"
 	"math/rand"
 	"time"
 )
 
+type Card struct {
+	Val  int    `json:"val"`
+	Suit string `json:"suit"`
+}
+
 // Defining hand as an array of cards separate from the deck
 type Hand struct {
-	ActualHand []c.Card //the 5 cards in the hand
-	HandType   string   //i.e. straight, 4 of a kind, royal flush...
+	ActualHand []Card //the 5 cards in the hand
+	HandType   string //i.e. straight, 4 of a kind, royal flush...
 }
 
 type Getter interface {
@@ -42,11 +47,11 @@ func (r *UserHand) GetAll() []Card {
 
 // Creating a new hand
 func NewHand(handType string) *Hand {
-	return &Hand{[]c.Card{}, handType}
+	return &Hand{[]Card{}, handType}
 }
 
 // Checking the card at an index in the hand
-func CheckCardIndex(hand *Hand, index int) c.Card {
+func CheckCardIndex(hand *Hand, index int) Card {
 	return hand.ActualHand[index]
 }
 
@@ -58,7 +63,11 @@ func AddCardHandSpecific(hand *Hand, val int, suit string) string {
 		return "adding specific card: suit is invalid"
 	} else {
 		if len(hand.ActualHand) < 5 {
-			hand.ActualHand = append(hand.ActualHand, c.NewCard(val, suit))
+			newCard := Card{
+				Val:  val,
+				Suit: suit,
+			}
+			hand.ActualHand = append(hand.ActualHand, newCard)
 			return "adding specific card: successful"
 		} else {
 			return "adding specific card: length of hand is already 5"
@@ -86,8 +95,10 @@ func AddCardHandRandom(hand *Hand) string {
 		default:
 			Suit = "Error when adding card to hand" //this should not ever be the value so if it is then an error has occured
 		}
-		card := c.NewCard(Number, Suit)
-		hand.ActualHand = append(hand.ActualHand, card)
+		//reverted to old code to get merge to work
+		//card := c.NewCard(Number, Suit)
+		newCard := Card{Number, Suit}
+		hand.ActualHand = append(hand.ActualHand, newCard)
 		return "adding random card: successful"
 	} else {
 		return "adding random card: length of hand is already 5"

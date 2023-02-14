@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
       Suit: this.Suit,
       Val: this.Val
     }).toPromise()
-    this.title = ''
+    this.Suit = ''
     this.Val = ''
   }
 
