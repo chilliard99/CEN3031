@@ -1,57 +1,52 @@
 package hand
 
 import (
-	//"example/web-service-gin/card"
+	c "example/web-service-gin/card"
 	//"strconv"
 	"math/rand"
 	"time"
 )
 
-type Card struct {
-	Val  int    `json:"val"`
-	Suit string `json:"suit"`
-}
-
 // Defining hand as an array of cards separate from the deck
 type Hand struct {
-	ActualHand []Card //the 5 cards in the hand
-	HandType   string //i.e. straight, 4 of a kind, royal flush...
+	ActualHand []c.Card //the 5 cards in the hand
+	HandType   string   //i.e. straight, 4 of a kind, royal flush...
 }
 
 type Getter interface {
-	GetAll() []Card
+	GetAll() []c.Card
 }
 
 type Adder interface {
-	Add(card Card)
+	Add(card c.Card)
 }
 
 // array of cards inputted by user
 type UserHand struct {
-	Cards []Card
+	Cards []c.Card
 }
 
 func New() *UserHand {
 	return &UserHand{
-		Cards: []Card{},
+		Cards: []c.Card{},
 	}
 }
 
-func (r *UserHand) Add(card Card) {
+func (r *UserHand) Add(card c.Card) {
 	r.Cards = append(r.Cards, card)
 }
 
-func (r *UserHand) GetAll() []Card {
+func (r *UserHand) GetAll() []c.Card {
 	return r.Cards
 }
 
 // Creating a new hand
 func NewHand(handType string) *Hand {
-	return &Hand{[]Card{}, handType}
+	return &Hand{[]c.Card{}, handType}
 }
 
 // Checking the card at an index in the hand
-func CheckCardIndex(hand *Hand, index int) Card {
+func CheckCardIndex(hand *Hand, index int) c.Card {
 	return hand.ActualHand[index]
 }
 
@@ -63,7 +58,7 @@ func AddCardHandSpecific(hand *Hand, val int, suit string) string {
 		return "adding specific card: suit is invalid"
 	} else {
 		if len(hand.ActualHand) < 5 {
-			newCard := Card{
+			newCard := c.Card{
 				Val:  val,
 				Suit: suit,
 			}
@@ -97,7 +92,7 @@ func AddCardHandRandom(hand *Hand) string {
 		}
 		//reverted to old code to get merge to work
 		//card := c.NewCard(Number, Suit)
-		newCard := Card{Number, Suit}
+		newCard := c.Card{Number, Suit}
 		hand.ActualHand = append(hand.ActualHand, newCard)
 		return "adding random card: successful"
 	} else {

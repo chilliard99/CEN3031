@@ -1,7 +1,7 @@
 package handler
 
 import (
-	//"example/web-service-gin/card"
+	"example/web-service-gin/card"
 	"example/web-service-gin/hand"
 	"fmt"
 	"net/http"
@@ -20,7 +20,7 @@ func HandPost(currUserHand hand.Adder) gin.HandlerFunc {
 		requestBody := handPostRequest{}
 		c.Bind(&requestBody)
 
-		item := hand.Card{
+		item := card.Card{
 			Val:  requestBody.Val,
 			Suit: requestBody.Suit,
 		}
