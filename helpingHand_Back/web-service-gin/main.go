@@ -24,7 +24,7 @@ func main() {
 	{
 		api.GET("/ping", handler.PingGet())
 		api.GET("/hand", handler.HandGet(currUserHand))
-		api.POST("/hand", handler.HandPost(currUserHand))
+		api.POST("/hand", handler.HandPost(currUserHand, currUserHand, currDeck)) //deck object
 	}
 	r.Run("0.0.0.0:5000")
 }

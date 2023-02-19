@@ -2,8 +2,8 @@ package handler
 
 import (
 	"example/web-service-gin/card"
+	"example/web-service-gin/deck"
 	"example/web-service-gin/hand"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +14,7 @@ type handPostRequest struct {
 	Suit string `json:"suit"`
 }
 
-func HandPost(currUserHand hand.Adder) gin.HandlerFunc {
+func HandPost(currUserHand hand.Adder, currUserHandGet hand.Getter, currDeck deck.Deck) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		requestBody := handPostRequest{}
@@ -24,12 +24,12 @@ func HandPost(currUserHand hand.Adder) gin.HandlerFunc {
 			Val:  requestBody.Val,
 			Suit: requestBody.Suit,
 		}
-		//delete
-		fmt.Println("here")
-		fmt.Println(item.Suit)
-
-		currUserHand.Add(item)
+		currUserHand.Add(item, 1)
 		//currUserHand.ActualHand = append(currUserHand.ActualHand, item)
+
+		//Update Probibilities
+		arr := currUserHandGet.GetAll()
+		deck.UpdateProb(arr, currDeck)
 
 		c.Status(http.StatusNoContent)
 	}

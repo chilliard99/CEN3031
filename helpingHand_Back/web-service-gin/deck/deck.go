@@ -9,6 +9,10 @@ import (
 // Define a deck as an array of cards
 type Deck []c.Card
 
+func UpdateProb(cards []c.Card, deck Deck) {
+
+}
+
 // Removes hand and community cards from the deck. Returns deckCopy without the input cards
 func RemoveCards(deck Deck, cards []c.Card) (deckCopy Deck) {
 	deckCount := len(deck)
