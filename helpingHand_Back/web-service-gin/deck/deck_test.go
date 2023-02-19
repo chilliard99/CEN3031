@@ -118,3 +118,67 @@ func TestPrintDeck(t *testing.T) {
 
 	deck.PrintDeck(tempdeck)
 }
+
+// Removes 3 cards from a copy of the deck, then tests the removal by running GetCardIndex on a full deck to see if the indexes were offset
+func TestRemoveCards(t *testing.T) {
+	tempDeck := deck.NewDeck()
+
+	card1 := card.NewCard(0, "Heart")
+	card2 := card.NewCard(12, "Club")
+	card3 := card.NewCard(2, "Spade")
+
+	var cards []card.Card
+
+	cards = append(cards, card1)
+	cards = append(cards, card2)
+	cards = append(cards, card3)
+
+	t.Log("\n")
+	t.Logf("Test #7: RemoveCards")
+	t.Logf("Input of deck, selection of 3 cards, comparing to full name of card with appropriate index offset")
+
+	deckCopy := deck.RemoveCards(tempDeck, cards)
+
+	if card.GetCardName(deckCopy[0]) != "Two of Hearts" { //value should be 1 higher (1 card removed by this index) Ace of Hearts -> Two of Hearts
+		t.Fatal("Card 1 not removed")
+	}
+	if card.GetCardName(deckCopy[deck.GetCardIndex(tempDeck, 12, "Club")]) != "Two of Spades" { //value should be 2 higher (2 cards removed by this index) King of Clubs -> Ace of Spades -> Two of Spades
+		t.Fatal("Card 2 not removed")
+	}
+	if card.GetCardName(deckCopy[deck.GetCardIndex(tempDeck, 2, "Spade")]) != "Six of Spades" { //value should be 3 higher (3 cards removed by this index) Three of Spades -> 4ofS -> 5ofS -> 6ofS
+		t.Fatal("Card 3 not removed")
+	}
+}
+
+// **NOT FUNCTIONING CURRENTLY**
+// Test to check whether the RoyalFlush function can return a true output given 4 of 5 cards required.
+func TestRoyalFlushCheck(t *testing.T) {
+	tempDeck := deck.NewDeck()
+
+	card1 := card.NewCard(12, "Spade")
+	card2 := card.NewCard(11, "Spade")
+	card3 := card.NewCard(10, "Spade")
+	card4 := card.NewCard(9, "Spade")
+
+	var cards []card.Card
+
+	cards = append(cards, card1)
+	cards = append(cards, card2)
+	cards = append(cards, card3)
+	cards = append(cards, card4)
+
+	t.Log("\n")
+	t.Logf("Test #8: RoyalFlushCheck")
+	t.Logf("Input of deck, selection of 4 cards (for royal flush), output should be true as it only need ace of spades")
+
+	deckCopy := deck.RemoveCards(tempDeck, cards)
+
+	boolResponse, probFloat := deck.RoyalFlush(deckCopy, cards)
+
+	if boolResponse == false {
+		t.Fatal("Returned false when it should've returned true")
+	}
+	if probFloat == 0.00 {
+		t.Fatal("Returned 0.0 when it should be greater")
+	}
+}
