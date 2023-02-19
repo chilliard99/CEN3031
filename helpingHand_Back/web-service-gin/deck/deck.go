@@ -9,8 +9,13 @@ import (
 // Define a deck as an array of cards
 type Deck []c.Card
 
-func UpdateProb(cards []c.Card, deck Deck) {
+func UpdateProb(cards []c.Card, deck Deck) (bool, int) {
+	deckCopy := RemoveCards(deck, cards)
+	royalBoolean, royalProb := RoyalFlush(deckCopy, cards)
 
+	fmt.Println("Bool result: ", royalBoolean, " Probability: ", royalProb)
+
+	return royalBoolean, int(royalProb)
 }
 
 // Removes hand and community cards from the deck. Returns deckCopy without the input cards

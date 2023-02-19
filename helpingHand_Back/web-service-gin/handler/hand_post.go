@@ -24,7 +24,7 @@ func HandPost(currUserHand hand.Adder, currUserHandGet hand.Getter, currDeck dec
 			Val:  requestBody.Val,
 			Suit: requestBody.Suit,
 		}
-		currUserHand.Add(item, 1)
+		currUserHand.Add(item)
 		//currUserHand.ActualHand = append(currUserHand.ActualHand, item)
 
 		//Update Probibilities

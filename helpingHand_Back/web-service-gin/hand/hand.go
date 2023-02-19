@@ -18,12 +18,12 @@ type Getter interface {
 }
 
 type Adder interface {
-	Add(card c.Card, index int)
+	Add(card c.Card)
 }
 
 // array of cards inputted by user
 type UserHand struct {
-	index int
+	//index int
 	Cards []c.Card
 }
 
@@ -33,13 +33,15 @@ func New() *UserHand {
 	}
 }
 
-// func (r *UserHand) Add(card c.Card) {
-// 	r.Cards = append(r.Cards, card)
-// }
+func (r *UserHand) Add(card c.Card) {
+	r.Cards = append(r.Cards, card)
+}
 
+/*
 func (r *UserHand) Add(card c.Card, index int) {
 	r.Cards[index] = card
 }
+*/
 
 func (r *UserHand) GetAll() []c.Card {
 	return r.Cards
