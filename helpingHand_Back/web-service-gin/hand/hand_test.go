@@ -7,6 +7,22 @@ import (
 	"testing"
 )
 
+// Attempts to see if hand type changes after inserting one pair of cards
+func TestOnePairCheck(t *testing.T) {
+	t.Log("Testing one pair functionality")
+	temphand := hand.NewHand("None")
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	hand.AddCardHandSpecific(temphand, 2, "Heart")
+	hand.AddCardHandSpecific(temphand, 1, "Club")
+	hand.AddCardHandSpecific(temphand, 3, "Spade")
+	hand.AddCardHandSpecific(temphand, 4, "Diamond")
+	if strings.Compare(hand.CheckHandType(temphand), "One Pair") != 0 {
+		t.Fatal("One Pair comparison is not working!")
+	} else {
+		t.Log("One Pair comparison successful!")
+	}
+}
+
 // Attempts to check 5 individual card values and suits after adding them to the hand
 func TestHandCardValues(t *testing.T) {
 	t.Log("Testing insertion of specific card values")
