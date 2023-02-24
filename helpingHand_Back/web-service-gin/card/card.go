@@ -2,8 +2,8 @@ package card
 
 // Card structure
 type Card struct {
-	Val  int    `json:"val"`
-	Suit string `json:"suit"`
+	Val  int    `json:"Val"`
+	Suit string `json:"Suit"`
 }
 
 func NewCard(value int, suit string) Card {
