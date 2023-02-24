@@ -16,7 +16,15 @@
     <button (click)="addCard()">Add Card</button>
 </div>
 
+<br>
+<br>
+<br>
 
+<div *ngFor="let card of currentHand">
+    <div>{{ card.Suit }}</div>
+    <div>{{ card.Val }}</div>
+    <br>
+</div>
 
 <!--<mat-slide-toggle>Toggle me!</mat-slide-toggle>
 <br class="removemelater">

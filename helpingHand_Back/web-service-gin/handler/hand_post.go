@@ -10,8 +10,8 @@ import (
 )
 
 type handPostRequest struct {
-	Val  int    `json:"val"`
-	Suit string `json:"suit"`
+	Val  int    `json:"Val"`
+	Suit string `json:"Suit"`
 }
 
 func HandPost(currUserHand hand.Adder, currUserHandGet hand.Getter, currDeck deck.Deck) gin.HandlerFunc {
