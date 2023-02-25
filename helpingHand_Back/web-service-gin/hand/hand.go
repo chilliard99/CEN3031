@@ -35,6 +35,19 @@ func New() *UserHand {
 }
 
 func (r *UserHand) Add(card c.Card) {
+	temp := r.GetAll()
+	//check validity of input
+	for i := 0; i < len(temp); i++ {
+		if temp[i].Suit == card.Suit && temp[i].Val == card.Val {
+			return
+		}
+	}
+	for i := 0; i < len(temp); i++ {
+		if temp[i].Index == card.Index {
+			temp[i] = card
+			return
+		}
+	}
 	r.Cards = append(r.Cards, card)
 }
 
@@ -126,7 +139,7 @@ func AddCardHandRandom(hand *Hand) string {
 		}
 		//reverted to old code to get merge to work
 		//card := c.NewCard(Number, Suit)
-		newCard := c.Card{Number, Suit}
+		newCard := c.Card{Val: Number, Suit: Suit, Index: Number}
 		hand.ActualHand = append(hand.ActualHand, newCard)
 		return "adding random card: successful"
 	} else {
