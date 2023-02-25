@@ -3,6 +3,8 @@ package deck
 import (
 	//imports card.go as c to prevent redundant card.Card or card.NewCard(int, string) every time a card is created
 	c "example/web-service-gin/card"
+	//imports hand.go as h to allow hand functions to be called
+	h "example/web-service-gin/hand"
 	"fmt"
 )
 
@@ -16,6 +18,32 @@ func UpdateProb(cards []c.Card, deck Deck) (bool, int) {
 	fmt.Println("Bool result: ", royalBoolean, " Probability: ", royalProb)
 
 	return royalBoolean, int(royalProb)
+}
+
+// Checking the hand type (i.e. one pair, 3 of a kind...) of the hand at the current time
+func CheckHandType(hand *h.Hand) string {
+	cardCount := make(map[int]int) //store count of card numbers
+	pairCount := 0
+	for index, card := range hand.ActualHand {
+		if index >= 0 {
+			cardCount[card.Val]++
+		}
+	}
+	for i := 0; i < 13; i++ {
+		if cardCount[i] == 2 {
+			pairCount++
+		}
+	}
+	if pairCount == 1 {
+		hand.HandType = "One Pair"
+		return "One Pair"
+	} else if pairCount == 2 {
+		hand.HandType = "Two Pair"
+		return "Two Pair"
+	} else {
+		hand.HandType = "None"
+		return "None"
+	}
 }
 
 // Removes hand and community cards from the deck. Returns deckCopy without the input cards

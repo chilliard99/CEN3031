@@ -1,6 +1,7 @@
 package hand_test
 
 import (
+	"example/web-service-gin/deck"
 	"example/web-service-gin/hand"
 	"strconv"
 	"strings"
@@ -16,7 +17,7 @@ func TestOnePairCheck(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Club")
 	hand.AddCardHandSpecific(temphand, 3, "Spade")
 	hand.AddCardHandSpecific(temphand, 4, "Diamond")
-	if strings.Compare(hand.CheckHandType(temphand), "One Pair") != 0 {
+	if strings.Compare(deck.CheckHandType(temphand), "One Pair") != 0 {
 		t.Fatal("One Pair comparison is not working!")
 	} else {
 		t.Log("One Pair comparison successful!")

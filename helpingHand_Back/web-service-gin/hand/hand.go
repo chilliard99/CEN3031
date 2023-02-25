@@ -71,32 +71,6 @@ func CheckCardIndex(hand *Hand, index int) c.Card {
 	return hand.ActualHand[index]
 }
 
-// Checking the hand type (i.e. one pair, 3 of a kind...) of the hand at the current time
-func CheckHandType(hand *Hand) string {
-	cardCount := make(map[int]int) //store count of card numbers
-	pairCount := 0
-	for index, card := range hand.ActualHand {
-		if index >= 0 {
-			cardCount[card.Val]++
-		}
-	}
-	for i := 0; i < 13; i++ {
-		if cardCount[i] == 2 {
-			pairCount++
-		}
-	}
-	if pairCount == 1 {
-		hand.HandType = "One Pair"
-		return "One Pair"
-	} else if pairCount == 2 {
-		hand.HandType = "Two Pair"
-		return "Two Pair"
-	} else {
-		hand.HandType = "None"
-		return "None"
-	}
-}
-
 // Add a specific card to the hand if hand has less than 5 cards ,for testing only
 func AddCardHandSpecific(hand *Hand, val int, suit string) string {
 	if val < 0 || val > 12 {
