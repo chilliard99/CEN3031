@@ -2,16 +2,29 @@ package card
 
 // Card structure
 type Card struct {
-	Val  int    `json:"Val"`
-	Suit string `json:"Suit"`
+	Val   int    `json:"Val"`
+	Suit  string `json:"Suit"`
+	Index int    `json:"Index"`
 }
 
 func NewCard(value int, suit string) Card {
 	var card Card
 	card.Val = value
 	card.Suit = suit
+	card.Index = 0
 	return card
 }
+
+/*
+Card Indexes (only applicable to user hand)
+	1 = hole 1
+	2 = hole 2
+	3 = community 1
+	4 = community 2
+	5 = community 3
+	6 = community 4
+	7 = community 5
+*/
 
 // Uses value and suit to return the name of the Card (i.e. "King of Clubs")
 func GetCardName(card Card) string {

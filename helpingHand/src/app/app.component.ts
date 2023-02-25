@@ -5,6 +5,7 @@ import { lastValueFrom } from 'rxjs'
 interface ICurrentHand {
   Val: number
   Suit: string
+  Index: number
 
 }
 
@@ -17,12 +18,15 @@ export class AppComponent implements OnInit {
   public title = 'helpingHand!!!!!';
   public Val = 0
   public Suit = ''
-  public currentHand: ICurrentHand[] = [
-    {
-      Val: 0,
-      Suit: 'Test Val'
-    }
-  ]
+  public Index = 0
+  // public currentHand: ICurrentHand[] = [
+  //   {
+  //     Val: 0,
+  //     Suit: 'Test Val',
+  //     Index: 0
+  //   }
+  // ]
+  public currentHand: ICurrentHand[] = []
 
   constructor (
     private httpClient: HttpClient
@@ -53,11 +57,13 @@ export class AppComponent implements OnInit {
   async addCard() {
     await this.httpClient.post('/api/hand', {
       Suit: this.Suit,
-      Val: this.Val
+      Val: this.Val,
+      Index: this.Index
     }).toPromise()
     await this.loadCards()
     this.Suit = ''
     this.Val = 0
+    this.Index = 0
   }
 
 }
