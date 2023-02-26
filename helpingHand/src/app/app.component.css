@@ -1,4 +1,17 @@
+/*Its been forever since I've done flex and grid so I'll refresh and change this later*/
 .removemelater {
     display: block;
     margin: 30px 0;
+}
+
+.inputsandtexts {
+    float:left
+}
+
+.cardimages {
+    float:right
+}
+
+.cardImgs {
+    display:inline
 }
