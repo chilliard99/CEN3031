@@ -24,6 +24,43 @@ func TestOnePairCheck(t *testing.T) {
 	}
 }
 
+// Attempts to see if hand type changes after inserting two pairs of cards
+func TestTwoPairCheck(t *testing.T) {
+	t.Log("Testing two pair functionality")
+	temphand := hand.NewHand("None")
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	hand.AddCardHandSpecific(temphand, 2, "Heart")
+	hand.AddCardHandSpecific(temphand, 1, "Club")
+	hand.AddCardHandSpecific(temphand, 2, "Club")
+	hand.AddCardHandSpecific(temphand, 4, "Diamond")
+	if strings.Compare(deck.CheckHandType(temphand), "Two Pair") != 0 {
+		t.Fatal("Two Pair comparison is not working!")
+	} else {
+		t.Log("Two Pair comparison successful!")
+	}
+}
+
+// Attempts to see if hand type changes after inserting three and four of a kind of cards
+func TestThreeAndFourCheck(t *testing.T) {
+	t.Log("Testing three of a kind functionality")
+	temphand := hand.NewHand("None")
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	hand.AddCardHandSpecific(temphand, 1, "Spade")
+	hand.AddCardHandSpecific(temphand, 1, "Club")
+	hand.AddCardHandSpecific(temphand, 4, "Diamond")
+	if strings.Compare(deck.CheckHandType(temphand), "Three of a Kind") != 0 {
+		t.Fatal("Three of a Kind comparison is not working!")
+	} else {
+		t.Log("Three of a Kind comparison successful!")
+	}
+	hand.AddCardHandSpecific(temphand, 1, "Diamond")
+	if strings.Compare(deck.CheckHandType(temphand), "Four of a Kind") != 0 {
+		t.Fatal("Four of a Kind comparison is not working!")
+	} else {
+		t.Log("Four of a Kind comparison successful!")
+	}
+}
+
 // Attempts to check 5 individual card values and suits after adding them to the hand
 func TestHandCardValues(t *testing.T) {
 	t.Log("Testing insertion of specific card values")

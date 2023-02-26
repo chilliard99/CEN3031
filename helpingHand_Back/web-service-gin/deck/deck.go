@@ -24,6 +24,8 @@ func UpdateProb(cards []c.Card, deck Deck) (bool, int) {
 func CheckHandType(hand *h.Hand) string {
 	cardCount := make(map[int]int) //store count of card numbers
 	pairCount := 0
+	trioCount := 0
+	quartetCount := 0
 	for index, card := range hand.ActualHand {
 		if index >= 0 {
 			cardCount[card.Val]++
@@ -32,6 +34,10 @@ func CheckHandType(hand *h.Hand) string {
 	for i := 0; i < 13; i++ {
 		if cardCount[i] == 2 {
 			pairCount++
+		} else if cardCount[i] == 3 {
+			trioCount++
+		} else if cardCount[i] == 4 {
+			quartetCount++
 		}
 	}
 	if pairCount == 1 {
@@ -40,6 +46,12 @@ func CheckHandType(hand *h.Hand) string {
 	} else if pairCount == 2 {
 		hand.HandType = "Two Pair"
 		return "Two Pair"
+	} else if trioCount == 1 {
+		hand.HandType = "Three of a Kind"
+		return "Three of a Kind"
+	} else if quartetCount == 1 {
+		hand.HandType = "Four of a Kind"
+		return "Four of a Kind"
 	} else {
 		hand.HandType = "None"
 		return "None"
