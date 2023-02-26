@@ -69,8 +69,47 @@ func RemoveCards(deck Deck, cards []c.Card) (deckCopy Deck) {
 	return
 }
 
+func ValSortCardsDes(cards []c.Card) []c.Card {
+	cardCount := len(cards)
+	swap := true
+
+	for swap {
+		swap = false
+		for i := 0; i < cardCount-1; i++ {
+			if cards[i+1].Val > cards[i].Val {
+				tempCard := cards[i+1]
+				cards[i+1] = cards[i]
+				cards[i] = tempCard
+				swap = true
+			}
+		}
+	}
+
+	return cards
+}
+
+func ValSortCardsAsc(cards []c.Card) []c.Card {
+	cardCount := len(cards)
+	swap := true
+
+	for swap {
+		swap = false
+		for i := 0; i < cardCount-1; i++ {
+			if cards[i+1].Val < cards[i].Val {
+				tempCard := cards[i+1]
+				cards[i+1] = cards[i]
+				cards[i] = tempCard
+				swap = true
+			}
+		}
+	}
+
+	return cards
+}
+
 // Check whether the hand and community cards provided can form a royal straight flush with the rest of the deck and return boolean and probability
-func RoyalFlush(deckCopy Deck, cards []c.Card) (bool, float64) {
+func RoyalFlush(deck Deck, cards []c.Card) (bool, float64) {
+	deckCopy := RemoveCards(deck, cards)
 	deckCount := len(deckCopy)
 	cardCount := len(cards)
 	remaining := 7 - cardCount
@@ -300,6 +339,102 @@ func RoyalFlush(deckCopy Deck, cards []c.Card) (bool, float64) {
 
 	return true, totalProb
 }
+
+// Returns true if hand + community cards contains a straight and probability. Third boolean represents whether or not the straight is royal
+func StraightCheck(deck Deck, cards []c.Card) (bool, float64, bool) {
+	//deckCopy := RemoveCards(deck, cards)
+	cards = ValSortCardsAsc(cards)
+	cardCount := len(cards)
+	lowVal := 0
+	highVal := 0
+	chain := 0
+
+	//VARIABLES FROM ROYALFLUSH (may use later):
+	//deckCount := len(deckCopy)
+	//remaining := 7 - cardCount
+	//lowIndex := 0
+	//chosenSuit := ""
+	//suits := map[string]struct{}{}
+	//straightHand := make(map[int]c.Card)
+	//needCards := [5]bool{true, true, true, true, true}
+	//var dupe c.Card
+	//needCount := 5
+	//VARIABLES FROM ROYALFLUSH
+
+	//Checks the cards in hand for a straight by looking for 5 sequentially valued cards
+	for i := 0; i < cardCount-1; i++ {
+		tempCard := cards[i]
+		tempNext := cards[i+1]
+		diff := tempNext.Val - tempCard.Val
+
+		fmt.Println("first: ", tempCard.Val, " second: ", tempNext.Val, " diff: ", diff)
+
+		if diff == 1 {
+			if chain == 0 {
+				lowVal = tempCard.Val
+				highVal = tempNext.Val
+				chain = 2
+
+				fmt.Println("starting chain at: ", lowVal)
+			} else {
+				chain++
+				highVal = tempNext.Val
+				fmt.Println("adding: ", highVal)
+			}
+		} else {
+			chain = 0
+			fmt.Println("restarting chain")
+		}
+	}
+
+	//ROYAL FLUSH
+	if lowVal == 9 && highVal == 12 && chain == 4 && cards[0].Val == 0 {
+		return true, 1.00, true //third boolean for royal
+	}
+
+	//Regular straight
+	if highVal-lowVal == 4 && chain == 5 {
+		return true, 1.00, false
+	}
+
+	return false, 0.00, false
+}
+
+//Started writing flushcheck before focusing on straightcheck
+/*
+func FlushCheck(deck Deck, cards []c.Card) (bool, int) {
+	//deckCopy := RemoveCards(deck, cards)
+	cardCount := len(cards)
+	suits := make(map[string]int)
+	var tempCard c.Card
+
+	//VARIABLES FROM ROYALFLUSH (may use later):
+		//deckCount := len(deckCopy)
+		//remaining := 7 - cardCount
+		//chosenSuit := ""
+		//royalFlush := make(map[int]c.Card)
+		//needCards := [5]bool{true, true, true, true, true}
+		//var dupe c.Card
+		//needCount := 5
+	//VARIABLES FROM ROYALFLUSH
+
+	//Populate suits map with count of each suit
+	for i := 0; i < cardCount; i++ {
+		tempCard = cards[i]
+
+		if suits[tempCard.Suit] > 0 {
+			suits[tempCard.Suit]++
+		} else {
+			suits[tempCard.Suit] = 1
+		}
+
+		//If there are 3 different suits, then 5/7 cards cannot be the same suit for a flush
+		if len(suits) == 3 {
+			return false, 0.00
+		}
+	}
+}
+*/
 
 // Create a new deck filling it with 52 cards: 4 suits, 13 cards each from 0 to 12
 func NewDeck() (deck Deck) {
