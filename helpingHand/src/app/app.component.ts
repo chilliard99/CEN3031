@@ -53,7 +53,7 @@ export class AppComponent implements OnInit {
     //Probably a better way to do this with the backend or something
     this.currImgs = [];
     for(let i = 0; i < this.currentHand.length; i++) {
-      this.currImgs.push("../assets/" + this.currentHand[i].Val + this.currentHand[i].Suit + ".png"); 
+      this.currImgs.push("../assets/" + (this.currentHand[i].Val + 1) + this.currentHand[i].Suit + ".png"); 
     }
     console.log(this.currentHand.length)
     //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')
@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
   async addCard() {
     await this.httpClient.post('/api/hand', {
       Suit: this.Suit,
-      Val: Number(this.Val), //REMOVE ME after I talk to Jon and figure out how to put a number on a select
+      Val: Number(this.Val) - 1, //
       Index: this.Index
     }).toPromise()
     await this.loadCards()
