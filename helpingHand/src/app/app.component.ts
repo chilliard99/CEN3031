@@ -62,7 +62,7 @@ export class AppComponent implements OnInit {
   async addCard() {
     await this.httpClient.post('/api/hand', {
       Suit: this.Suit,
-      Val: this.Val,
+      Val: Number(this.Val), //REMOVE ME after I talk to Jon and figure out how to put a number on a select
       Index: this.Index
     }).toPromise()
     await this.loadCards()

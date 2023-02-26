@@ -1,19 +1,29 @@
 
 <div class="inputsandtexts">
-    <div>
-        <div>Suit</div>
-        <input
-        [(ngModel)]="Suit"
-        type="text"
-        placeholder="Enter the suit">
-    </div>
-    <div>
-        <div>Value</div>
-        <input
-        [(ngModel)]="Val"
-        type="number"
-        placeholder="Enter the val">
-    </div>
+    <mat-form-field appearance="fill">
+        <mat-label>Suit</mat-label>
+        <mat-select [(ngModel)]="Suit">
+          <mat-option value="diamond">Diamond</mat-option>
+          <mat-option value="club">Club</mat-option>
+          <mat-option value="heart">Heart</mat-option>
+          <mat-option value="spade">Spade</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Val</mat-label>
+        <mat-select [(ngModel)]="Val" type="number" > <!--Why does type="number" not work?-->
+            <!--These values are just for the images-->
+            <mat-option value="0">Ace</mat-option>
+            <mat-option *ngFor='let key of [2,3,4,5,6,7,8,9,10]' value="{{key}}">{{key}}</mat-option>
+            <mat-option value="11">Jack</mat-option>
+            <mat-option value="12">Queen</mat-option>
+            <mat-option value="13">King</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+    
         <div>Index</div>
         <input
         [(ngModel)]="Index"
@@ -38,7 +48,7 @@
 <div class="cardImgs">
     <div class="cardImgs" *ngFor="let images of currImgs">
         <mat-card class="cardImgs">
-            <img mat-card-img width="175" height="250" src="{{images}}" alt="Invalid Value (CHANGE ME TO REAL ALT TEXT WHEN WE HAVE DROPDOWNS)">
+            <img mat-card-img width="175" height="250" src="{{images}}" alt="Image of a Card">
         </mat-card>
     </div>
 </div>
