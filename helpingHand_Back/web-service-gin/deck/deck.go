@@ -367,7 +367,7 @@ func StraightCheck(deck Deck, cards []c.Card) (bool, float64, bool) {
 		tempNext := cards[i+1]
 		diff := tempNext.Val - tempCard.Val
 
-		fmt.Println("first: ", tempCard.Val, " second: ", tempNext.Val, " diff: ", diff)
+		//fmt.Println("first: ", tempCard.Val, " second: ", tempNext.Val, " diff: ", diff)
 
 		if diff == 1 {
 			if chain == 0 {
@@ -375,15 +375,15 @@ func StraightCheck(deck Deck, cards []c.Card) (bool, float64, bool) {
 				highVal = tempNext.Val
 				chain = 2
 
-				fmt.Println("starting chain at: ", lowVal)
+				//fmt.Println("starting chain at: ", lowVal)
 			} else {
 				chain++
 				highVal = tempNext.Val
-				fmt.Println("adding: ", highVal)
+				//fmt.Println("adding: ", highVal)
 			}
 		} else {
 			chain = 0
-			fmt.Println("restarting chain")
+			//fmt.Println("restarting chain")
 		}
 	}
 
