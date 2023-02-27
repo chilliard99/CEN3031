@@ -56,13 +56,16 @@ export class AppComponent implements OnInit {
       this.currImgs.push("../assets/" + (this.currentHand[i].Val + 1) + this.currentHand[i].Suit + ".png"); 
     }
     console.log(this.currentHand.length)
+
+
     //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')
   }
+
 
   async addCard() {
     await this.httpClient.post('/api/hand', {
       Suit: this.Suit,
-      Val: Number(this.Val) - 1, //
+      Val: Number(this.Val) - 1, //This is a bandaid fix for now since IDK how to get the select form to output a number instead of a string
       Index: this.Index
     }).toPromise()
     await this.loadCards()

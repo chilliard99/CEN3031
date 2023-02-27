@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatInputModule } from '@angular/material/input'; 
 import { MatCardModule } from '@angular/material/card';
 import {MatSelectModule} from '@angular/material/select'; 
+import {MatTabsModule} from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
 import { lastValueFrom } from 'rxjs'
 
@@ -26,6 +27,7 @@ import { lastValueFrom } from 'rxjs'
     FormsModule,
     MatCardModule,
     MatInputModule,
+    MatTabsModule,
     MatSelectModule
   ],
   providers: [],
