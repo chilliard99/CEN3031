@@ -21,41 +21,58 @@ func UpdateProb(cards []c.Card, deck Deck) (bool, int) {
 }
 
 // Checking the hand type (i.e. one pair, 3 of a kind...) of the hand at the current time
-func CheckHandType(hand *h.Hand) string {
+func CheckHandType(hand *h.Hand) []string {
+	doesHandHaveType := false
+	handTypes := make([]string, 0) //store hand types
 	cardCount := make(map[int]int) //store count of card numbers
 	pairCount := 0
 	trioCount := 0
 	quartetCount := 0
-	for index, card := range hand.ActualHand {
-		if index >= 0 {
-			cardCount[card.Val]++
-		}
+	for _, card := range hand.ActualHand {
+		cardCount[card.Val]++
 	}
 	for i := 0; i < 13; i++ {
 		if cardCount[i] == 2 {
 			pairCount++
+			doesHandHaveType = true
 		} else if cardCount[i] == 3 {
 			trioCount++
+			doesHandHaveType = true
 		} else if cardCount[i] == 4 {
 			quartetCount++
+			doesHandHaveType = true
 		}
 	}
-	if pairCount == 1 {
-		hand.HandType = "One Pair"
-		return "One Pair"
-	} else if pairCount == 2 {
-		hand.HandType = "Two Pair"
-		return "Two Pair"
-	} else if trioCount == 1 {
-		hand.HandType = "Three of a Kind"
-		return "Three of a Kind"
-	} else if quartetCount == 1 {
-		hand.HandType = "Four of a Kind"
-		return "Four of a Kind"
-	} else {
-		hand.HandType = "None"
-		return "None"
+	hasPair := false
+	if !doesHandHaveType {
+		handTypes = append(handTypes, "None")
+		return handTypes
 	}
+	if pairCount >= 1 {
+		handTypes = append(handTypes, "One Pair")
+		hasPair = true
+	}
+	if pairCount >= 2 {
+		handTypes = append(handTypes, "Two Pair")
+	}
+	if trioCount >= 1 {
+		handTypes = append(handTypes, "Three of a Kind")
+		if !hasPair {
+			handTypes = append(handTypes, "One Pair")
+		} else {
+			handTypes = append(handTypes, "Full House")
+		}
+	}
+	if quartetCount >= 1 {
+		handTypes = append(handTypes, "Four of a Kind")
+		handTypes = append(handTypes, "Three of a Kind")
+		if !hasPair {
+			handTypes = append(handTypes, "One Pair")
+		} else {
+			handTypes = append(handTypes, "Full House")
+		}
+	}
+	return handTypes
 }
 
 // Removes hand and community cards from the deck. Returns deckCopy without the input cards
