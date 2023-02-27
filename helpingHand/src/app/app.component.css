@@ -2,6 +2,7 @@
 .cardWrapper {
     display: flex;
     flex-wrap: wrap;
+    width: 70%;
     align-content: flex-start;
 }
 
@@ -12,7 +13,8 @@
 }
 
 .inputsandtexts {
-    margin-right: 1%;
+    margin-right: 5%;
+    width: 10%
 }
 
 #topbar { /*Not actually a top bar, originally planned on using popups for the other two tabs, but went with tabs. REMEMBER TO ASK ABOUT THIS AT MEETING*/
@@ -26,8 +28,7 @@
     display:flex;
     justify-content: right;
     flex-direction: column;
-    width: 25%;
-    
+    width: 15%;
     border-left-color:black;
     border-left-width: 10px;
 }
