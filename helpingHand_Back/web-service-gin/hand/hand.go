@@ -4,6 +4,7 @@ import (
 	c "example/web-service-gin/card"
 	//"strconv"
 	"math/rand"
+	"sort"
 	"time"
 )
 
@@ -28,6 +29,13 @@ type UserHand struct {
 	HandType string
 }
 
+// sorting array by index
+type ByIndex []c.Card
+
+func (a ByIndex) Len() int           { return len(a) }
+func (a ByIndex) Less(i, j int) bool { return a[i].Index < a[j].Index }
+func (a ByIndex) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+
 func New() *UserHand {
 	return &UserHand{
 		Cards: []c.Card{},
@@ -49,6 +57,7 @@ func (r *UserHand) Add(card c.Card) {
 		}
 	}
 	r.Cards = append(r.Cards, card)
+	sort.Sort(ByIndex(r.Cards))
 }
 
 /*
