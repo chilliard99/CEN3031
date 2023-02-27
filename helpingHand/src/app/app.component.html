@@ -1,35 +1,58 @@
-<div>
-    <div>
-        <div>Suit</div>
-        <input
-        [(ngModel)]="Suit"
-        type="text"
-        placeholder="Enter the suit">
-    </div>
-    <div>
-        <div>Value</div>
-        <input
-        [(ngModel)]="Val"
-        type="number"
-        placeholder="Enter the val">
-    </div>
+
+<div class="inputsandtexts">
+    <mat-form-field appearance="fill">
+        <mat-label>Suit</mat-label>
+        <mat-select [(ngModel)]="Suit">
+          <mat-option value="diamond">Diamond</mat-option>
+          <mat-option value="club">Club</mat-option>
+          <mat-option value="heart">Heart</mat-option>
+          <mat-option value="spade">Spade</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br>
+    <mat-form-field appearance="fill">
+        <mat-label>Val</mat-label>
+        <mat-select [(ngModel)]="Val" type="number" > <!--Why does type="number" not work?-->
+            <!--Values get 1 subtracted so they get sent to the backend right, but the default values are used for the images because I don't want to rename them all-->
+            <mat-option value="1">Ace</mat-option>
+            <mat-option *ngFor='let key of [2,3,4,5,6,7,8,9,10]' value="{{key}}">{{key}}</mat-option>
+            <mat-option value="11">Jack</mat-option>
+            <mat-option value="12">Queen</mat-option>
+            <mat-option value="13">King</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+    
         <div>Index</div>
         <input
         [(ngModel)]="Index"
         type="number"
         placeholder="Testing">
     <button (click)="addCard()">Add Card</button>
-</div>
 
-<br>
-<br>
-<br>
-
-<div *ngFor="let card of currentHand">
-    <div>{{ card.Suit }}</div>
-    <div>{{ card.Val }}</div>
     <br>
+    <br>
+    <br>
+
+    <div *ngFor="let card of currentHand">
+        <div>{{ card.Suit }}</div>
+        <div>{{ card.Val }}</div>
+        <br>
+    </div>
 </div>
+
+
+
+
+<div class="cardImgs">
+    <div class="cardImgs" *ngFor="let images of currImgs">
+        <mat-card class="cardImgs">
+            <img mat-card-img width="175" height="250" src="{{images}}" alt="Image of a Card">
+        </mat-card>
+    </div>
+</div>
+
 
 <!--<mat-slide-toggle>Toggle me!</mat-slide-toggle>
 <br class="removemelater">

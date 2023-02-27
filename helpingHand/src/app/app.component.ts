@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   //   }
   // ]
   public currentHand: ICurrentHand[] = []
-
+  public currImgs:string[] = new Array;
   constructor (
     private httpClient: HttpClient
   ) {}
@@ -50,6 +50,11 @@ export class AppComponent implements OnInit {
 
   async loadCards() {
     this.currentHand = await lastValueFrom(this.httpClient.get<ICurrentHand[]>('/api/hand'))
+    //Probably a better way to do this with the backend or something
+    this.currImgs = [];
+    for(let i = 0; i < this.currentHand.length; i++) {
+      this.currImgs.push("../assets/" + (this.currentHand[i].Val + 1) + this.currentHand[i].Suit + ".png"); 
+    }
     console.log(this.currentHand.length)
     //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')
   }
@@ -57,7 +62,7 @@ export class AppComponent implements OnInit {
   async addCard() {
     await this.httpClient.post('/api/hand', {
       Suit: this.Suit,
-      Val: this.Val,
+      Val: Number(this.Val) - 1, //
       Index: this.Index
     }).toPromise()
     await this.loadCards()
@@ -65,5 +70,5 @@ export class AppComponent implements OnInit {
     this.Val = 0
     this.Index = 0
   }
-
+  
 }

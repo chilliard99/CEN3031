@@ -8,6 +8,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatButtonModule } from '@angular/material/button'
 import { MatInputModule } from '@angular/material/input'; 
 import { MatCardModule } from '@angular/material/card';
+import {MatSelectModule} from '@angular/material/select'; 
 import { FormsModule } from '@angular/forms';
 import { lastValueFrom } from 'rxjs'
 
@@ -24,7 +25,8 @@ import { lastValueFrom } from 'rxjs'
     HttpClientModule,
     FormsModule,
     MatCardModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
