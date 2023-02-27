@@ -1,35 +1,65 @@
-<div>
-    <div>
-        <div>Suit</div>
-        <input
-        [(ngModel)]="Suit"
-        type="text"
-        placeholder="Enter the suit">
-    </div>
-    <div>
-        <div>Value</div>
-        <input
-        [(ngModel)]="Val"
-        type="number"
-        placeholder="Enter the val">
-    </div>
-        <div>Index</div>
-        <input
-        [(ngModel)]="Index"
-        type="number"
-        placeholder="Testing">
-    <button (click)="addCard()">Add Card</button>
-</div>
+<mat-tab-group id="mainPage">
+    <mat-tab id="simTest" label="Simulation"> 
+        <header id="topbar"></header>
+        <div id="simulationLayer">
+            <section class="inputsandtexts">
+                <mat-form-field appearance="fill">
+                    <mat-label>Suit</mat-label>
+                    <mat-select [(ngModel)]="Suit">
+                    <mat-option value="diamond">Diamond</mat-option>
+                    <mat-option value="club">Club</mat-option>
+                    <mat-option value="heart">Heart</mat-option>
+                    <mat-option value="spade">Spade</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>Val</mat-label>
+                    <mat-select [(ngModel)]="Val" type="number" > <!--Why does type="number" not work?-->
+                        <!--Values get 1 subtracted so they get sent to the backend right, but the default values are used for the images because I don't want to rename them all-->
+                        <mat-option value="1">Ace</mat-option>
+                        <mat-option *ngFor='let key of [2,3,4,5,6,7,8,9,10]' value="{{key}}">{{key}}</mat-option>
+                        <mat-option value="11">Jack</mat-option>
+                        <mat-option value="12">Queen</mat-option>
+                        <mat-option value="13">King</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div>Index</div>
+                <input
+                [(ngModel)]="Index"
+                type="number"
+                placeholder="Testing">
+                <button (click)="addCard()">Add Card</button>
+            </section>
 
-<br>
-<br>
-<br>
 
-<div *ngFor="let card of currentHand">
-    <div>{{ card.Suit }}</div>
-    <div>{{ card.Val }}</div>
-    <br>
-</div>
+            
+            <section class="cardWrapper">
+                <div class="cardImgs" *ngFor="let images of currImgs">
+                    <mat-card>
+                        <img mat-card-img src="{{images}}" alt="Image of a Card">
+                    </mat-card>
+                </div>
+            </section>
+            
+            <aside id="rightSideBar">
+                <h2>Current Hand</h2>
+                <div *ngFor="let card of currentHand">
+                    <div>{{ card.Suit }} {{ card.Val }}</div>
+                    <br>
+                </div>
+            </aside>    
+        </div>
+    </mat-tab>
+
+    <mat-tab label="Hand List"> Stuff </mat-tab>
+
+    <mat-tab label="Poker Terms"> More Stuff </mat-tab>
+</mat-tab-group>
+
+
+
+
+
 
 <!--<mat-slide-toggle>Toggle me!</mat-slide-toggle>
 <br class="removemelater">

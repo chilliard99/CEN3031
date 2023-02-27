@@ -150,7 +150,7 @@ func TestRemoveCards(t *testing.T) {
 	}
 }
 
-// **NOT FUNCTIONING CURRENTLY**
+// **ONLY TESTS FOR ROYALFLUSH PRESENCE CURRENTLY**
 // Test to check whether the RoyalFlush function can return a true output given 4 of 5 cards required.
 func TestRoyalFlushCheck(t *testing.T) {
 	tempDeck := deck.NewDeck()
@@ -159,6 +159,7 @@ func TestRoyalFlushCheck(t *testing.T) {
 	card2 := card.NewCard(11, "Spade")
 	card3 := card.NewCard(10, "Spade")
 	card4 := card.NewCard(9, "Spade")
+	card5 := card.NewCard(0, "Spade") //added line for half-measure test
 
 	var cards []card.Card
 
@@ -166,19 +167,90 @@ func TestRoyalFlushCheck(t *testing.T) {
 	cards = append(cards, card2)
 	cards = append(cards, card3)
 	cards = append(cards, card4)
+	cards = append(cards, card5) //added line for half-measure test
 
 	t.Log("\n")
 	t.Logf("Test #8: RoyalFlushCheck")
-	t.Logf("Input of deck, selection of 4 cards (for royal flush), output should be true as it only need ace of spades")
+	//t.Logf("Input of deck, selection of 4 cards (for royal flush), output should be true as it only need ace of spades")
 
-	deckCopy := deck.RemoveCards(tempDeck, cards)
+	t.Logf("Input of deck, selection of 5 cards (for royal flush), output should be true") //added line for half-measure test
 
-	boolResponse, probFloat := deck.RoyalFlush(deckCopy, cards)
+	boolResponse, probFloat := deck.RoyalFlush(tempDeck, cards)
 
 	if boolResponse == false {
 		t.Fatal("Returned false when it should've returned true")
 	}
 	if probFloat == 0.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
+	}
+}
+
+// Test to check whether straight function will properly identify a straight (royal)
+func TestStraightCheck1(t *testing.T) {
+	tempDeck := deck.NewDeck()
+
+	card1 := card.NewCard(12, "Spade")
+	card2 := card.NewCard(11, "Spade")
+	card3 := card.NewCard(10, "Spade")
+	card4 := card.NewCard(9, "Spade")
+	card5 := card.NewCard(0, "Spade")
+
+	var cards []card.Card
+
+	cards = append(cards, card1)
+	cards = append(cards, card2)
+	cards = append(cards, card3)
+	cards = append(cards, card4)
+	cards = append(cards, card5)
+
+	t.Log("\n")
+	t.Logf("Test #9: StraightCheck (royal)")
+	t.Logf("Input of deck, selection of 5 cards (for royal flush), output should be true")
+
+	boolResponse, probFloat, royalBoolean := deck.StraightCheck(tempDeck, cards)
+
+	if boolResponse == false {
+		t.Fatal("Returned false when it should've returned true")
+	}
+	if probFloat == 0.00 {
+		t.Fatal("Returned 0.0 when it should be greater")
+	}
+	if royalBoolean == false {
+		t.Fatal("Returned false for royal when it should've returned true")
+	}
+}
+
+// Test to check whether straight function will properly identify a straight (non-royal)
+func TestStraightCheck2(t *testing.T) {
+	tempDeck := deck.NewDeck()
+
+	card1 := card.NewCard(11, "Spade")
+	card2 := card.NewCard(10, "Spade")
+	card3 := card.NewCard(9, "Spade")
+	card4 := card.NewCard(8, "Spade")
+	card5 := card.NewCard(7, "Spade")
+
+	var cards []card.Card
+
+	cards = append(cards, card1)
+	cards = append(cards, card2)
+	cards = append(cards, card3)
+	cards = append(cards, card4)
+	cards = append(cards, card5)
+
+	t.Log("\n")
+	t.Logf("Test #10: StraightCheck (non-royal)")
+	t.Logf("Input of deck, selection of 5 sequential cards, output should be true")
+
+	boolResponse, probFloat, royalBoolean := deck.StraightCheck(tempDeck, cards)
+
+	if boolResponse == false {
+		t.Fatal("Returned false when it should've returned true")
+	}
+	if probFloat == 0.00 {
+		t.Fatal("Returned 0.0 when it should be greater")
+	}
+	if royalBoolean == true {
+		t.Fatal("Returned true for royal when it should've returned false")
 	}
 }

@@ -1,4 +1,44 @@
-.removemelater {
-    display: block;
-    margin: 30px 0;
+
+.cardWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 70%;
+    align-content: flex-start;
+}
+
+.cardImgs {
+    width: 15%;
+    height: auto;
+    justify-content: center;
+}
+
+.inputsandtexts {
+    margin-right: 5%;
+    width: 10%
+}
+
+#topbar { /*Not actually a top bar, originally planned on using popups for the other two tabs, but went with tabs. REMEMBER TO ASK ABOUT THIS AT MEETING*/
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1%;
+    height: 10%
+}
+
+#rightSideBar {
+    display:flex;
+    justify-content: right;
+    flex-direction: column;
+    width: 15%;
+    border-left-color:black;
+    border-left-width: 10px;
+}
+
+.topbarbuttons {
+    flex-grow: 1;
+    height: 100%;
+}
+
+#simulationLayer {
+    display:flex;
+    margin-bottom: 1%;
 }

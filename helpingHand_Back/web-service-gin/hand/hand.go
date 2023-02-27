@@ -71,40 +71,14 @@ func CheckCardIndex(hand *Hand, index int) c.Card {
 	return hand.ActualHand[index]
 }
 
-// Checking the hand type (i.e. one pair, 3 of a kind...) of the hand at the current time
-func CheckHandType(hand *Hand) string {
-	cardCount := make(map[int]int) //store count of card numbers
-	pairCount := 0
-	for index, card := range hand.ActualHand {
-		if index >= 0 {
-			cardCount[card.Val]++
-		}
-	}
-	for i := 0; i < 13; i++ {
-		if cardCount[i] == 2 {
-			pairCount++
-		}
-	}
-	if pairCount == 1 {
-		hand.HandType = "One Pair"
-		return "One Pair"
-	} else if pairCount == 2 {
-		hand.HandType = "Two Pair"
-		return "Two Pair"
-	} else {
-		hand.HandType = "None"
-		return "None"
-	}
-}
-
-// Add a specific card to the hand if hand has less than 5 cards ,for testing only
+// Add a specific card to the hand if hand has less than 8 cards ,for testing only
 func AddCardHandSpecific(hand *Hand, val int, suit string) string {
 	if val < 0 || val > 12 {
 		return "adding specific card: value is invalid"
 	} else if suit != "Heart" && suit != "Diamond" && suit != "Club" && suit != "Spade" {
 		return "adding specific card: suit is invalid"
 	} else {
-		if len(hand.ActualHand) < 5 {
+		if len(hand.ActualHand) < 8 {
 			newCard := c.Card{
 				Val:  val,
 				Suit: suit,
@@ -112,14 +86,14 @@ func AddCardHandSpecific(hand *Hand, val int, suit string) string {
 			hand.ActualHand = append(hand.ActualHand, newCard)
 			return "adding specific card: successful"
 		} else {
-			return "adding specific card: length of hand is already 5"
+			return "adding specific card: length of hand is already 7"
 		}
 	}
 }
 
 // Add a random card to the hand if hand has less than 5 cards
 func AddCardHandRandom(hand *Hand) string {
-	if len(hand.ActualHand) < 5 {
+	if len(hand.ActualHand) < 7 {
 		//get "random" value from time
 		rand.Seed(time.Now().UnixNano())
 		Number := rand.Intn(13)
@@ -143,6 +117,6 @@ func AddCardHandRandom(hand *Hand) string {
 		hand.ActualHand = append(hand.ActualHand, newCard)
 		return "adding random card: successful"
 	} else {
-		return "adding random card: length of hand is already 5"
+		return "adding random card: length of hand is already 7"
 	}
 }
