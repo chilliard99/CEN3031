@@ -23,7 +23,7 @@ Frontend Unit Tests:
 
 Backend Unit Tests (Golang tests):
 
-  Deck:
+  - Deck:
     - 5 GetCardIndex tests for accurate index returns from a deck.
     - GetCardName test for accurate proper card name return.
     - PrintDeck test for simply viewing full deck printout (no intended function yet, may be used to show cards remaining in deck).
@@ -31,7 +31,7 @@ Backend Unit Tests (Golang tests):
     - RoyalFlush test for identifying if an array of cards contains a royal flush (substitution with Flush and Straight functions planned).
     - 2 StraightCheck tests for identifying if an array of cards contains either a regular straight or a royal straight.
     
-  Hand:
+  - Hand:
     - 
   
 Backend API Documentation:
