@@ -22,7 +22,8 @@ describe('AppComponent', () => {
   let debugElement: DebugElement;
   let fixture: ComponentFixture<AppComponent>;
   let app: AppComponent;
-  let htmlElement: HTMLElement;
+  let rightSideBar: HTMLElement;
+  let images: HTMLElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -50,9 +51,13 @@ describe('AppComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
     app = fixture.componentInstance;
+    app.currImgs.push("../assets/3club.png");
+    app.currentHand.push({
+      Suit: "club",
+      Val: 3,
+      Index: 0
+    });
     fixture.detectChanges();
-    debugElement = fixture.debugElement.query(By.css('#rightSideBar'))
-    htmlElement = debugElement.nativeElement;
   });
 
   //First test to ensure that the app actually gets created
@@ -66,11 +71,38 @@ describe('AppComponent', () => {
      expect(lengthCurrHand).toEqual(lengthImgHand);
   });
 
-  it('should display no values at start', () => {
-    expect(htmlElement.lastChild?.childNodes.length).toEqual(0);
+  it('should display new text when a card is added to currentHand', () => {
+    const element: DebugElement[] = fixture.debugElement.queryAll(By.css('.rightsideloop'));
+    expect(element.length).toBe(1);
   })
 
+  it('should display an image when one is added to currImgs', () => {
+     const element: DebugElement[] = fixture.debugElement.queryAll(By.css('.cardImgs'));
+     expect(element.length).toBe(1);
+  })
 
+  it('should display the proper values of currentHand on the page', () => {
+    const element: DebugElement[] = fixture.debugElement.queryAll(By.css('.rightsideloop'));
+    element.forEach((obj:DebugElement, index:number) => {
+      expect(obj.children[0].nativeElement.innerHTML.trim()).toEqual(app.currentHand[index].Suit + " " + app.currentHand[index].Val.toString());
+    })
+  })
+
+  it('should display the proper image according to currImage', () => {
+    const element =  fixture.debugElement.queryAll(By.css('.cardImgs'));
+    element.forEach((obj:DebugElement, index:number) => {
+      //Src is shown as http://localhost, meanwhile currImgs shows ..//assets, slice is used to remove the first few dots.
+      expect(obj.children[0].children[0].nativeElement.src).toContain((app.currImgs[index]).slice(2));
+    })
+  })
+
+  it('should display the proper image according to currentHand', () => {
+    const element =  fixture.debugElement.queryAll(By.css('.cardImgs'));
+    element.forEach((obj:DebugElement, index:number) => {
+      //Src is shown as http://localhost, meanwhile currImgs shows ..//assets, slice is used to remove the first few dots.
+      expect(obj.children[0].children[0].nativeElement.src).toContain("/assets/" + (app.currentHand[index].Val) + app.currentHand[index].Suit + ".png");
+    })
+  })
 
 
   
