@@ -3,24 +3,24 @@
         <header id="topbar"></header>
         <div id="simulationLayer">
             <section class="inputsandtexts">
-                <mat-form-field appearance="fill">
+                <mat-form-field id="Suits" appearance="fill">
                     <mat-label>Suit</mat-label>
-                    <mat-select [(ngModel)]="Suit">
-                    <mat-option value="diamond">Diamond</mat-option>
-                    <mat-option value="club">Club</mat-option>
-                    <mat-option value="heart">Heart</mat-option>
-                    <mat-option value="spade">Spade</mat-option>
+                    <mat-select id="SuitSelect" [(ngModel)]="Suit">
+                    <mat-option id="diamond" value="diamond">Diamond</mat-option>
+                    <mat-option id="club" value="club">Club</mat-option>
+                    <mat-option id="heart" value="heart">Heart</mat-option>
+                    <mat-option id="spade" value="spade">Spade</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Val</mat-label>
-                    <mat-select [(ngModel)]="Val" type="number" > <!--Why does type="number" not work?-->
+                    <mat-select id="ValsSelect" [(ngModel)]="Val" type="number" > <!--Why does type="number" not work?-->
                         <!--Values get 1 subtracted so they get sent to the backend right, but the default values are used for the images because I don't want to rename them all-->
-                        <mat-option value="1">Ace</mat-option>
+                        <mat-option id="ace" value="1">Ace</mat-option>
                         <mat-option *ngFor='let key of [2,3,4,5,6,7,8,9,10]' value="{{key}}">{{key}}</mat-option>
-                        <mat-option value="11">Jack</mat-option>
-                        <mat-option value="12">Queen</mat-option>
-                        <mat-option value="13">King</mat-option>
+                        <mat-option id="jack" value="11">Jack</mat-option>
+                        <mat-option id="queen" value="12">Queen</mat-option>
+                        <mat-option id="king" value="13">King</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <div>Index</div>
@@ -28,7 +28,7 @@
                 [(ngModel)]="Index"
                 type="number"
                 placeholder="Testing">
-                <button (click)="addCard()">Add Card</button>
+                <button id="add_card" (click)="addCard()">Add Card</button>
             </section>
 
 
