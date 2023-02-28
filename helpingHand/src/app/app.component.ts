@@ -15,7 +15,7 @@ interface ICurrentHand {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  public title = 'helpingHand!!!!!';
+  public title = 'helpingHand';
   public Val = 0
   public Suit = ''
   public Index = 0
