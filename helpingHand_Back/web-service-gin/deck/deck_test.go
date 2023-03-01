@@ -3,6 +3,7 @@ package deck_test
 import (
 	"example/web-service-gin/card"
 	"example/web-service-gin/deck"
+	"example/web-service-gin/hand"
 	"strconv"
 	"testing"
 )
@@ -253,4 +254,77 @@ func TestStraightCheck2(t *testing.T) {
 	if royalBoolean == true {
 		t.Fatal("Returned true for royal when it should've returned false")
 	}
+}
+
+// Attempts to see if hand type changes after inserting one pair of cards
+func TestOnePairCheck(t *testing.T) {
+	t.Log("Testing one pair functionality")
+	temphand := hand.NewHand("None")
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	hand.AddCardHandSpecific(temphand, 2, "Heart")
+	hand.AddCardHandSpecific(temphand, 1, "Club")
+	hand.AddCardHandSpecific(temphand, 3, "Spade")
+	hand.AddCardHandSpecific(temphand, 4, "Diamond")
+	if deck.Contains(deck.CheckHandType(temphand), "One Pair") != true {
+		t.Fatal("One Pair comparison is not working!")
+	} else {
+		t.Log("One Pair comparison successful!")
+	}
+}
+
+// Attempts to see if hand type changes after inserting two pairs of cards
+func TestTwoPairCheck(t *testing.T) {
+	t.Log("Testing two pair functionality")
+	temphand := hand.NewHand("None")
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	hand.AddCardHandSpecific(temphand, 2, "Heart")
+	hand.AddCardHandSpecific(temphand, 1, "Club")
+	hand.AddCardHandSpecific(temphand, 2, "Club")
+	hand.AddCardHandSpecific(temphand, 4, "Diamond")
+	if deck.Contains(deck.CheckHandType(temphand), "Two Pair") != true {
+		t.Fatal("Two Pair comparison is not working!")
+	} else {
+		t.Log("Two Pair comparison successful!")
+	}
+}
+
+// Attempts to see if hand type changes after inserting three and four of a kind of cards
+// Also full house now
+func TestThreeFourFullCheck(t *testing.T) {
+	t.Log("Testing three of a kind functionality")
+	temphand := hand.NewHand("None")
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	hand.AddCardHandSpecific(temphand, 1, "Spade")
+	hand.AddCardHandSpecific(temphand, 1, "Club")
+	hand.AddCardHandSpecific(temphand, 4, "Diamond")
+	if deck.Contains(deck.CheckHandType(temphand), "Three of a Kind") != true {
+		t.Fatal("Three of a Kind comparison is not working!")
+	} else {
+		t.Log("Three of a Kind comparison successful!")
+	}
+	hand.AddCardHandSpecific(temphand, 1, "Diamond")
+	if deck.Contains(deck.CheckHandType(temphand), "Four of a Kind") != true {
+		t.Fatal("Four of a Kind comparison is not working!")
+	} else {
+		t.Log("Four of a Kind comparison successful!")
+	}
+	hand.AddCardHandSpecific(temphand, 4, "Spade")
+	if deck.Contains(deck.CheckHandType(temphand), "Full House") != true {
+		t.Fatal("Full House comparison is not working!")
+	} else {
+		t.Log("Full House comparison successful!")
+	}
+}
+
+// Trying to see if future hand function works
+func TestFutureHand(t *testing.T) {
+	t.Log("Testing future hand functionality")
+	temphand := hand.NewHand("None")
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	hand.AddCardHandSpecific(temphand, 1, "Spade")
+	hand.AddCardHandSpecific(temphand, 1, "Club")
+	if deck.Contains(deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand)), "Four of a Kind") != true {
+		t.Fatal("Future hand function does not work for three of a kind!")
+	}
+	t.Log(("Future hand function works for three of a kind!"))
 }

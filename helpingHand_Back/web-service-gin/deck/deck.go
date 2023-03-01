@@ -8,6 +8,18 @@ import (
 	"fmt"
 )
 
+// check if string slice already contains item
+// from https://freshman.tech/snippets/go/check-if-slice-contains-element/
+func Contains(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+
+	return false
+}
+
 // Define a deck as an array of cards
 type Deck []c.Card
 
@@ -18,6 +30,35 @@ func UpdateProb(cards []c.Card, deck Deck) (bool, int) {
 	fmt.Println("Bool result: ", royalBoolean, " Probability: ", royalProb)
 
 	return royalBoolean, int(royalProb)
+}
+
+// Determining what hands can be created using the current hand and cards in the deck
+func DetermineFutureHands(hand *h.Hand, currentHands []string) []string {
+	futureHands := make([]string, 0)
+	if len(hand.ActualHand) < 7 {
+		if Contains(currentHands, "Full House") {
+			futureHands = append(futureHands, "Placeholder - Full House")
+		} else if Contains(currentHands, "Three of a Kind") {
+			futureHands = append(futureHands, "Four of a Kind")
+		} else if Contains(currentHands, "One Pair") {
+			futureHands = append(futureHands, "Three of a Kind")
+			if len(hand.ActualHand) < 6 {
+				futureHands = append(futureHands, "Four of a Kind")
+				futureHands = append(futureHands, "Two Pair")
+			}
+		} else if Contains(currentHands, "Two Pair") {
+			futureHands = append(futureHands, "Three of a Kind")
+			if len(hand.ActualHand) < 6 {
+				futureHands = append(futureHands, "Four of a Kind")
+			}
+		} else {
+			futureHands = append(futureHands, "One Pair")
+		}
+	} else {
+		//no future hands can be made so the function returns "None"
+		futureHands = append(futureHands, "None")
+	}
+	return futureHands
 }
 
 // Checking the hand type (i.e. one pair, 3 of a kind...) of the hand at the current time
