@@ -3,7 +3,8 @@ Sprint 2 Progress:
   Frontend:
   
   - Completed end-to-end integration, allowing information to be sent between the frontend and backend.
-  - 
+  - Created assets for the display of card values according to backend data.
+  - Designed wireframes for and implamented the basic structure of the page's layout.
   
   Backend:
   
@@ -19,7 +20,13 @@ Sprint 2 Progress:
 
 Frontend Unit Tests:
 
-  - 
+  - Basic test to check if the app is properly created
+  - Checks if the number of image locations stored in currImgs is equal to the amount of cards in currHand.
+  - Ensures that the number of elements rendered in the right side bar is equal to the number of elements in currHand.
+  - Ensures that the number of matLabel elements rendered is equal to the number of entries in currImgs.
+  - Compares the content of currHand to the values displayed to ensure that they are equal.
+  - Compares the content of currImg to the src attribute of the images displayed to ensure that they are roughly equal.
+  - Compares the src attribute of the displayed images to the content of currHand to see if the proper image is displayed with respect to the stored hand. 
 
 Backend Unit Tests (Golang tests):
 
