@@ -10,7 +10,7 @@ import (
 
 // Defining hand as an array of cards separate from the deck
 type Hand struct {
-	ActualHand []c.Card //the 5 cards in the hand
+	ActualHand []c.Card //the 7 cards in the hand
 	HandType   string   //i.e. straight, 4 of a kind, royal flush...
 }
 
@@ -100,7 +100,7 @@ func AddCardHandSpecific(hand *Hand, val int, suit string) string {
 	}
 }
 
-// Add a random card to the hand if hand has less than 5 cards
+// Add a random card to the hand if hand has less than 7 cards
 func AddCardHandRandom(hand *Hand) string {
 	if len(hand.ActualHand) < 7 {
 		//get "random" value from time
