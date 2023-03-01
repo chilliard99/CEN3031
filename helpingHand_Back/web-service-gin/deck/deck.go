@@ -8,6 +8,16 @@ import (
 	"fmt"
 )
 
+// Potential structure to return probability function to front end
+type HandType struct {
+	Handname string `json:"Handname"`
+	Prob     int    `json:"Prob"`
+}
+
+type Probabilitys struct {
+	ProbList []HandType
+}
+
 // check if string slice already contains item
 // from https://freshman.tech/snippets/go/check-if-slice-contains-element/
 func Contains(s []string, str string) bool {
