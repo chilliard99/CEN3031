@@ -23,6 +23,7 @@ func Contains(s []string, str string) bool {
 // Define a deck as an array of cards
 type Deck []c.Card
 
+// Returns RoyalFlush output when given cards from the frontend
 func UpdateProb(cards []c.Card, deck Deck) (bool, int) {
 	deckCopy := RemoveCards(deck, cards)
 	royalBoolean, royalProb := RoyalFlush(deckCopy, cards)
@@ -179,10 +180,13 @@ func ValSortCardsAsc(cards []c.Card) []c.Card {
 
 // Check whether the hand and community cards provided can form a royal straight flush with the rest of the deck and return boolean and probability
 func RoyalFlush(deck Deck, cards []c.Card) (bool, float64) {
-	deckCopy := RemoveCards(deck, cards)
-	deckCount := len(deckCopy)
 	cardCount := len(cards)
 	remaining := 7 - cardCount
+
+	//Variables for probability calculation (which is commented out)
+	//deckCopy := RemoveCards(deck, cards)
+	//deckCount := len(deckCopy)
+	//chosenSuit := ""
 
 	/* POSSIBLY NOT NEEDED
 	turnCount := 0
@@ -204,7 +208,6 @@ func RoyalFlush(deck Deck, cards []c.Card) (bool, float64) {
 	}
 	*/
 
-	chosenSuit := ""
 	suits := map[string]struct{}{}
 	royalFlush := make(map[int]c.Card)
 	needCards := [5]bool{true, true, true, true, true}
@@ -234,7 +237,7 @@ func RoyalFlush(deck Deck, cards []c.Card) (bool, float64) {
 			//If map slot is empty, add card
 			if royalFlush[tempCard.Val].Suit == "" {
 				royalFlush[tempCard.Val] = tempCard
-				chosenSuit = tempCard.Suit
+				//chosenSuit = tempCard.Suit
 
 				//Check dupe to make sure cards are in the right suit (in case of duplicate value card in the wrong suit)
 				if dupe.Suit == tempCard.Suit {
@@ -323,91 +326,95 @@ func RoyalFlush(deck Deck, cards []c.Card) (bool, float64) {
 		return true, 1.00 //if none needed, return true and 100.0%
 	}
 
-	totalProb := 0.00
-	//Calculate possibilities of getting other cards from the deck
-	for remaining > 0 {
-		boolIndex := 0
-		firstVal := 99
-		tempProb := 0.00
+	//NON-FUNCTIONAL PROBABILITY CALCULATION
+	/*
+		totalProb := 0.00
+		//Calculate possibilities of getting other cards from the deck
+		for remaining > 0 {
+			boolIndex := 0
+			firstVal := 99
+			tempProb := 0.00
 
-		//Get the proper card value from boolean array
-		for i := 0; i < 5; i++ {
-			if needCards[i] {
-				switch i {
-				case 0:
-					firstVal = 12
-					boolIndex = 0
-				case 1:
-					firstVal = 11
-					boolIndex = 1
-				case 2:
-					firstVal = 10
-					boolIndex = 2
-				case 3:
-					firstVal = 9
-					boolIndex = 3
-				case 4:
-					firstVal = 0
-					boolIndex = 4
-				default:
+			//Get the proper card value from boolean array
+			for i := 0; i < 5; i++ {
+				if needCards[i] {
+					switch i {
+					case 0:
+						firstVal = 12
+						boolIndex = 0
+					case 1:
+						firstVal = 11
+						boolIndex = 1
+					case 2:
+						firstVal = 10
+						boolIndex = 2
+					case 3:
+						firstVal = 9
+						boolIndex = 3
+					case 4:
+						firstVal = 0
+						boolIndex = 4
+					default:
+					}
+					break
 				}
-				break
+			}
+
+			//Go through deck, find the needed card, remove it, and add to the probability
+			for i := 0; i < deckCount; i++ {
+				if deckCopy[i].Suit == chosenSuit && deckCopy[i].Val == firstVal {
+					//Find probability
+					tempProb = 1.00 / float64(deckCount)
+
+					//Adjust boolean array and other variables for found card
+					needCards[boolIndex] = false
+					remaining--
+
+					//Remove the card from the deckCopy and break
+					var rem []c.Card
+					rem = append(rem, deckCopy[i])
+					deckCopy = RemoveCards(deckCopy, rem)
+					break
+				}
+
+			}
+
+			//needed card not found in deck, return false and 0.0%
+			if tempProb == 0.00 {
+				return false, 0.00
+			}
+
+			//Set totalProb if not already set
+			if totalProb == 0.00 {
+				totalProb = tempProb
+				tempProb = 0.00
+
+				//THIS CALCULATION ASSUMES DRAWING ALL CARDS IN THE ORDER OF CALCULATION (for 2 cards in any order, it is multiplied by 2. For 3 in any order, it is multiplied by 6, etc.)
+			} else {
+				totalProb = totalProb * tempProb
 			}
 		}
 
-		//Go through deck, find the needed card, remove it, and add to the probability
-		for i := 0; i < deckCount; i++ {
-			if deckCopy[i].Suit == chosenSuit && deckCopy[i].Val == firstVal {
-				//Find probability
-				tempProb = 1.00 / float64(deckCount)
-
-				//Adjust boolean array and other variables for found card
-				needCards[boolIndex] = false
-				remaining--
-
-				//Remove the card from the deckCopy and break
-				var rem []c.Card
-				rem = append(rem, deckCopy[i])
-				deckCopy = RemoveCards(deckCopy, rem)
-				break
-			}
-
+		//I have no idea if this accounts for the number of permutations/orderings for cards
+		switch needCount {
+		case 1:
+		case 2:
+			totalProb = totalProb * 2
+		case 3:
+			totalProb = totalProb * 6
+		case 4:
+			totalProb = totalProb * 24
+		case 5:
+			totalProb = totalProb * 120
+		case 6:
+			totalProb = totalProb * 720
+		case 7:
+			totalProb = totalProb * 5040
 		}
 
-		//needed card not found in deck, return false and 0.0%
-		if tempProb == 0.00 {
-			return false, 0.00
-		}
-
-		//Set totalProb if not already set
-		if totalProb == 0.00 {
-			totalProb = tempProb
-			tempProb = 0.00
-
-			//THIS CALCULATION ASSUMES DRAWING ALL CARDS IN THE ORDER OF CALCULATION (for 2 cards in any order, it is multiplied by 2. For 3 in any order, it is multiplied by 6, etc.)
-		} else {
-			totalProb = totalProb * tempProb
-		}
-	}
-
-	//I have no idea if this accounts for the number of permutations/orderings for cards
-	switch needCount {
-	case 1:
-	case 2:
-		totalProb = totalProb * 2
-	case 3:
-		totalProb = totalProb * 6
-	case 4:
-		totalProb = totalProb * 24
-	case 5:
-		totalProb = totalProb * 120
-	case 6:
-		totalProb = totalProb * 720
-	case 7:
-		totalProb = totalProb * 5040
-	}
-
-	return true, totalProb
+		return true, totalProb
+	*/
+	return false, 0.00
 }
 
 // Returns true if hand + community cards contains a straight and probability. Third boolean represents whether or not the straight is royal

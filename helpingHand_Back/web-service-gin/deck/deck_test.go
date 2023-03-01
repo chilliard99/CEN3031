@@ -256,6 +256,49 @@ func TestStraightCheck2(t *testing.T) {
 	}
 }
 
+// Test to check accuracy of card array sorting functions
+func TestValSortCards(t *testing.T) {
+	card1 := card.NewCard(1, "Heart")
+	card2 := card.NewCard(11, "Spade")
+	card3 := card.NewCard(10, "Club")
+	card4 := card.NewCard(4, "Diamond")
+	card5 := card.NewCard(8, "Spade")
+
+	var cards []card.Card
+
+	cards = append(cards, card1)
+	cards = append(cards, card2)
+	cards = append(cards, card3)
+	cards = append(cards, card4)
+	cards = append(cards, card5)
+
+	sortedAsc := deck.ValSortCardsAsc(cards)
+
+	lastVal := 0
+
+	for i := 0; i < len(cards); i++ {
+		t.Logf(strconv.Itoa(sortedAsc[i].Val))
+		if lastVal > sortedAsc[i].Val {
+			t.Fatal("Cards are not in ascending order")
+		}
+
+		lastVal = sortedAsc[i].Val
+	}
+
+	sortedDes := deck.ValSortCardsDes(cards)
+
+	lastVal = 13
+
+	for i := 0; i < len(cards); i++ {
+		t.Logf(strconv.Itoa(sortedDes[i].Val))
+		if lastVal < sortedDes[i].Val {
+			t.Fatal("Cards are not in descending order")
+		}
+
+		lastVal = sortedDes[i].Val
+	}
+}
+
 // Attempts to see if hand type changes after inserting one pair of cards
 func TestOnePairCheck(t *testing.T) {
 	t.Log("Testing one pair functionality")

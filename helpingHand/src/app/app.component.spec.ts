@@ -99,7 +99,6 @@ describe('AppComponent', () => {
   it('should display the proper image according to currentHand', () => {
     const element =  fixture.debugElement.queryAll(By.css('.cardImgs'));
     element.forEach((obj:DebugElement, index:number) => {
-      //Src is shown as http://localhost, meanwhile currImgs shows ..//assets, slice is used to remove the first few dots.
       expect(obj.children[0].children[0].nativeElement.src).toContain("/assets/" + (app.currentHand[index].Val) + app.currentHand[index].Suit + ".png");
     })
   })
