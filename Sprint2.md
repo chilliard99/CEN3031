@@ -17,6 +17,10 @@ Sprint 2 Progress:
     - Full house
     - Straight
     - Royal flush
+ 
+Frontend e2e (Cypress) Test:
+
+  - Wrote a simple e2e test usining cypress that selects and clicks the suits drop down, then selects and clicks the diamond option. Next it selects and clicks the value drop down and selects and clicks the ace option. Finally it selects and clicks the add card button.
 
 Frontend Unit Tests:
 
