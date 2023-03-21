@@ -15,7 +15,7 @@ type handPostRequest struct {
 	Index int    `json:"Index"`
 }
 
-func HandPost(currUserHand hand.Adder, currUserHandGet hand.Getter, currDeck deck.Deck) gin.HandlerFunc {
+func HandPost(currUserHand hand.Adder, currUserHandGet hand.Getter, currDeck deck.Deck, currUserProb deck.Getter) gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		requestBody := handPostRequest{}
@@ -31,7 +31,7 @@ func HandPost(currUserHand hand.Adder, currUserHandGet hand.Getter, currDeck dec
 
 		//Update Probibilities
 		arr := currUserHandGet.GetAll()
-		deck.UpdateProb(arr, currDeck)
+		deck.UpdateProb(arr, currDeck, currUserProb.GetAll())
 
 		c.Status(http.StatusNoContent)
 	}

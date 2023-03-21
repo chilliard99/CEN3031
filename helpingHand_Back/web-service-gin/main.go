@@ -18,13 +18,15 @@ func main() {
 	fmt.Println(len(currentHand.ActualHand))
 	//user
 	currUserHand := hand.New()
+	currUserProb := deck.New()
 
 	r := gin.Default()
 	api := r.Group("/api")
 	{
 		api.GET("/ping", handler.PingGet())
 		api.GET("/hand", handler.HandGet(currUserHand))
-		api.POST("/hand", handler.HandPost(currUserHand, currUserHand, currDeck)) //deck object
+		api.GET("/prob", handler.ProbGet(currUserProb))
+		api.POST("/hand", handler.HandPost(currUserHand, currUserHand, currDeck, currUserProb)) //deck object
 	}
 	r.Run("0.0.0.0:5000")
 }

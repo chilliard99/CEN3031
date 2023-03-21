@@ -1,17 +1,15 @@
 package handler
 
 import (
-	"example/web-service-gin/hand"
-	//"example/web-service-gin/deck"
-	//"fmt"
+	"example/web-service-gin/deck"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-func HandGet(currUserHand hand.Getter) gin.HandlerFunc {
+func ProbGet(currUserProb deck.Getter) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		results := currUserHand.GetAll()
+		results := currUserProb.GetAll()
 		//fmt.Println("hello im here " + results[0].Suit)
 		c.JSON(http.StatusOK, results)
 	}
