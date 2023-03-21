@@ -9,13 +9,28 @@ import (
 )
 
 // Potential structure to return probability function to front end
-type HandType struct {
-	Handname string `json:"Handname"`
-	Prob     int    `json:"Prob"`
+
+type Getter interface {
+	GetAll() []HandProb
+}
+
+type HandProb struct {
+	Handname string  `json:"Handname"`
+	Prob     float64 `json:"Prob"`
 }
 
 type Probabilitys struct {
-	ProbList []HandType
+	ProbList []HandProb
+}
+
+func New() *Probabilitys {
+	return &Probabilitys{
+		ProbList: []HandProb{{Handname: "hcard", Prob: 0.00}},
+	}
+}
+
+func (r *Probabilitys) GetAll() []HandProb {
+	return r.ProbList
 }
 
 // check if string slice already contains item
@@ -34,10 +49,10 @@ func Contains(s []string, str string) bool {
 type Deck []c.Card
 
 // Returns RoyalFlush output when given cards from the frontend
-func UpdateProb(cards []c.Card, deck Deck) (bool, int) {
+func UpdateProb(cards []c.Card, deck Deck, currUserProb []HandProb) (bool, int) {
 	deckCopy := RemoveCards(deck, cards)
 	royalBoolean, royalProb := RoyalFlush(deckCopy, cards)
-
+	currUserProb[0].Prob = HighCard(deckCopy, cards)
 	fmt.Println("Bool result: ", royalBoolean, " Probability: ", royalProb)
 
 	return royalBoolean, int(royalProb)
@@ -186,6 +201,11 @@ func ValSortCardsAsc(cards []c.Card) []c.Card {
 	}
 
 	return cards
+}
+
+// Check the probability of a high card
+func HighCard(deck Deck, cards []c.Card) float64 {
+	return 1.00
 }
 
 // Check whether the hand and community cards provided can form a royal straight flush with the rest of the deck and return boolean and probability
