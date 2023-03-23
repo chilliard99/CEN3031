@@ -25,7 +25,9 @@ type Probabilitys struct {
 
 func New() *Probabilitys {
 	return &Probabilitys{
-		ProbList: []HandProb{{Handname: "hcard", Prob: 0.00}},
+		ProbList: []HandProb{{Handname: "High Card", Prob: 0.00}, {Handname: "One Pair", Prob: 0.00}, {Handname: "Two Pair", Prob: 0.00}, {Handname: "Three of a Kind", Prob: 0.00},
+			{Handname: "Straight", Prob: 0.00}, {Handname: "Flush", Prob: 0.00}, {Handname: "Full House", Prob: 0.00}, {Handname: "Four of a Kind", Prob: 0.00},
+			{Handname: "Straight Flush", Prob: 0.00}, {Handname: "Royal Flush", Prob: 0.00}},
 	}
 }
 
