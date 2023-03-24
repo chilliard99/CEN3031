@@ -176,24 +176,23 @@ func TestRoyalFlushCheck(t *testing.T) {
 
 	t.Logf("Input of deck, selection of 5 cards (for royal flush), output should be true") //added line for half-measure test
 
-	boolResponse, probFloat := deck.RoyalFlush(tempDeck, cards)
+	probFloat := deck.RoyalFlush(tempDeck, cards)
 
-	if boolResponse == false {
-		t.Fatal("Returned false when it should've returned true")
-	}
 	if probFloat == 0.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
 	}
 }
 
-// Test to check whether straight function will properly identify a straight (royal)
-func TestStraightCheck1(t *testing.T) {
+// Test to check whether straight function will properly identify a straight (flush)
+func TestStraightCheck(t *testing.T) {
 	tempDeck := deck.NewDeck()
 
 	card1 := card.NewCard(12, "Spade")
 	card2 := card.NewCard(11, "Spade")
 	card3 := card.NewCard(10, "Spade")
 	card4 := card.NewCard(9, "Spade")
+	//card5 := card.NewCard(8, "Spade")	//for testing non-broadway (no difference in output)
+	//card5 := card.NewCard(0, "Heart") //for testing non-flush (bool will return false)
 	card5 := card.NewCard(0, "Spade")
 
 	var cards []card.Card
@@ -205,31 +204,29 @@ func TestStraightCheck1(t *testing.T) {
 	cards = append(cards, card5)
 
 	t.Log("\n")
-	t.Logf("Test #9: StraightCheck (royal)")
-	t.Logf("Input of deck, selection of 5 cards (for royal flush), output should be true")
+	t.Logf("Test #9: StraightCheck")
+	t.Logf("Input of deck, selection of 5 cards (for broadway straight), output should be true")
 
-	boolResponse, probFloat, royalBoolean := deck.StraightCheck(tempDeck, cards)
+	probFloat, flushBool := deck.StraightCheck(tempDeck, cards)
 
-	if boolResponse == false {
-		t.Fatal("Returned false when it should've returned true")
-	}
 	if probFloat == 0.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
 	}
-	if royalBoolean == false {
-		t.Fatal("Returned false for royal when it should've returned true")
+	if flushBool == false {
+		t.Fatal("Returned false for flush when it should have been true")
 	}
 }
 
-// Test to check whether straight function will properly identify a straight (non-royal)
-func TestStraightCheck2(t *testing.T) {
+// Tests to see if the hand + community cards contains 5 cards of the same suit for a flush. (Containing 3 different suits between 7 cards invalidates the possibility)
+func TestFlushCheck(t *testing.T) {
 	tempDeck := deck.NewDeck()
 
-	card1 := card.NewCard(11, "Spade")
-	card2 := card.NewCard(10, "Spade")
-	card3 := card.NewCard(9, "Spade")
-	card4 := card.NewCard(8, "Spade")
-	card5 := card.NewCard(7, "Spade")
+	card1 := card.NewCard(12, "Spade")
+	card2 := card.NewCard(11, "Spade")
+	card3 := card.NewCard(10, "Spade")
+	card4 := card.NewCard(9, "Spade")
+	card5 := card.NewCard(0, "Spade")
+	//card5 := card.NewCard(0, "Diamond") for testing non-flush
 
 	var cards []card.Card
 
@@ -240,20 +237,73 @@ func TestStraightCheck2(t *testing.T) {
 	cards = append(cards, card5)
 
 	t.Log("\n")
-	t.Logf("Test #10: StraightCheck (non-royal)")
-	t.Logf("Input of deck, selection of 5 sequential cards, output should be true")
+	t.Logf("Test #10: FlushCheck")
+	t.Logf("Input of deck, selection of 5 cards (flush), output should be true")
 
-	boolResponse, probFloat, royalBoolean := deck.StraightCheck(tempDeck, cards)
+	probFloat := deck.FlushCheck(tempDeck, cards)
 
-	if boolResponse == false {
-		t.Fatal("Returned false when it should've returned true")
-	}
 	if probFloat == 0.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
 	}
-	if royalBoolean == true {
-		t.Fatal("Returned true for royal when it should've returned false")
+}
+
+// Tests to see if the cards (marked extraCards) were properly removed from the array
+func TestRemoveCardsFromArray(t *testing.T) {
+	card1 := card.NewCard(12, "Spade")
+	card2 := card.NewCard(10, "Spade")
+	card3 := card.NewCard(8, "Spade")
+	card4 := card.NewCard(6, "Spade")
+	card5 := card.NewCard(0, "Spade")
+	//card5 := card.NewCard(0, "Diamond") for testing non-flush
+
+	var cards []card.Card
+
+	cards = append(cards, card1)
+	cards = append(cards, card2)
+	cards = append(cards, card3)
+	cards = append(cards, card4)
+	cards = append(cards, card5)
+
+	var extraCards []card.Card
+
+	extraCards = append(extraCards, card4)
+	extraCards = append(extraCards, card5)
+
+	cardCopy := deck.RemoveCardsFromArray(cards, extraCards)
+
+	t.Log("\n")
+	t.Logf("Test #11: RemoveCardsFromArray")
+	t.Logf("Input of 5 cards, selection of 2 cards from the original array, output should be two less cards")
+
+	if len(cardCopy) < 3 {
+		t.Fatal("Returned less than 3 cards (too many removed)")
 	}
+	if len(cardCopy) > 3 {
+		t.Fatal("Returned more than 3 cards (too few removed)")
+	}
+
+	card4Bool := false
+	card5Bool := false
+
+	for i := 0; i < len(cardCopy); i++ {
+		if cardCopy[i] == card4 {
+			card4Bool = true
+		}
+		if cardCopy[i] == card5 {
+			card5Bool = true
+		}
+	}
+
+	if card4Bool && card5Bool {
+		t.Fatal("Contains card4 and card5 when both should've been removed")
+	}
+	if card4Bool {
+		t.Fatal("Contains card4 when it should've been removed")
+	}
+	if card5Bool {
+		t.Fatal("Contains card5 when it should've been removed")
+	}
+
 }
 
 // Test to check accuracy of card array sorting functions
