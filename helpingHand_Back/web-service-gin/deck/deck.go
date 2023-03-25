@@ -54,14 +54,32 @@ type Deck []c.Card
 
 // Returns RoyalFlush output when given cards from the frontend
 func UpdateProb(cards []c.Card, deck Deck, currUserProb []HandProb) {
+
+	handTypes := CheckHandType(cards)
+
 	deckCopy := RemoveCards(deck, cards)
 
 	straightProb, straightFlushBool := StraightCheck(deckCopy, cards)
 
 	currUserProb[0].Prob = HighCard(deckCopy, cards)
-
+	if Contains(handTypes, "One Pair") {
+		currUserProb[1].Prob = 1.00
+	}
+	if Contains(handTypes, "Two Pair") {
+		currUserProb[2].Prob = 1.00
+	}
+	if Contains(handTypes, "Three of a Kind") {
+		currUserProb[3].Prob = 1.00
+	}
 	currUserProb[4].Prob = straightProb
 	currUserProb[5].Prob = FlushCheck(deckCopy, cards)
+
+	if Contains(handTypes, "Full House") {
+		currUserProb[6].Prob = 1.00
+	}
+	if Contains(handTypes, "Four of a Kind") {
+		currUserProb[7].Prob = 1.00
+	}
 
 	if straightFlushBool {
 		currUserProb[8].Prob = 1.00
@@ -102,16 +120,22 @@ func DetermineFutureHands(hand *h.Hand, currentHands []string) []string {
 	return futureHands
 }
 
+func GetHandArray(hand *h.Hand) []c.Card {
+	handArray := make([]c.Card, 0)
+	handArray = append(handArray, hand.ActualHand...)
+	return handArray
+}
+
 // Checking the hand type (i.e. one pair, 3 of a kind...) of the hand at the current time
-func CheckHandType(hand *h.Hand) []string {
+func CheckHandType(hand []c.Card) []string {
 	doesHandHaveType := false
 	handTypes := make([]string, 0) //store hand types
 	cardCount := make(map[int]int) //store count of card numbers
 	pairCount := 0
 	trioCount := 0
 	quartetCount := 0
-	for _, card := range hand.ActualHand {
-		cardCount[card.Val]++
+	for card := range hand {
+		cardCount[card]++
 	}
 	for i := 0; i < 13; i++ {
 		if cardCount[i] == 2 {

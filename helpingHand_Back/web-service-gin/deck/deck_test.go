@@ -358,7 +358,8 @@ func TestOnePairCheck(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Club")
 	hand.AddCardHandSpecific(temphand, 3, "Spade")
 	hand.AddCardHandSpecific(temphand, 4, "Diamond")
-	if deck.Contains(deck.CheckHandType(temphand), "One Pair") != true {
+	temparray := deck.GetHandArray(temphand)
+	if deck.Contains(deck.CheckHandType(temparray), "One Pair") != true {
 		t.Fatal("One Pair comparison is not working!")
 	} else {
 		t.Log("One Pair comparison successful!")
@@ -374,7 +375,8 @@ func TestTwoPairCheck(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Club")
 	hand.AddCardHandSpecific(temphand, 2, "Club")
 	hand.AddCardHandSpecific(temphand, 4, "Diamond")
-	if deck.Contains(deck.CheckHandType(temphand), "Two Pair") != true {
+	temparray := deck.GetHandArray(temphand)
+	if deck.Contains(deck.CheckHandType(temparray), "Two Pair") != true {
 		t.Fatal("Two Pair comparison is not working!")
 	} else {
 		t.Log("Two Pair comparison successful!")
@@ -390,19 +392,22 @@ func TestThreeFourFullCheck(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Spade")
 	hand.AddCardHandSpecific(temphand, 1, "Club")
 	hand.AddCardHandSpecific(temphand, 4, "Diamond")
-	if deck.Contains(deck.CheckHandType(temphand), "Three of a Kind") != true {
+	temparray := deck.GetHandArray(temphand)
+	if deck.Contains(deck.CheckHandType(temparray), "Three of a Kind") != true {
 		t.Fatal("Three of a Kind comparison is not working!")
 	} else {
 		t.Log("Three of a Kind comparison successful!")
 	}
 	hand.AddCardHandSpecific(temphand, 1, "Diamond")
-	if deck.Contains(deck.CheckHandType(temphand), "Four of a Kind") != true {
+	temparray = deck.GetHandArray(temphand)
+	if deck.Contains(deck.CheckHandType(temparray), "Four of a Kind") != true {
 		t.Fatal("Four of a Kind comparison is not working!")
 	} else {
 		t.Log("Four of a Kind comparison successful!")
 	}
 	hand.AddCardHandSpecific(temphand, 4, "Spade")
-	if deck.Contains(deck.CheckHandType(temphand), "Full House") != true {
+	temparray = deck.GetHandArray(temphand)
+	if deck.Contains(deck.CheckHandType(temparray), "Full House") != true {
 		t.Fatal("Full House comparison is not working!")
 	} else {
 		t.Log("Full House comparison successful!")
@@ -416,7 +421,8 @@ func TestFutureHand(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Heart")
 	hand.AddCardHandSpecific(temphand, 1, "Spade")
 	hand.AddCardHandSpecific(temphand, 1, "Club")
-	if deck.Contains(deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand)), "Four of a Kind") != true {
+	temparray := deck.GetHandArray(temphand)
+	if deck.Contains(deck.DetermineFutureHands(temphand, deck.CheckHandType(temparray)), "Four of a Kind") != true {
 		t.Fatal("Future hand function does not work for three of a kind!")
 	}
 	t.Log(("Future hand function works for three of a kind!"))
