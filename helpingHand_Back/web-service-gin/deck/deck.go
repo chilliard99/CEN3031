@@ -134,8 +134,8 @@ func CheckHandType(hand []c.Card) []string {
 	pairCount := 0
 	trioCount := 0
 	quartetCount := 0
-	for card := range hand {
-		cardCount[card]++
+	for _, card := range hand {
+		cardCount[card.Val]++
 	}
 	for i := 0; i < 13; i++ {
 		if cardCount[i] == 2 {
