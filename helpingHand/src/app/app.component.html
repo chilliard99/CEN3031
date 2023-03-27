@@ -6,6 +6,7 @@
         <img class="suitImg" (click)="setSuit('heart')" src="../assets/heart.png" alt="Heart">
         <img class="suitImg" (click)="setSuit('club')" src="../assets/club.png" alt="Club">
         <img class="suitImg" (click)="setSuit('diamond')" src="../assets/diamond.png" alt="Diamond">
+        <img class="suitImg" (click)="setSuit('');setVal(1);this.displayVal=false" src="" alt="Delete">
     </div>
     <div *ngIf="displayVal" class="selectionWrapper">
         <h1 class="suitSelection">Select Value</h1>

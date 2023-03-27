@@ -5,7 +5,7 @@ import (
 	"sort"
 
 	//"strconv"
-	//"fmt"
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -47,10 +47,33 @@ func New() *UserHand {
 
 func (r *UserHand) Add(card c.Card) {
 
+	// fmt.Println("Before??")
+	// fmt.Print(r.Cards[0].Index)
+	// fmt.Println(r.Cards[0].Suit)
+	// fmt.Print(r.Cards[1].Index)
+	// fmt.Println(r.Cards[1].Suit)
+	// fmt.Print(r.Cards[2].Index)
+	// fmt.Println(r.Cards[2].Suit)
+	// fmt.Print(r.Cards[3].Index)
+	// fmt.Println(r.Cards[3].Suit)
+	// fmt.Print(r.Cards[4].Index)
+	// fmt.Println(r.Cards[4].Suit)
+	// fmt.Print(r.Cards[5].Index)
+	// fmt.Println(r.Cards[5].Suit)
+	// fmt.Print(r.Cards[6].Index)
+	// fmt.Println(r.Cards[6].Suit)
+
 	temp := r.GetAll()
 	//check validity of input
+	if card.Suit == "" {
+		r.Cards[card.Index].Suit = ""
+		r.Cards[card.Val].Val = 0
+		return
+	}
+
 	for i := 0; i < len(temp); i++ {
 		if temp[i].Suit == card.Suit && temp[i].Val == card.Val {
+			fmt.Println("here")
 			return
 		}
 	}
@@ -59,6 +82,23 @@ func (r *UserHand) Add(card c.Card) {
 			r.Cards[i].Suit = card.Suit
 			r.Cards[i].Val = card.Val
 			sort.Sort(ByIndex(r.Cards))
+
+			// fmt.Println("After??")
+			// fmt.Print(r.Cards[0].Index)
+			// fmt.Println(r.Cards[0].Suit)
+			// fmt.Print(r.Cards[1].Index)
+			// fmt.Println(r.Cards[1].Suit)
+			// fmt.Print(r.Cards[2].Index)
+			// fmt.Println(r.Cards[2].Suit)
+			// fmt.Print(r.Cards[3].Index)
+			// fmt.Println(r.Cards[3].Suit)
+			// fmt.Print(r.Cards[4].Index)
+			// fmt.Println(r.Cards[4].Suit)
+			// fmt.Print(r.Cards[5].Index)
+			// fmt.Println(r.Cards[5].Suit)
+			// fmt.Print(r.Cards[6].Index)
+			// fmt.Println(r.Cards[6].Suit)
+
 			return
 		}
 	}
