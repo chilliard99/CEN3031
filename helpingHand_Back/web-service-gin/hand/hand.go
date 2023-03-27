@@ -5,6 +5,7 @@ import (
 	"sort"
 
 	//"strconv"
+	"fmt"
 	"math/rand"
 	"time"
 )
@@ -39,11 +40,13 @@ func (a ByIndex) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 
 func New() *UserHand {
 	return &UserHand{
-		Cards: []c.Card{},
+		Cards: []c.Card{{Val: 0, Suit: "", Index: 0}, {Val: 0, Suit: "", Index: 1}, {Val: 0, Suit: "", Index: 2}, {Val: 0, Suit: "", Index: 3},
+			{Val: 0, Suit: "", Index: 4}, {Val: 0, Suit: "", Index: 5}, {Val: 0, Suit: "", Index: 6}},
 	}
 }
 
 func (r *UserHand) Add(card c.Card) {
+
 	temp := r.GetAll()
 	//check validity of input
 	for i := 0; i < len(temp); i++ {
@@ -52,8 +55,10 @@ func (r *UserHand) Add(card c.Card) {
 		}
 	}
 	for i := 0; i < len(temp); i++ {
-		if temp[i].Index == card.Index {
-			temp[i] = card
+		if i == card.Index {
+			r.Cards[i].Suit = card.Suit
+			r.Cards[i].Val = card.Val
+			sort.Sort(ByIndex(r.Cards))
 			return
 		}
 	}
@@ -68,6 +73,21 @@ func (r *UserHand) Add(card c.Card, index int) {
 */
 
 func (r *UserHand) GetAll() []c.Card {
+	fmt.Println("Get ALL??")
+	fmt.Print(r.Cards[0].Index)
+	fmt.Println(r.Cards[0].Suit)
+	fmt.Print(r.Cards[1].Index)
+	fmt.Println(r.Cards[1].Suit)
+	fmt.Print(r.Cards[2].Index)
+	fmt.Println(r.Cards[2].Suit)
+	fmt.Print(r.Cards[3].Index)
+	fmt.Println(r.Cards[3].Suit)
+	fmt.Print(r.Cards[4].Index)
+	fmt.Println(r.Cards[4].Suit)
+	fmt.Print(r.Cards[5].Index)
+	fmt.Println(r.Cards[5].Suit)
+	fmt.Print(r.Cards[6].Index)
+	fmt.Println(r.Cards[6].Suit)
 	return r.Cards
 }
 
