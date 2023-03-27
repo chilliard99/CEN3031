@@ -6,22 +6,69 @@
     align-content: flex-start;
 }
 
-.cardImgs {
-    width: 15%;
+#holecards {
+    width: 100%;
+}
+
+#holecardswrapper {
+    margin-left: 5%;
+    width: 25%;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+#communitycards {
+    margin-left: 6.5%;
+    margin-top: 2%;
+    width: 100%;
+    display:flex;
+    flex-wrap: wrap;
+}
+
+#cardtitles {
+    text-align: center;
+    width: 100%;
+    font-size:250%;
+}
+
+#bottomCardTitle {
+    margin-left: 5%;
+    width: 100%;
+    font-size:250%;
+}
+
+.removed {
+    width:0%;
+}
+
+#cardImgs {
+    width: 40%;
+    margin: 1%;
     height: auto;
     justify-content: center;
 }
 
-.inputsandtexts {
-    margin-right: 5%;
-    width: 10%
+#bottomcardImgs {
+    width: 11.5%;
+    margin: 0.25%;
+    height: auto;
 }
 
-#topbar { /*Not actually a top bar, originally planned on using popups for the other two tabs, but went with tabs. REMEMBER TO ASK ABOUT THIS AT MEETING*/
+
+.inputsandtexts {
+    margin-right: 5%;
+    width: 10%;
+    height: auto;
+    font-size: 10%;
+}
+
+#topbar { 
     display: flex;
     justify-content: center;
     margin-bottom: 1%;
-    height: 10%
+    height: 2%
 }
 
 #rightSideBar {
@@ -40,5 +87,51 @@
 
 #simulationLayer {
     display:flex;
-    margin-bottom: 1%;
+    margin-bottom: 5%;
+    flex-wrap: wrap;
+}
+
+#screendarkener {   
+    background-color:black;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 70%;
+    z-index: 1000;
+}
+
+.selectionWrapper { 
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    position:absolute;
+    z-index: 1001;
+    justify-content:center;
+}
+
+.suitSelection {
+    margin-top: 10%;
+    color:white;
+    font-weight: bold;
+    font-size: 400%;
+    width: 100%;
+    font-family: Roboto;
+    text-align: center;
+}
+
+.suitImg {
+    width:5%;
+    margin:2%;
+    height:auto;
+}
+
+.valueSelect {
+    color:white;
+    font-weight: bold;
+    margin-top: 5%;
+    margin-left: 1%;
+    margin-right: 1%;
+    font-size: 300%;
 }

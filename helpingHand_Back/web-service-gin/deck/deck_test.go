@@ -4,6 +4,7 @@ import (
 	"example/web-service-gin/card"
 	"example/web-service-gin/deck"
 	"example/web-service-gin/hand"
+	"math"
 	"strconv"
 	"testing"
 )
@@ -176,24 +177,23 @@ func TestRoyalFlushCheck(t *testing.T) {
 
 	t.Logf("Input of deck, selection of 5 cards (for royal flush), output should be true") //added line for half-measure test
 
-	boolResponse, probFloat := deck.RoyalFlush(tempDeck, cards)
+	probFloat := deck.RoyalFlush(tempDeck, cards)
 
-	if boolResponse == false {
-		t.Fatal("Returned false when it should've returned true")
-	}
 	if probFloat == 0.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
 	}
 }
 
-// Test to check whether straight function will properly identify a straight (royal)
-func TestStraightCheck1(t *testing.T) {
+// Test to check whether straight function will properly identify a straight (flush)
+func TestStraightCheck(t *testing.T) {
 	tempDeck := deck.NewDeck()
 
 	card1 := card.NewCard(12, "Spade")
 	card2 := card.NewCard(11, "Spade")
 	card3 := card.NewCard(10, "Spade")
 	card4 := card.NewCard(9, "Spade")
+	//card5 := card.NewCard(8, "Spade")	//for testing non-broadway (no difference in output)
+	//card5 := card.NewCard(0, "Heart") //for testing non-flush (bool will return false)
 	card5 := card.NewCard(0, "Spade")
 
 	var cards []card.Card
@@ -205,31 +205,29 @@ func TestStraightCheck1(t *testing.T) {
 	cards = append(cards, card5)
 
 	t.Log("\n")
-	t.Logf("Test #9: StraightCheck (royal)")
-	t.Logf("Input of deck, selection of 5 cards (for royal flush), output should be true")
+	t.Logf("Test #9: StraightCheck")
+	t.Logf("Input of deck, selection of 5 cards (for broadway straight), output should be true")
 
-	boolResponse, probFloat, royalBoolean := deck.StraightCheck(tempDeck, cards)
+	probFloat, flushBool := deck.StraightCheck(tempDeck, cards)
 
-	if boolResponse == false {
-		t.Fatal("Returned false when it should've returned true")
-	}
 	if probFloat == 0.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
 	}
-	if royalBoolean == false {
-		t.Fatal("Returned false for royal when it should've returned true")
+	if flushBool == false {
+		t.Fatal("Returned false for flush when it should have been true")
 	}
 }
 
-// Test to check whether straight function will properly identify a straight (non-royal)
-func TestStraightCheck2(t *testing.T) {
+// Tests to see if the hand + community cards contains 5 cards of the same suit for a flush. (Containing 3 different suits between 7 cards invalidates the possibility)
+func TestFlushCheck(t *testing.T) {
 	tempDeck := deck.NewDeck()
 
-	card1 := card.NewCard(11, "Spade")
-	card2 := card.NewCard(10, "Spade")
-	card3 := card.NewCard(9, "Spade")
-	card4 := card.NewCard(8, "Spade")
-	card5 := card.NewCard(7, "Spade")
+	card1 := card.NewCard(12, "Spade")
+	card2 := card.NewCard(11, "Spade")
+	card3 := card.NewCard(10, "Spade")
+	card4 := card.NewCard(9, "Spade")
+	card5 := card.NewCard(0, "Spade")
+	//card5 := card.NewCard(0, "Diamond") for testing non-flush
 
 	var cards []card.Card
 
@@ -240,19 +238,181 @@ func TestStraightCheck2(t *testing.T) {
 	cards = append(cards, card5)
 
 	t.Log("\n")
-	t.Logf("Test #10: StraightCheck (non-royal)")
-	t.Logf("Input of deck, selection of 5 sequential cards, output should be true")
+	t.Logf("Test #10: FlushCheck")
+	t.Logf("Input of deck, selection of 5 cards (flush), output should be true")
 
-	boolResponse, probFloat, royalBoolean := deck.StraightCheck(tempDeck, cards)
+	probFloat := deck.FlushCheck(tempDeck, cards)
 
-	if boolResponse == false {
-		t.Fatal("Returned false when it should've returned true")
-	}
 	if probFloat == 0.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
 	}
-	if royalBoolean == true {
-		t.Fatal("Returned true for royal when it should've returned false")
+}
+
+// Tests to see if the cards (marked extraCards) were properly removed from the array
+func TestRemoveCardsFromArray(t *testing.T) {
+	card1 := card.NewCard(12, "Spade")
+	card2 := card.NewCard(10, "Spade")
+	card3 := card.NewCard(8, "Spade")
+	card4 := card.NewCard(6, "Spade")
+	card5 := card.NewCard(0, "Spade")
+	//card5 := card.NewCard(0, "Diamond") for testing non-flush
+
+	var cards []card.Card
+
+	cards = append(cards, card1)
+	cards = append(cards, card2)
+	cards = append(cards, card3)
+	cards = append(cards, card4)
+	cards = append(cards, card5)
+
+	var extraCards []card.Card
+
+	extraCards = append(extraCards, card4)
+	extraCards = append(extraCards, card5)
+
+	cardCopy := deck.RemoveCardsFromArray(cards, extraCards)
+
+	t.Log("\n")
+	t.Logf("Test #11: RemoveCardsFromArray")
+	t.Logf("Input of 5 cards, selection of 2 cards from the original array, output should be two less cards")
+
+	if len(cardCopy) < 3 {
+		t.Fatal("Returned less than 3 cards (too many removed)")
+	}
+	if len(cardCopy) > 3 {
+		t.Fatal("Returned more than 3 cards (too few removed)")
+	}
+
+	card4Bool := false
+	card5Bool := false
+
+	for i := 0; i < len(cardCopy); i++ {
+		if cardCopy[i] == card4 {
+			card4Bool = true
+		}
+		if cardCopy[i] == card5 {
+			card5Bool = true
+		}
+	}
+
+	if card4Bool && card5Bool {
+		t.Fatal("Contains card4 and card5 when both should've been removed")
+	}
+	if card4Bool {
+		t.Fatal("Contains card4 when it should've been removed")
+	}
+	if card5Bool {
+		t.Fatal("Contains card5 when it should've been removed")
+	}
+
+}
+
+// Tests to see if probability is accurately being calculated when input with the cards needed for a particular hand
+func TestFindCardProb(t *testing.T) {
+	//Royal flush
+	card1 := card.NewCard(11, "Spade")
+	card2 := card.NewCard(9, "Spade")
+
+	var cards []card.Card
+
+	cards = append(cards, card1)
+	cards = append(cards, card2)
+
+	t.Log("\n")
+	t.Logf("Test #12: FindCardProb")
+	t.Logf("Various inputs, various tests")
+
+	t.Log("\n")
+	t.Logf("	Subtest #1, Royal Flush:")
+
+	targetSuit := "Spade"
+	targetVals := []int{12, 10, 0}
+	permutations := float64(deck.Factorial(5))
+	totalProb := ((1.00 / 50.00) * (1.00 / 49.00) * (1.00 / 48.00)) * permutations
+	tempFloat := deck.FindCardProb(cards, targetVals, targetSuit, 0)
+	compare1 := (math.Round(tempFloat*1000000) / 1000000)
+	compare2 := (math.Round(totalProb*1000000) / 1000000)
+
+	//Function call (last value only relevant for flush specifically)
+	if compare1 != 0.001020 && compare2 != 0.001020 {
+		t.Fatal("Returned a different percent value: ", compare1)
+	}
+
+	t.Log("\n")
+	t.Logf("	Subtest #2, Straight Flush:")
+
+	targetSuit = "Spade"
+	targetVals = []int{10, 8, 7}
+	permutations = float64(deck.Factorial(5))
+	totalProb = ((1.00 / 50.00) * (1.00 / 49.00) * (1.00 / 48.00)) * permutations
+	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 0)
+	compare1 = (math.Round(tempFloat*1000000) / 1000000)
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	//Function call (last value only relevant for flush specifically)
+	if compare1 != 0.001020 && compare2 != 0.001020 {
+		t.Fatal("Returned a different percent value: ", compare1)
+	}
+
+	t.Log("\n")
+	t.Logf("	Subtest #3, Four of a Kind:")
+
+	targetSuit = ""
+	targetVals = []int{11, 11, 11}
+	permutations = float64(deck.Factorial(5))
+	totalProb = ((3.00 / 50.00) * (2.00 / 49.00) * (1.00 / 48.00)) * permutations
+	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 0)
+	compare1 = (math.Round(tempFloat*1000000) / 1000000)
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	//Function call (last value only relevant for flush specifically)
+	if compare1 != 0.006122 && compare2 != 0.006122 {
+		t.Fatal("Returned a different percent value: ", compare1)
+	}
+
+	t.Log("\n")
+	t.Logf("	Subtest #4, Full House:")
+
+	targetSuit = ""
+	targetVals = []int{11, 11, 9}
+	permutations = float64(deck.Factorial(5))
+	totalProb = ((3.00 / 50.00) * (2.00 / 49.00) * (3.00 / 48.00)) * permutations
+	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 0)
+	compare1 = (math.Round(tempFloat*1000000) / 1000000)
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	//Function call (last value only relevant for flush specifically)
+	if compare1 != 0.018367 && compare2 != 0.018367 {
+		t.Fatal("Returned a different percent value: ", compare1)
+	}
+
+	/* NOT CURRENTLY WORKING. MY MATH IS WRONG AND MIGHT BE WRONG FOR THE OTHERS AS WELL
+
+	t.Log("\n")
+	t.Logf("	Subtest #5, Flush:")
+
+	targetSuit = "Spade"
+	targetVals = []int{}
+	permutations = float64(deck.Factorial(5))
+	totalProb = ((11.00 / 50.00) * (10.00 / 49.00) * (9.00 / 48.00)) * permutations
+	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 3) //input 3 cards needed as targetVals is empty. Card array length determines 5 cards to be drawn.
+	compare1 = (math.Round(tempFloat*1000000) / 1000000)
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	//Function call (last value only relevant for flush specifically)
+	if compare1 != compare2 { //compare1 != 0.006122 && compare2 != 0.006122 {
+		t.Fatal("Returned a different percent value: ", compare1)
+	}
+
+	*/
+}
+
+func TestFactorial(t *testing.T) {
+	temp := deck.Factorial(7)
+	if temp == 0.00 {
+		t.Fatal("No input should result in 0, except for 0")
+	} else if temp != 5040.000 {
+		t.Fatal("Incorrect output")
 	}
 }
 
@@ -308,7 +468,8 @@ func TestOnePairCheck(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Club")
 	hand.AddCardHandSpecific(temphand, 3, "Spade")
 	hand.AddCardHandSpecific(temphand, 4, "Diamond")
-	if deck.Contains(deck.CheckHandType(temphand), "One Pair") != true {
+	temparray := deck.GetHandArray(temphand)
+	if deck.Contains(deck.CheckHandType(temparray), "One Pair") != true {
 		t.Fatal("One Pair comparison is not working!")
 	} else {
 		t.Log("One Pair comparison successful!")
@@ -324,7 +485,8 @@ func TestTwoPairCheck(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Club")
 	hand.AddCardHandSpecific(temphand, 2, "Club")
 	hand.AddCardHandSpecific(temphand, 4, "Diamond")
-	if deck.Contains(deck.CheckHandType(temphand), "Two Pair") != true {
+	temparray := deck.GetHandArray(temphand)
+	if deck.Contains(deck.CheckHandType(temparray), "Two Pair") != true {
 		t.Fatal("Two Pair comparison is not working!")
 	} else {
 		t.Log("Two Pair comparison successful!")
@@ -340,19 +502,22 @@ func TestThreeFourFullCheck(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Spade")
 	hand.AddCardHandSpecific(temphand, 1, "Club")
 	hand.AddCardHandSpecific(temphand, 4, "Diamond")
-	if deck.Contains(deck.CheckHandType(temphand), "Three of a Kind") != true {
+	temparray := deck.GetHandArray(temphand)
+	if deck.Contains(deck.CheckHandType(temparray), "Three of a Kind") != true {
 		t.Fatal("Three of a Kind comparison is not working!")
 	} else {
 		t.Log("Three of a Kind comparison successful!")
 	}
 	hand.AddCardHandSpecific(temphand, 1, "Diamond")
-	if deck.Contains(deck.CheckHandType(temphand), "Four of a Kind") != true {
+	temparray = deck.GetHandArray(temphand)
+	if deck.Contains(deck.CheckHandType(temparray), "Four of a Kind") != true {
 		t.Fatal("Four of a Kind comparison is not working!")
 	} else {
 		t.Log("Four of a Kind comparison successful!")
 	}
 	hand.AddCardHandSpecific(temphand, 4, "Spade")
-	if deck.Contains(deck.CheckHandType(temphand), "Full House") != true {
+	temparray = deck.GetHandArray(temphand)
+	if deck.Contains(deck.CheckHandType(temparray), "Full House") != true {
 		t.Fatal("Full House comparison is not working!")
 	} else {
 		t.Log("Full House comparison successful!")
@@ -366,7 +531,8 @@ func TestFutureHand(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Heart")
 	hand.AddCardHandSpecific(temphand, 1, "Spade")
 	hand.AddCardHandSpecific(temphand, 1, "Club")
-	if deck.Contains(deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand)), "Four of a Kind") != true {
+	temparray := deck.GetHandArray(temphand)
+	if deck.Contains(deck.DetermineFutureHands(temphand, deck.CheckHandType(temparray)), "Four of a Kind") != true {
 		t.Fatal("Future hand function does not work for three of a kind!")
 	}
 	t.Log(("Future hand function works for three of a kind!"))

@@ -1,53 +1,96 @@
-<mat-tab-group id="mainPage">
-    <mat-tab id="simTest" label="Simulation"> 
+<div *ngIf="displaySuitVal || displayVal" class="overlayClass">
+    <div id="screendarkener"></div>
+    <div *ngIf="displaySuitVal" class="selectionWrapper">
+        <h1 class="suitSelection">Select Suit</h1>
+        <img class="suitImg" (click)="setSuit('spade')" src="../assets/spade.png" alt="Spade">
+        <img class="suitImg" (click)="setSuit('heart')" src="../assets/heart.png" alt="Heart">
+        <img class="suitImg" (click)="setSuit('club')" src="../assets/club.png" alt="Club">
+        <img class="suitImg" (click)="setSuit('diamond')" src="../assets/diamond.png" alt="Diamond">
+    </div>
+    <div *ngIf="displayVal" class="selectionWrapper">
+        <h1 class="suitSelection">Select Value</h1>
+        <p class="valueSelect" (click)="setVal(1)">Ace</p>
+        <p class="valueSelect" (click)="setVal(2)">2</p>
+        <p class="valueSelect" (click)="setVal(3)">3</p>
+        <p class="valueSelect" (click)="setVal(4)">4</p>
+        <p class="valueSelect" (click)="setVal(5)">5</p>
+        <p class="valueSelect" (click)="setVal(6)">6</p>
+        <p class="valueSelect" (click)="setVal(7)">7</p>
+        <p class="valueSelect" (click)="setVal(8)">8</p>
+        <p class="valueSelect" (click)="setVal(9)">9</p>
+        <p class="valueSelect" (click)="setVal(10)">10</p>
+        <p class="valueSelect" (click)="setVal(11)">Jack</p>
+        <p class="valueSelect" (click)="setVal(12)">Queen</p>
+        <p class="valueSelect" (click)="setVal(13)">King</p>
+        
+    </div>
+</div>
+
+
+<mat-tab-group dynamicHeight id="mainPage">
+    <mat-tab label="Simulation"> 
         <header id="topbar"></header>
         <div id="simulationLayer">
-            <section class="inputsandtexts">
-                <mat-form-field id="Suits" appearance="fill">
-                    <mat-label>Suit</mat-label>
-                    <mat-select id="SuitSelect" [(ngModel)]="Suit">
-                    <mat-option id="diamond" value="diamond">Diamond</mat-option>
-                    <mat-option id="club" value="club">Club</mat-option>
-                    <mat-option id="heart" value="heart">Heart</mat-option>
-                    <mat-option id="spade" value="spade">Spade</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>Val</mat-label>
-                    <mat-select id="ValsSelect" [(ngModel)]="Val" type="number" > <!--Why does type="number" not work?-->
-                        <!--Values get 1 subtracted so they get sent to the backend right, but the default values are used for the images because I don't want to rename them all-->
-                        <mat-option id="ace" value="1">Ace</mat-option>
-                        <mat-option *ngFor='let key of [2,3,4,5,6,7,8,9,10]' value="{{key}}">{{key}}</mat-option>
-                        <mat-option id="jack" value="11">Jack</mat-option>
-                        <mat-option id="queen" value="12">Queen</mat-option>
-                        <mat-option id="king" value="13">King</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <div>Index</div>
-                <input
-                [(ngModel)]="Index"
-                type="number"
-                placeholder="Testing">
-                <button id="add_card" (click)="addCard()">Add Card</button>
+            
+            <section id="holecards">
+                <div id="holecardswrapper">
+                    <h2 id="cardtitles">Hole Cards</h2>
+                    <div id="cardImgs" *ngFor="let images of currImgs; let i=index;">
+                        <!-- This first image is for when no card is added, it just displays the back-->
+                        <mat-card (click)="displaySuit(0)" id="defaultcard0" *ngIf="currImgs[0] == 'unfilled' && i == 0">
+                            <img mat-card-img src="../assets/back.png" alt="Image of a Card">
+                        </mat-card>
+                        <!-- This shows the actual card image and can be adjusted through clicking-->
+                        <mat-card (click)="displaySuit(0)" id="holecard1" *ngIf="currImgs[0] !== 'unfilled' && i == 0">
+                            <img mat-card-img src="{{images}}" alt="Image of a Card">
+                        </mat-card>
+                        <mat-card (click)="displaySuit(1)" id="defaultcard0" *ngIf="currImgs[1] == 'unfilled' && i == 1">
+                            <img mat-card-img src="../assets/back.png" alt="Image of a Card">
+                        </mat-card>
+                        <mat-card (click)="displaySuit(1)" id="holecard1" *ngIf="currImgs[1] !== 'unfilled' && i == 1">
+                            <img mat-card-img src="{{images}}" alt="Image of a Card">
+                        </mat-card>
+                    </div>
+                </div>
             </section>
 
-
-            
-            <section class="cardWrapper">
-                <div class="cardImgs" *ngFor="let images of currImgs">
-                    <mat-card>
+            <section id="communitycards">
+                <h2 id="bottomCardTitle">Community Cards</h2>
+                <div id="bottomcardImgs" *ngFor="let images of currImgs | slice:2; let i=index;">
+                    <mat-card (click)="displaySuit(2)" *ngIf="currImgs[2] == 'unfilled' && i == 0">
+                        <img mat-card-img src="../assets/back.png" alt="Image of a Card">
+                    </mat-card>
+                    <mat-card (click)="displaySuit(2)" *ngIf="currImgs[2] !== 'unfilled' && i == 0">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
+                    <mat-card (click)="displaySuit(3)" *ngIf="currImgs[3] == 'unfilled' && i == 1">
+                        <img mat-card-img src="../assets/back.png" alt="Image of a Card">
+                    </mat-card>
+                    <mat-card (click)="displaySuit(3)" *ngIf="currImgs[3] !== 'unfilled' && i == 1">
+                        <img mat-card-img src="{{images}}" alt="Image of a Card">
+                    </mat-card>
+                    <mat-card (click)="displaySuit(4)" *ngIf="currImgs[4] == 'unfilled' && i == 2">
+                        <img mat-card-img src="../assets/back.png" alt="Image of a Card">
+                    </mat-card>
+                    <mat-card (click)="displaySuit(4)" *ngIf="currImgs[4] !== 'unfilled' && i == 2">
+                        <img mat-card-img src="{{images}}" alt="Image of a Card">
+                    </mat-card>
+                    <mat-card (click)="displaySuit(5)" *ngIf="currImgs[5] == 'unfilled' && i == 3">
+                        <img mat-card-img src="../assets/back.png" alt="Image of a Card">
+                    </mat-card>
+                    <mat-card (click)="displaySuit(5)" *ngIf="currImgs[5] !== 'unfilled' && i == 3">
+                        <img mat-card-img src="{{images}}" alt="Image of a Card">
+                    </mat-card>
+                    <mat-card (click)="displaySuit(6)" *ngIf="currImgs[6] == 'unfilled' && i == 4">
+                        <img mat-card-img src="../assets/back.png" alt="Image of a Card">
+                    </mat-card>
+                    <mat-card (click)="displaySuit(6)" *ngIf="currImgs[6] !== 'unfilled' && i == 4">
+                        <img mat-card-img src="{{images}}" alt="Image of a Card">
+                    </mat-card>
+                    
+
                 </div>
             </section>
-            
-            <aside id="rightSideBar">
-                <h2>Current Hand</h2>
-                <div *ngFor="let card of currentHand" class="rightsideloop">
-                    <div>{{ card.Suit }} {{ card.Val }}</div>
-                    <br>
-                </div>
-            </aside>    
         </div>
     </mat-tab>
 
@@ -58,6 +101,55 @@
 
 
 
+
+
+<!--       
+<section class="inputsandtexts">
+    <mat-form-field id="Suits" appearance="fill">
+        <mat-label>Suit</mat-label>
+        <mat-select id="SuitSelect" [(ngModel)]="Suit">
+        <mat-option id="diamond" value="diamond">Diamond</mat-option>
+        <mat-option id="club" value="club">Club</mat-option>
+        <mat-option id="heart" value="heart">Heart</mat-option>
+        <mat-option id="spade" value="spade">Spade</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Val</mat-label>
+        <mat-select id="ValsSelect" [(ngModel)]="Val" type="number" > 
+            <mat-option id="ace" value="1">Ace</mat-option>
+            <mat-option *ngFor='let key of [2,3,4,5,6,7,8,9,10]' value="{{key}}">{{key}}</mat-option>
+            <mat-option id="jack" value="11">Jack</mat-option>
+            <mat-option id="queen" value="12">Queen</mat-option>
+            <mat-option id="king" value="13">King</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <div>Index</div>
+    <input
+    [(ngModel)]="Index"
+    type="number"
+    placeholder="Testing">
+    <button id="add_card" (click)="addCard()">Add Card</button>
+</section>
+
+
+
+<section class="cardWrapper">
+    <div class="cardImgs" *ngFor="let images of currImgs">
+        <mat-card>
+            <img mat-card-img src="{{images}}" alt="Image of a Card">
+        </mat-card>
+    </div>
+</section>
+
+<aside id="rightSideBar">
+    <h2>Current Hand</h2>
+    <div *ngFor="let card of currentHand" class="rightsideloop">
+        <div>{{ card.Suit }} {{ card.Val }}</div>
+        <br>
+    </div>
+</aside>    
+    --->
 
 
 
