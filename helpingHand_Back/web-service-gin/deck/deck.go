@@ -55,6 +55,7 @@ func UpdateProb(cards []c.Card, deck Deck, currUserProb []HandProb) (bool, int) 
 	deckCopy := RemoveCards(deck, cards)
 	royalBoolean, royalProb := RoyalFlush(deckCopy, cards)
 	currUserProb[0].Prob = HighCard(deckCopy, cards)
+	currUserProb[9].Prob = royalProb
 	fmt.Println("Bool result: ", royalBoolean, " Probability: ", royalProb)
 
 	return royalBoolean, int(royalProb)
