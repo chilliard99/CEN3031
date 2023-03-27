@@ -65,7 +65,17 @@ func ContainsInt(n []int, num int) bool {
 type Deck []c.Card
 
 // Returns RoyalFlush output when given cards from the frontend
-func UpdateProb(cards []c.Card, deck Deck, currUserProb []HandProb) {
+func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
+
+	cards := []c.Card{}
+
+	for i := 0; i < len(cards_); i++ {
+		if cards_[i].Suit != "" {
+			cards = append(cards, cards_[i])
+		}
+	}
+
+	fmt.Println(len(cards))
 
 	handTypes := CheckHandType(cards)
 
