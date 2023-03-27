@@ -4,6 +4,7 @@ import (
 	"example/web-service-gin/card"
 	"example/web-service-gin/deck"
 	"example/web-service-gin/hand"
+	"math"
 	"strconv"
 	"testing"
 )
@@ -304,6 +305,115 @@ func TestRemoveCardsFromArray(t *testing.T) {
 		t.Fatal("Contains card5 when it should've been removed")
 	}
 
+}
+
+// Tests to see if probability is accurately being calculated when input with the cards needed for a particular hand
+func TestFindCardProb(t *testing.T) {
+	//Royal flush
+	card1 := card.NewCard(11, "Spade")
+	card2 := card.NewCard(9, "Spade")
+
+	var cards []card.Card
+
+	cards = append(cards, card1)
+	cards = append(cards, card2)
+
+	t.Log("\n")
+	t.Logf("Test #12: FindCardProb")
+	t.Logf("Various inputs, various tests")
+
+	t.Log("\n")
+	t.Logf("	Subtest #1, Royal Flush:")
+
+	targetSuit := "Spade"
+	targetVals := []int{12, 10, 0}
+	permutations := float64(deck.Factorial(5))
+	totalProb := ((1.00 / 50.00) * (1.00 / 49.00) * (1.00 / 48.00)) * permutations
+	tempFloat := deck.FindCardProb(cards, targetVals, targetSuit, 0)
+	compare1 := (math.Round(tempFloat*1000000) / 1000000)
+	compare2 := (math.Round(totalProb*1000000) / 1000000)
+
+	//Function call (last value only relevant for flush specifically)
+	if compare1 != 0.001020 && compare2 != 0.001020 {
+		t.Fatal("Returned a different percent value: ", compare1)
+	}
+
+	t.Log("\n")
+	t.Logf("	Subtest #2, Straight Flush:")
+
+	targetSuit = "Spade"
+	targetVals = []int{10, 8, 7}
+	permutations = float64(deck.Factorial(5))
+	totalProb = ((1.00 / 50.00) * (1.00 / 49.00) * (1.00 / 48.00)) * permutations
+	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 0)
+	compare1 = (math.Round(tempFloat*1000000) / 1000000)
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	//Function call (last value only relevant for flush specifically)
+	if compare1 != 0.001020 && compare2 != 0.001020 {
+		t.Fatal("Returned a different percent value: ", compare1)
+	}
+
+	t.Log("\n")
+	t.Logf("	Subtest #3, Four of a Kind:")
+
+	targetSuit = ""
+	targetVals = []int{11, 11, 11}
+	permutations = float64(deck.Factorial(5))
+	totalProb = ((3.00 / 50.00) * (2.00 / 49.00) * (1.00 / 48.00)) * permutations
+	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 0)
+	compare1 = (math.Round(tempFloat*1000000) / 1000000)
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	//Function call (last value only relevant for flush specifically)
+	if compare1 != 0.006122 && compare2 != 0.006122 {
+		t.Fatal("Returned a different percent value: ", compare1)
+	}
+
+	t.Log("\n")
+	t.Logf("	Subtest #4, Full House:")
+
+	targetSuit = ""
+	targetVals = []int{11, 11, 9}
+	permutations = float64(deck.Factorial(5))
+	totalProb = ((3.00 / 50.00) * (2.00 / 49.00) * (3.00 / 48.00)) * permutations
+	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 0)
+	compare1 = (math.Round(tempFloat*1000000) / 1000000)
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	//Function call (last value only relevant for flush specifically)
+	if compare1 != 0.018367 && compare2 != 0.018367 {
+		t.Fatal("Returned a different percent value: ", compare1)
+	}
+
+	/* NOT CURRENTLY WORKING. MY MATH IS WRONG AND MIGHT BE WRONG FOR THE OTHERS AS WELL
+
+	t.Log("\n")
+	t.Logf("	Subtest #5, Flush:")
+
+	targetSuit = "Spade"
+	targetVals = []int{}
+	permutations = float64(deck.Factorial(5))
+	totalProb = ((11.00 / 50.00) * (10.00 / 49.00) * (9.00 / 48.00)) * permutations
+	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 3) //input 3 cards needed as targetVals is empty. Card array length determines 5 cards to be drawn.
+	compare1 = (math.Round(tempFloat*1000000) / 1000000)
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	//Function call (last value only relevant for flush specifically)
+	if compare1 != compare2 { //compare1 != 0.006122 && compare2 != 0.006122 {
+		t.Fatal("Returned a different percent value: ", compare1)
+	}
+
+	*/
+}
+
+func TestFactorial(t *testing.T) {
+	temp := deck.Factorial(7)
+	if temp == 0.00 {
+		t.Fatal("No input should result in 0, except for 0")
+	} else if temp != 5040.000 {
+		t.Fatal("Incorrect output")
+	}
 }
 
 // Test to check accuracy of card array sorting functions

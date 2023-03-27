@@ -49,6 +49,18 @@ func Contains(s []string, str string) bool {
 	return false
 }
 
+// Check if int slice already contains items
+// Copied above variation with ints
+func ContainsInt(n []int, num int) bool {
+	for _, v := range n {
+		if v == num {
+			return true
+		}
+	}
+
+	return false
+}
+
 // Define a deck as an array of cards
 type Deck []c.Card
 
@@ -89,6 +101,118 @@ func UpdateProb(cards []c.Card, deck Deck, currUserProb []HandProb) {
 	currUserProb[9].Prob = RoyalFlush(deckCopy, cards)
 
 	//fmt.Println("Bool result: ", royalBoolean, " Probability: ", royalProb)
+}
+
+// Factorial function taken from:
+// https://www.golangprograms.com/go-program-to-find-factorial-of-a-number.html
+func Factorial(n int) float64 {
+	factVal := 1.0000000
+	if n < 0 {
+		fmt.Print("Factorial of negative number doesn't exist.")
+	} else {
+		for i := 1; i <= n; i++ {
+			factVal *= float64(i) // mismatched types int64 and int
+		}
+
+	}
+	return factVal /* return from function*/
+}
+
+func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNeed int) float64 {
+	deck := NewDeck()
+	deckCopy := RemoveCards(deck, cards)
+	cardCount := len(cards)
+	numNeeded := len(targetVals)
+	numToDraw := 7 - cardCount
+	totalProb := 1.00
+	var indProbs []float64
+
+	//Default 0.00 if not enough cards will be drawn
+	if len(targetVals) > numToDraw {
+		return 0.00
+	}
+
+	//For flush only, where specific values are not needed.
+	if numNeeded == 0 {
+		for i := 0; i < numSuitNeed; i++ {
+			validCardCount := 0
+			deckLength := len(deckCopy)
+			var tempCard c.Card
+
+			for j := 0; j < deckLength; j++ {
+				//If a card of the proper suit is found, add it to the count and store the last for removal
+				if deckCopy[j].Suit == targetSuit {
+					validCardCount++
+					tempCard = deckCopy[j]
+				}
+
+			}
+
+			//Calculate chance and append to list of individual probabilities
+			tempFloat := float64(validCardCount) / float64(deckLength)
+			indProbs = append(indProbs, tempFloat)
+
+			//Remove the latest valid card to simulate drawing it
+			var toRemove []c.Card
+			toRemove = append(toRemove, tempCard)
+			deckCopy = RemoveCards(deckCopy, toRemove)
+		}
+
+		//Multiply individual probabilities
+		for i := 0; i < numNeeded; i++ {
+			totalProb *= indProbs[i]
+		}
+
+		//Calculate number of orderings as the draw order doesn't matter (including free draws). Max is 7! = 5040
+		numPermutations := Factorial(numToDraw)
+
+		totalProb *= float64(numPermutations)
+
+		return totalProb
+	}
+
+	//Find the chance of getting one card of a particular value (and suit if applicable), then store the chance for multiplication
+	for i := 0; i < numNeeded; i++ {
+		validCardCount := 0
+		deckLength := len(deckCopy)
+		var tempCard c.Card
+
+		for j := 0; j < deckLength; j++ {
+			//If the value is equal and the suit matches or isn't specified, add to count of valid cards
+			if targetVals[i] == deckCopy[j].Val && (targetSuit == "" || targetSuit == deckCopy[j].Suit) {
+				validCardCount++
+				tempCard = deckCopy[j]
+			}
+		}
+
+		//Calculate chance and append to list of individual probabilities
+		tempFloat := float64(validCardCount) / float64(deckLength)
+		indProbs = append(indProbs, tempFloat)
+		//fmt.Print(validCardCount, " / ", deckLength, " = ")
+		//fmt.Printf("%f\n", tempFloat)
+
+		//Remove the latest valid card to simulate drawing it
+		var toRemove []c.Card
+		toRemove = append(toRemove, tempCard)
+		deckCopy = RemoveCards(deckCopy, toRemove)
+	}
+
+	//fmt.Print("\n\n")
+
+	//Multiply individual probabilities
+	for i := 0; i < numNeeded; i++ {
+		totalProb *= indProbs[i]
+		//fmt.Printf("%f ", totalProb)
+	}
+
+	//Calculate number of orderings as the draw order doesn't matter (including free draws). Max is 7! = 5040
+	numPermutations := Factorial(numToDraw)
+	//fmt.Printf("\n%f ", numPermutations)
+
+	totalProb *= float64(numPermutations)
+	//fmt.Printf("%f", totalProb)
+
+	return totalProb
 }
 
 // Determining what hands can be created using the current hand and cards in the deck
