@@ -15,6 +15,8 @@ interface ICurrentHand {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  public displaySuitVal = false;
+  public displayVal = false;
   public title = 'helpingHand';
   public Val = 0
   public Suit = ''
@@ -52,8 +54,13 @@ export class AppComponent implements OnInit {
     this.currentHand = await lastValueFrom(this.httpClient.get<ICurrentHand[]>('/api/hand'))
     //Probably a better way to do this with the backend or something
     this.currImgs = [];
-    for(let i = 0; i < this.currentHand.length; i++) {
-      this.currImgs.push("../assets/" + (this.currentHand[i].Val + 1) + this.currentHand[i].Suit + ".png"); 
+    for(let i = 0; i < 7; i++) {
+      if(i < this.currentHand.length) {
+        this.currImgs.push("../assets/" + (this.currentHand[i].Val + 1) + this.currentHand[i].Suit + ".png"); 
+      }
+      else {
+        this.currImgs.push("unfilled");
+      }
     }
     console.log(this.currentHand.length)
 
@@ -61,11 +68,30 @@ export class AppComponent implements OnInit {
     //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')
   }
 
+  async displaySuit(_Index: number) {
+    for(let i = 0; i < this.currImgs.length; i++) {
+      console.log(this.currImgs[i]);
+    }
+    this.Index = _Index;
+    this.displaySuitVal = !this.displaySuitVal;
+  }
+
+  async setSuit(_Suit : string) {
+    this.Suit = _Suit
+    this.displaySuitVal = false;
+    this.displayVal = true;
+  }
+
+  async setVal(_Val :number) {
+    this.Val = _Val;
+    this.displayVal = false;
+    this.addCard();
+  }
 
   async addCard() {
     await this.httpClient.post('/api/hand', {
       Suit: this.Suit,
-      Val: Number(this.Val) - 1, //This is a bandaid fix for now since IDK how to get the select form to output a number instead of a string
+      Val: Number(this.Val) - 1,
       Index: this.Index
     }).toPromise()
     await this.loadCards()
