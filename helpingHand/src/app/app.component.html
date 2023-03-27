@@ -37,18 +37,21 @@
                     <h2 id="cardtitles">Hole Cards</h2>
                     <div id="cardImgs" *ngFor="let images of currImgs; let i=index;">
                         <!-- This first image is for when no card is added, it just displays the back-->
-                        <mat-card (click)="displaySuit(0)" id="defaultcard0" *ngIf="currImgs[0] == 'unfilled' && i == 0">
+                        <!-- <mat-card (click)="displaySuit(0)" id="defaultcard0" *ngIf="currImgs[0] == 'unfilled' && i == 0">
                             <img mat-card-img src="../assets/back.png" alt="Image of a Card">
+                        </mat-card> -->
+                        <mat-card (click)="displaySuit(0)" id="defaultcard0" *ngIf="currentHand[0].Suit == '' && i == 0">
+                            <img mat-card-img src="../assets/back.png">
                         </mat-card>
                         <!-- This shows the actual card image and can be adjusted through clicking-->
-                        <mat-card (click)="displaySuit(0)" id="holecard1" *ngIf="currImgs[0] !== 'unfilled' && i == 0">
-                            <img mat-card-img src="{{images}}" alt="Image of a Card">
+                        <mat-card (click)="displaySuit(0)" id="holecard1" *ngIf="currentHand[0].Suit != '' && i == 0">
+                            <img mat-card-img src="{{images}}">
                         </mat-card>
-                        <mat-card (click)="displaySuit(1)" id="defaultcard0" *ngIf="currImgs[1] == 'unfilled' && i == 1">
-                            <img mat-card-img src="../assets/back.png" alt="Image of a Card">
+                        <mat-card (click)="displaySuit(1)" id="defaultcard0" *ngIf="currentHand[1].Suit == '' && i == 1">
+                            <img mat-card-img src="../assets/back.png">
                         </mat-card>
-                        <mat-card (click)="displaySuit(1)" id="holecard1" *ngIf="currImgs[1] !== 'unfilled' && i == 1">
-                            <img mat-card-img src="{{images}}" alt="Image of a Card">
+                        <mat-card (click)="displaySuit(1)" id="holecard1" *ngIf="currentHand[1].Suit != '' && i == 1">
+                            <img mat-card-img src="{{images}}">
                         </mat-card>
                     </div>
                 </div>
@@ -57,34 +60,34 @@
             <section id="communitycards">
                 <h2 id="bottomCardTitle">Community Cards</h2>
                 <div id="bottomcardImgs" *ngFor="let images of currImgs | slice:2; let i=index;">
-                    <mat-card (click)="displaySuit(2)" *ngIf="currImgs[2] == 'unfilled' && i == 0">
+                    <mat-card (click)="displaySuit(2)" *ngIf="currentHand[2].Suit == '' && i == 0">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(2)" *ngIf="currImgs[2] !== 'unfilled' && i == 0">
+                    <mat-card (click)="displaySuit(2)" *ngIf="currentHand[2].Suit != '' && i == 0">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(3)" *ngIf="currImgs[3] == 'unfilled' && i == 1">
+                    <mat-card (click)="displaySuit(3)" *ngIf="currentHand[3].Suit == '' && i == 1">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(3)" *ngIf="currImgs[3] !== 'unfilled' && i == 1">
+                    <mat-card (click)="displaySuit(3)" *ngIf="currentHand[3].Suit != '' && i == 1">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(4)" *ngIf="currImgs[4] == 'unfilled' && i == 2">
+                    <mat-card (click)="displaySuit(4)" *ngIf="currentHand[4].Suit == '' && i == 2">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(4)" *ngIf="currImgs[4] !== 'unfilled' && i == 2">
+                    <mat-card (click)="displaySuit(4)" *ngIf="currentHand[4].Suit != '' && i == 2">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(5)" *ngIf="currImgs[5] == 'unfilled' && i == 3">
+                    <mat-card (click)="displaySuit(5)" *ngIf="currentHand[5].Suit == '' && i == 3">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(5)" *ngIf="currImgs[5] !== 'unfilled' && i == 3">
+                    <mat-card (click)="displaySuit(5)" *ngIf="currentHand[5].Suit != '' && i == 3">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(6)" *ngIf="currImgs[6] == 'unfilled' && i == 4">
+                    <mat-card (click)="displaySuit(6)" *ngIf="currentHand[6].Suit == '' && i == 4">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(6)" *ngIf="currImgs[6] !== 'unfilled' && i == 4">
+                    <mat-card (click)="displaySuit(6)" *ngIf="currentHand[6].Suit != '' && i == 4">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
                     
