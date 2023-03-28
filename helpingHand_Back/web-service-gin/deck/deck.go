@@ -217,7 +217,7 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 	}
 
 	//Calculate number of orderings as the draw order doesn't matter (including free draws). Max is 7! = 5040
-	numPermutations := Factorial(numToDraw)
+	numPermutations := Factorial(numNeeded)
 	//fmt.Printf("\n%f ", numPermutations)
 
 	totalProb *= float64(numPermutations)
