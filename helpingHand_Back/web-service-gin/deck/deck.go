@@ -6,6 +6,7 @@ import (
 	//imports hand.go as h to allow hand functions to be called
 	h "example/web-service-gin/hand"
 	"fmt"
+	"math"
 )
 
 // Potential structure to return probability function to front end
@@ -223,6 +224,38 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 	//fmt.Printf("%f", totalProb)
 
 	return totalProb
+}
+
+// Determining probability of future hands from DetermineFutureHands
+func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
+	var futureProbs []float64
+	canAddNumCards := 7 - len(hand.ActualHand)
+	if Contains(futureHands, "Four of a Kind") {
+		tripleVals := make([]int, 13)
+		for _, card := range hand.ActualHand {
+			tripleVals[card.Val]++
+		}
+		firstTriple := -1
+		secondTriple := -1
+		doesFirstTripleExist := false
+		for index, count := range tripleVals {
+			if count == 3 && !doesFirstTripleExist {
+				firstTriple = index
+			}
+			if count == 3 && doesFirstTripleExist {
+				secondTriple = index
+			}
+		}
+		for i := 0; i < canAddNumCards; i++ {
+			if secondTriple == -1 && firstTriple != -1 {
+				//only 1 triple so it's easier
+				futureProbs = append(futureProbs, math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
+			} else {
+				futureProbs = append(futureProbs, -222)
+			}
+		}
+	}
+	return futureProbs
 }
 
 // Determining what hands can be created using the current hand and cards in the deck
