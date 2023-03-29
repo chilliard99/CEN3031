@@ -95,11 +95,6 @@ describe('AppComponent', () => {
     expect(fixture.debugElement.query(By.css('#displaySuitVal'))).toBeDefined();
   })
 
-  it('should display selection screen when flagged', () => {
-    app.displaySuitVal = true;
-    expect(fixture.debugElement.query(By.css('#displaySuitVal'))).toBeDefined();
-  })
-
   it('should call addCard for each card in currentHand in removeAll', () => {
     spyOn(app, 'addCard')
     app.removeAll();
@@ -118,13 +113,7 @@ describe('AppComponent', () => {
     expect(app.addCard).toHaveBeenCalled(); 
   })
 
-  it('addCard should not be called if -1 is passed ot setVal', () => {
-    spyOn(app, 'addCard')
-    app.setVal(-1);
-    expect(app.addCard).not.toHaveBeenCalled(); 
-  })
-
-  it('addCard should not be called if -1 is passed ot setVal', () => {
+  it('addCard should not be called if -1 is passed to setVal', () => {
     spyOn(app, 'addCard')
     app.setVal(-1);
     expect(app.addCard).not.toHaveBeenCalled(); 

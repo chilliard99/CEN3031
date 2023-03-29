@@ -2,7 +2,13 @@ Sprint 3 Progress:
 
 Frontend:
 
-  -g
+  - Reworked UI to better line up with initial wireframes, distinguishing between hole cards and community cards.
+  - Implamented a more conveniant system to add new cards into their respective locations.
+  - Added randomizeAll() and the randomize button which randomly assigns each card a suit and value.
+  - Added handleRightClick() which allows the user to right click to remove a card from its given location.
+  - Added removeAll() which resets all cards to their basic, back facing, state. 
+  - Added setSuit(), setVal(), and displaySuit() handler functions to manage the process of adding a card.
+
 
 Backend:
 
@@ -17,7 +23,18 @@ Backend:
 
 Frontend Unit Tests:
 
-  -g
+  - Basic test to ensure that the app is created
+  - Test to see if the number of cards in currhand matches the number of cards in currImgs
+  - A test which checks if the page renders only two hole cards.
+  - A test which checks if the page renders only three community cards.
+  - Ensures that the selection screen does not render without a proper flag.
+  - Ensures that the selection screen renders properly when it is flagged.
+  - Checks that addCard() function is called for each member of currHand when removeAll is called.
+  - Checks that addCard() function is called for each memeber of currHand when randomizeAll is called.
+  - Ensures that setSuit() calls addCard if 'random' is passed as a parameter.
+  - Ensures that addCard() is not called if setVal is passed (-1) as a parameter.
+  - Checks if displaySuit() swaps the value of displaySuitVal.
+  - Checks if rightClickHandler() calls addCard().
 
 Backend Unit Tests:
 
