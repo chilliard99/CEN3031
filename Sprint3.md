@@ -8,6 +8,7 @@ Frontend:
   - Added handleRightClick() which allows the user to right click to remove a card from its given location.
   - Added removeAll() which resets all cards to their basic, back facing, state. 
   - Added setSuit(), setVal(), and displaySuit() handler functions to manage the process of adding a card.
+  - Displayed the raw probability data in the hands tab.
 
 
 Backend:
@@ -55,6 +56,8 @@ Backend Unit Tests:
   - Hand:
     - TestHandCardValues test for checking if card values and suits successfully insert into an array of card objects
     - TestHandAddOverflow test to check if adding more than 7 cards gives an error
+    - testRandomAndRemove e2e cypress test to test front end funcionality of random hand and remove functions.
+    - testRoyal e2e cypress test to show user manually inputing a hand that contains a royal flush.
 
 Backend API Documentation:
 
