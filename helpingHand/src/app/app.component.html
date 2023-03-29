@@ -6,7 +6,10 @@
         <img class="suitImg" (click)="setSuit('heart')" src="../assets/heart.png" alt="Heart">
         <img class="suitImg" (click)="setSuit('club')" src="../assets/club.png" alt="Club">
         <img class="suitImg" (click)="setSuit('diamond')" src="../assets/diamond.png" alt="Diamond">
-        <img class="suitImg" (click)="setSuit('');setVal(1);this.displayVal=false" src="" alt="Delete">
+        <img class="suitImg" (click)="setSuit('random')" src="../assets/dice.png" alt="Random">
+        <div class="buttwrapper">
+            <button (click)="setSuit('back')" mat-raised-button >Back</button>
+        </div>
     </div>
     <div *ngIf="displayVal" class="selectionWrapper">
         <h1 class="suitSelection">Select Value</h1>
@@ -23,16 +26,23 @@
         <p class="valueSelect" (click)="setVal(11)">Jack</p>
         <p class="valueSelect" (click)="setVal(12)">Queen</p>
         <p class="valueSelect" (click)="setVal(13)">King</p>
-        
+        <div class="buttwrapper">
+            <button (click)="setVal(-1)" mat-raised-button >Back</button>
+        </div>
     </div>
 </div>
 
 
 <mat-tab-group dynamicHeight id="mainPage">
     <mat-tab label="Simulation"> 
-        <header id="topbar"></header>
         <div id="simulationLayer">
             
+            <section id="topButtons">
+                <button class="indivbutts" (click)="removeAll()" mat-raised-button >Remove All</button>
+                <button class="indivbutts" (click)="randomizeAll()" mat-raised-button >Randomize</button>
+            </section>
+            
+
             <section id="holecards">
                 <div id="holecardswrapper">
                     <h2 id="cardtitles">Hole Cards</h2>
@@ -57,6 +67,8 @@
                     </div>
                 </div>
             </section>
+
+            
 
             <section id="communitycards">
                 <h2 id="bottomCardTitle">Community Cards</h2>
@@ -95,6 +107,8 @@
 
                 </div>
             </section>
+
+            
         </div>
     </mat-tab>
 
