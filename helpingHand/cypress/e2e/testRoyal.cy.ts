@@ -32,8 +32,9 @@ describe('test royal', () => {
         cy.get("#defaultcard6").click()
         cy.get("#diamond").click()
         cy.get("#3").click()
+        cy.get("#mat-tab-label-0-1").click()
+        cy.get("#mat-tab-label-0-0").click()
         cy.get("#removeAll").click()
-        
     });
 
   })
