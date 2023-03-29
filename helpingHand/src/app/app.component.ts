@@ -68,24 +68,61 @@ export class AppComponent implements OnInit {
     //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')
   }
 
+  async handleRightClick(_Index: number, _Value: number, _Suit: string, event: any) {
+    event.preventDefault();
+    this.Index = _Index;
+    this.Val = _Value;
+    this.Suit = _Suit
+    this.addCard();
+  }
+  
   async displaySuit(_Index: number) {
-    for(let i = 0; i < this.currImgs.length; i++) {
-      console.log(this.currImgs[i]);
-    }
     this.Index = _Index;
     this.displaySuitVal = !this.displaySuitVal;
   }
 
+  async removeAll() {
+    for(let i = 0; i < this.currentHand.length; i++) {
+       this.Val = 1;
+       this.Index = i;
+       this.Suit = "";
+       this.addCard();
+    }
+  }
+ 
+  async randomizeAll() {
+    let suits: string[] = ["spade", "club", "heart", "diamond"];
+    for(let i = 0; i < this.currentHand.length; i++) {
+       this.Val = Math.floor(Math.random() * 13) + 1;
+       this.Index = i;
+       this.Suit = suits[Math.floor(Math.random() * 3)];
+       this.addCard();
+    }
+  }
+
   async setSuit(_Suit : string) {
-    this.Suit = _Suit
     this.displaySuitVal = false;
-    this.displayVal = true;
+    if(_Suit === "random") {
+      let suits: string[] = ["spade", "club", "heart", "diamond"];
+      this.Suit = suits[Math.floor(Math.random() * 3)];
+      this.Val = Math.floor(Math.random() * 13) + 1;
+      this.addCard();
+    }
+    else if (_Suit !== "back") {
+      this.Suit = _Suit
+      this.displayVal = true;
+    }
   }
 
   async setVal(_Val :number) {
-    this.Val = _Val;
     this.displayVal = false;
-    this.addCard();
+    if(_Val !== -1) {
+      this.Val = _Val;
+      this.addCard();
+    }
+    else {
+      this.displaySuitVal = true;
+    }
   }
 
   async addCard() {

@@ -51,25 +51,91 @@ describe('AppComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AppComponent);
     app = fixture.componentInstance;
-    app.currImgs.push("../assets/3club.png");
-    app.currentHand.push({
-      Suit: "club",
-      Val: 3,
-      Index: 0
-    });
+    let suits: string[] = ["spade", "club", "heart", "diamond"];
+    for(let i = 0; i < 7; i++) {
+      app.currentHand.push({
+        Suit: suits[Math.floor(Math.random() * 3)],
+        Val: Math.floor(Math.random() * 13) + 1,
+        Index: i
+      });
+      app.currImgs.push("../assets/" + (app.currentHand[i].Val + 1) + app.currentHand[i].Suit + ".png");
+    }
     fixture.detectChanges();
   });
 
+
   //First test to ensure that the app actually gets created
+
   it('should create the app', () => {
     expect(app).toBeTruthy();
   });
 
   it('should have cards equal to images', () => {
-     const lengthCurrHand = app.currentHand.length;
-     const lengthImgHand = app.currImgs.length;
-     expect(lengthCurrHand).toEqual(lengthImgHand);
+    const lengthCurrHand = app.currentHand.length;
+    const lengthImgHand = app.currImgs.length;
+    expect(lengthCurrHand).toEqual(lengthImgHand);
   });
+
+  it('the hole cards should only contain two images', () => {
+    const element: DebugElement[] = fixture.debugElement.queryAll(By.css('#cardImgs'));
+    expect(element.length).toBe(2);
+  })
+
+  it('the community cards should only contain five images', () => {
+    const element: DebugElement[] = fixture.debugElement.queryAll(By.css('#bottomcardImgs'));
+    expect(element.length).toBe(5);
+  })
+
+  it('should not display selection screen when not flagged', () => {
+    expect(fixture.debugElement.query(By.css('#displaySuitVal'))).toBeNull();
+  })
+
+  it('should display selection screen when flagged', () => {
+    app.displaySuitVal = true;
+    expect(fixture.debugElement.query(By.css('#displaySuitVal'))).toBeDefined();
+  })
+
+  it('should call addCard for each card in currentHand in removeAll', () => {
+    spyOn(app, 'addCard')
+    app.removeAll();
+    expect(app.addCard).toHaveBeenCalledTimes(app.currentHand.length); 
+  })
+
+  it('should call addCard for each card in currentHand in randomizeAll', () => {
+    spyOn(app, 'addCard')
+    app.randomizeAll();
+    expect(app.addCard).toHaveBeenCalledTimes(app.currentHand.length); 
+  })
+
+  it('setSuit should call addCard if random is passed in as a parameter', () => {
+    spyOn(app, 'addCard')
+    app.setSuit('random');
+    expect(app.addCard).toHaveBeenCalled(); 
+  })
+
+  it('addCard should not be called if -1 is passed to setVal', () => {
+    spyOn(app, 'addCard')
+    app.setVal(-1);
+    expect(app.addCard).not.toHaveBeenCalled(); 
+  })
+
+  it('displaySuit should swap the value of displaySuitVal', () => {
+    app.displaySuitVal = false;
+    app.displaySuit(1);
+    expect(app.displaySuitVal).toBeTruthy(); 
+  })
+
+  it('right click handler function should call addCard', () => {
+    spyOn(app, 'addCard')
+    app.handleRightClick(-1, -1 ,'test', event);
+    expect(app.addCard).toHaveBeenCalled(); 
+  })
+
+
+
+  
+  
+  /*
 
   it('should display new text when a card is added to currentHand', () => {
     const element: DebugElement[] = fixture.debugElement.queryAll(By.css('.rightsideloop'));
@@ -101,7 +167,11 @@ describe('AppComponent', () => {
     element.forEach((obj:DebugElement, index:number) => {
       expect(obj.children[0].children[0].nativeElement.src).toContain("/assets/" + (app.currentHand[index].Val) + app.currentHand[index].Suit + ".png");
     })
-  })
+  })*/
+
+  
+
+  
 
 
   

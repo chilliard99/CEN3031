@@ -6,7 +6,10 @@
         <img class="suitImg" (click)="setSuit('heart')" src="../assets/heart.png" alt="Heart">
         <img class="suitImg" (click)="setSuit('club')" src="../assets/club.png" alt="Club">
         <img class="suitImg" (click)="setSuit('diamond')" src="../assets/diamond.png" alt="Diamond">
-        <img class="suitImg" (click)="setSuit('');setVal(1);this.displayVal=false" src="" alt="Delete">
+        <img class="suitImg" (click)="setSuit('random')" src="../assets/dice.png" alt="Random">
+        <div class="buttwrapper">
+            <button (click)="setSuit('back')" mat-raised-button >Back</button>
+        </div>
     </div>
     <div *ngIf="displayVal" class="selectionWrapper">
         <h1 class="suitSelection">Select Value</h1>
@@ -23,20 +26,27 @@
         <p class="valueSelect" (click)="setVal(11)">Jack</p>
         <p class="valueSelect" (click)="setVal(12)">Queen</p>
         <p class="valueSelect" (click)="setVal(13)">King</p>
-        
+        <div class="buttwrapper">
+            <button (click)="setVal(-1)" mat-raised-button >Back</button>
+        </div>
     </div>
 </div>
 
 
 <mat-tab-group dynamicHeight id="mainPage">
     <mat-tab label="Simulation"> 
-        <header id="topbar"></header>
         <div id="simulationLayer">
             
+            <section id="topButtons">
+                <button class="indivbutts" (click)="removeAll()" mat-raised-button >Remove All</button>
+                <button class="indivbutts" (click)="randomizeAll()" mat-raised-button >Randomize</button>
+            </section>
+            
+
             <section id="holecards">
                 <div id="holecardswrapper">
                     <h2 id="cardtitles">Hole Cards</h2>
-                    <div id="cardImgs" *ngFor="let images of currImgs; let i=index;">
+                    <div id="cardImgs" *ngFor="let images of currImgs | slice:0:2; let i=index;">
                         <!-- This first image is for when no card is added, it just displays the back-->
                         <!-- <mat-card (click)="displaySuit(0)" id="defaultcard0" *ngIf="currImgs[0] == 'unfilled' && i == 0">
                             <img mat-card-img src="../assets/back.png" alt="Image of a Card">
@@ -45,18 +55,20 @@
                             <img mat-card-img src="../assets/back.png">
                         </mat-card>
                         <!-- This shows the actual card image and can be adjusted through clicking-->
-                        <mat-card (click)="displaySuit(0)" id="holecard1" *ngIf="currentHand[0].Suit != '' && i == 0">
+                        <mat-card (click)="displaySuit(0)" id="holecard1" (contextmenu)="handleRightClick(0,1,'',$event)" *ngIf="currentHand[0].Suit != '' && i == 0">
                             <img mat-card-img src="{{images}}">
                         </mat-card>
                         <mat-card (click)="displaySuit(1)" id="defaultcard0" *ngIf="currentHand[1].Suit == '' && i == 1">
                             <img mat-card-img src="../assets/back.png">
                         </mat-card>
-                        <mat-card (click)="displaySuit(1)" id="holecard1" *ngIf="currentHand[1].Suit != '' && i == 1">
+                        <mat-card (click)="displaySuit(1)" id="holecard1" (contextmenu)="handleRightClick(1,1,'',$event)" *ngIf="currentHand[1].Suit != '' && i == 1">
                             <img mat-card-img src="{{images}}">
                         </mat-card>
                     </div>
                 </div>
             </section>
+
+            
 
             <section id="communitycards">
                 <h2 id="bottomCardTitle">Community Cards</h2>
@@ -64,37 +76,39 @@
                     <mat-card (click)="displaySuit(2)" *ngIf="currentHand[2].Suit == '' && i == 0">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(2)" *ngIf="currentHand[2].Suit != '' && i == 0">
+                    <mat-card (click)="displaySuit(2)" (contextmenu)="handleRightClick(2,1,'',$event)" *ngIf="currentHand[2].Suit != '' && i == 0">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
                     <mat-card (click)="displaySuit(3)" *ngIf="currentHand[3].Suit == '' && i == 1">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(3)" *ngIf="currentHand[3].Suit != '' && i == 1">
+                    <mat-card (click)="displaySuit(3)" (contextmenu)="handleRightClick(3,1,'',$event)" *ngIf="currentHand[3].Suit != '' && i == 1">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
                     <mat-card (click)="displaySuit(4)" *ngIf="currentHand[4].Suit == '' && i == 2">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(4)" *ngIf="currentHand[4].Suit != '' && i == 2">
+                    <mat-card (click)="displaySuit(4)" (contextmenu)="handleRightClick(4,1,'',$event)" *ngIf="currentHand[4].Suit != '' && i == 2">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
                     <mat-card (click)="displaySuit(5)" *ngIf="currentHand[5].Suit == '' && i == 3">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(5)" *ngIf="currentHand[5].Suit != '' && i == 3">
+                    <mat-card (click)="displaySuit(5)" (contextmenu)="handleRightClick(5,1,'',$event)" *ngIf="currentHand[5].Suit != '' && i == 3">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
                     <mat-card (click)="displaySuit(6)" *ngIf="currentHand[6].Suit == '' && i == 4">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(6)" *ngIf="currentHand[6].Suit != '' && i == 4">
+                    <mat-card (click)="displaySuit(6)" (contextmenu)="handleRightClick(6,1,'',$event)" *ngIf="currentHand[6].Suit != '' && i == 4">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
                     
 
                 </div>
             </section>
+
+            
         </div>
     </mat-tab>
 

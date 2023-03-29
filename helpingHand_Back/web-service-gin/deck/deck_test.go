@@ -309,6 +309,20 @@ func TestRemoveCardsFromArray(t *testing.T) {
 
 // Tests to see if probability is accurately being calculated when input with the cards needed for a particular hand
 func TestFindCardProb(t *testing.T) {
+
+	//Test0, calculates the chance of getting a Royal Flush and then multiplies it by 4 for each distinct Royal Flush
+	//Result is compared to cumulative Royal Flush probability from Wikipedia
+	var test0Cards []card.Card
+	test0Target := []int{12, 11, 10, 9, 0}
+	test0Suit := "Spade"
+	test0 := deck.FindCardProb(test0Cards, test0Target, test0Suit, 0)
+	test0 *= 4.00 //For each distinct Royal Flush (4)
+	test0Prob := (math.Round(test0*100000000) / 100000000)
+
+	if test0Prob != 0.00000154 {
+		t.Fatal("Royal Flush initial prob incorrect. True prob: 0.00000154 Output: ", test0Prob)
+	}
+
 	//Royal flush
 	card1 := card.NewCard(11, "Spade")
 	card2 := card.NewCard(9, "Spade")
@@ -327,14 +341,14 @@ func TestFindCardProb(t *testing.T) {
 
 	targetSuit := "Spade"
 	targetVals := []int{12, 10, 0}
-	permutations := float64(deck.Factorial(5))
+	permutations := float64(deck.Factorial(3))
 	totalProb := ((1.00 / 50.00) * (1.00 / 49.00) * (1.00 / 48.00)) * permutations
 	tempFloat := deck.FindCardProb(cards, targetVals, targetSuit, 0)
 	compare1 := (math.Round(tempFloat*1000000) / 1000000)
 	compare2 := (math.Round(totalProb*1000000) / 1000000)
 
 	//Function call (last value only relevant for flush specifically)
-	if compare1 != 0.001020 && compare2 != 0.001020 {
+	if compare1 != 0.000051 && compare2 != 0.000051 {
 		t.Fatal("Returned a different percent value: ", compare1)
 	}
 
@@ -343,14 +357,14 @@ func TestFindCardProb(t *testing.T) {
 
 	targetSuit = "Spade"
 	targetVals = []int{10, 8, 7}
-	permutations = float64(deck.Factorial(5))
+	permutations = float64(deck.Factorial(3))
 	totalProb = ((1.00 / 50.00) * (1.00 / 49.00) * (1.00 / 48.00)) * permutations
 	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 0)
 	compare1 = (math.Round(tempFloat*1000000) / 1000000)
 	compare2 = (math.Round(totalProb*1000000) / 1000000)
 
 	//Function call (last value only relevant for flush specifically)
-	if compare1 != 0.001020 && compare2 != 0.001020 {
+	if compare1 != 0.000051 && compare2 != 0.000051 {
 		t.Fatal("Returned a different percent value: ", compare1)
 	}
 
@@ -359,14 +373,14 @@ func TestFindCardProb(t *testing.T) {
 
 	targetSuit = ""
 	targetVals = []int{11, 11, 11}
-	permutations = float64(deck.Factorial(5))
+	permutations = float64(deck.Factorial(3))
 	totalProb = ((3.00 / 50.00) * (2.00 / 49.00) * (1.00 / 48.00)) * permutations
 	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 0)
 	compare1 = (math.Round(tempFloat*1000000) / 1000000)
 	compare2 = (math.Round(totalProb*1000000) / 1000000)
 
 	//Function call (last value only relevant for flush specifically)
-	if compare1 != 0.006122 && compare2 != 0.006122 {
+	if compare1 != 0.000306 && compare2 != 0.000306 {
 		t.Fatal("Returned a different percent value: ", compare1)
 	}
 
@@ -375,14 +389,14 @@ func TestFindCardProb(t *testing.T) {
 
 	targetSuit = ""
 	targetVals = []int{11, 11, 9}
-	permutations = float64(deck.Factorial(5))
+	permutations = float64(deck.Factorial(3))
 	totalProb = ((3.00 / 50.00) * (2.00 / 49.00) * (3.00 / 48.00)) * permutations
 	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 0)
 	compare1 = (math.Round(tempFloat*1000000) / 1000000)
 	compare2 = (math.Round(totalProb*1000000) / 1000000)
 
 	//Function call (last value only relevant for flush specifically)
-	if compare1 != 0.018367 && compare2 != 0.018367 {
+	if compare1 != 0.000918 && compare2 != 0.000918 {
 		t.Fatal("Returned a different percent value: ", compare1)
 	}
 
@@ -536,4 +550,19 @@ func TestFutureHand(t *testing.T) {
 		t.Fatal("Future hand function does not work for three of a kind!")
 	}
 	t.Log(("Future hand function works for three of a kind!"))
+}
+
+// attempt 1 at future probability function test
+func TestFutureProbabilityFourOfKind(t *testing.T) {
+	t.Log("Testing future probability for four of a kind with one triple")
+	temphand := hand.NewHand("None")
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	hand.AddCardHandSpecific(temphand, 1, "Spade")
+	hand.AddCardHandSpecific(temphand, 1, "Club")
+	probability := math.Pow(float64(1)/float64(49), float64(4))
+	array := deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))
+	if array[0] != probability {
+		t.Fatal("Four of a kind future probability is wrong")
+	}
+	t.Log("Four of a kind future probability is right")
 }

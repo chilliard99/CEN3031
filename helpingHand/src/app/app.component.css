@@ -10,6 +10,17 @@
     width: 100%;
 }
 
+#topButtons {
+    margin-left: 7%;
+    margin-bottom: 1%;
+    margin-top: 1%;
+    width: 100%;
+}
+
+.indivbutts {
+    margin-left: 1%;
+}
+
 #holecardswrapper {
     margin-left: 5%;
     width: 25%;
@@ -31,6 +42,13 @@
     text-align: center;
     width: 100%;
     font-size:250%;
+}
+
+.buttwrapper{ 
+    width:100%;
+    justify-content:center;
+    display:flex;
+    margin-top: 2%;
 }
 
 #bottomCardTitle {
@@ -64,13 +82,6 @@
     font-size: 10%;
 }
 
-#topbar { 
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1%;
-    height: 2%
-}
-
 #rightSideBar {
     display:flex;
     justify-content: right;
@@ -87,12 +98,12 @@
 
 #simulationLayer {
     display:flex;
-    margin-bottom: 5%;
     flex-wrap: wrap;
 }
 
 #screendarkener {   
     background-color:black;
+    height: auto;
     position: absolute;
     top: 0px;
     right: 0px;

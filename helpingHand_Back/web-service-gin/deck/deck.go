@@ -6,6 +6,7 @@ import (
 	//imports hand.go as h to allow hand functions to be called
 	h "example/web-service-gin/hand"
 	"fmt"
+	"math"
 )
 
 // Potential structure to return probability function to front end
@@ -216,13 +217,58 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 	}
 
 	//Calculate number of orderings as the draw order doesn't matter (including free draws). Max is 7! = 5040
-	numPermutations := Factorial(numToDraw)
+	numPermutations := Factorial(numNeeded)
 	//fmt.Printf("\n%f ", numPermutations)
 
 	totalProb *= float64(numPermutations)
 	//fmt.Printf("%f", totalProb)
 
 	return totalProb
+}
+
+// Determining probability of future hands from DetermineFutureHands
+func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
+	var futureProbs []float64
+	canAddNumCards := 7 - len(hand.ActualHand)
+	if Contains(futureHands, "One Pair") {
+		//just multiply by num cards in hand and do
+		onePairProb := 0.0
+		for i := 1; i < canAddNumCards+1; i++ {
+			onePairProb += float64(3*len(hand.ActualHand)) / float64(52-i+1-len(hand.ActualHand)) * math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-i+1-len(hand.ActualHand)), float64(i-1))
+		}
+	}
+	if Contains(futureHands, "Two Pair") {
+
+	}
+	if Contains(futureHands, "Three of a Kind") {
+
+	}
+	if Contains(futureHands, "Four of a Kind") {
+		tripleVals := make([]int, 13)
+		for _, card := range hand.ActualHand {
+			tripleVals[card.Val]++
+		}
+		firstTriple := -1
+		secondTriple := -1
+		doesFirstTripleExist := false
+		for index, count := range tripleVals {
+			if count == 3 && !doesFirstTripleExist {
+				firstTriple = index
+			}
+			if count == 3 && doesFirstTripleExist {
+				secondTriple = index
+			}
+		}
+		for i := 0; i < canAddNumCards; i++ {
+			if secondTriple == -1 && firstTriple != -1 {
+				//only 1 triple so it's easier
+				futureProbs = append(futureProbs, math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
+			} else {
+				futureProbs = append(futureProbs, -222)
+			}
+		}
+	}
+	return futureProbs
 }
 
 // Determining what hands can be created using the current hand and cards in the deck
