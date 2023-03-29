@@ -230,6 +230,19 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 	var futureProbs []float64
 	canAddNumCards := 7 - len(hand.ActualHand)
+	if Contains(futureHands, "One Pair") {
+		//just multiply by num cards in hand and do
+		onePairProb := 0.0
+		for i := 1; i < canAddNumCards+1; i++ {
+			onePairProb += float64(3*len(hand.ActualHand)) / float64(52-i+1-len(hand.ActualHand)) * math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-i+1-len(hand.ActualHand)), float64(i-1))
+		}
+	}
+	if Contains(futureHands, "Two Pair") {
+
+	}
+	if Contains(futureHands, "Three of a Kind") {
+
+	}
 	if Contains(futureHands, "Four of a Kind") {
 		tripleVals := make([]int, 13)
 		for _, card := range hand.ActualHand {
