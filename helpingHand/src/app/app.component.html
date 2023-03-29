@@ -46,7 +46,7 @@
             <section id="holecards">
                 <div id="holecardswrapper">
                     <h2 id="cardtitles">Hole Cards</h2>
-                    <div id="cardImgs" *ngFor="let images of currImgs; let i=index;">
+                    <div id="cardImgs" *ngFor="let images of currImgs | slice:0:2; let i=index;">
                         <!-- This first image is for when no card is added, it just displays the back-->
                         <!-- <mat-card (click)="displaySuit(0)" id="defaultcard0" *ngIf="currImgs[0] == 'unfilled' && i == 0">
                             <img mat-card-img src="../assets/back.png" alt="Image of a Card">

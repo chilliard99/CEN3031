@@ -126,7 +126,6 @@ export class AppComponent implements OnInit {
   }
 
   async addCard() {
-    console.log("Suit:" + this.Suit + " Value:" + (Number(this.Val) - 1) + " Index:" + this.Index);
     await this.httpClient.post('/api/hand', {
       Suit: this.Suit,
       Val: Number(this.Val) - 1,
