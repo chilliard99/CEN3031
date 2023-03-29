@@ -5,11 +5,11 @@ describe('Add Card', () => {
     });
 
     it('Click Suits', () => {
-        cy.get('#SuitSelect').click()
-        cy.get('#diamond').click()
-        cy.get('#ValsSelect').click()
-        cy.get('#ace').click()
-        cy.get('#add_card').click()
+        cy.get("#defaultcard0").click()
+        cy.get("#diamond").click()
+        cy.get("#ace").click()
+        cy.get("#simulationLayer").click()
+        cy.get("#removeAll").click()
     });
 
   })
