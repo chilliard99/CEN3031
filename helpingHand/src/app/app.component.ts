@@ -68,10 +68,15 @@ export class AppComponent implements OnInit {
     //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')
   }
 
+  async handleRightClick(_Index: number, _Value: number, _Suit: string, event: any) {
+    event.preventDefault();
+    this.Index = _Index;
+    this.Val = _Value;
+    this.Suit = _Suit
+    this.addCard();
+  }
+  
   async displaySuit(_Index: number) {
-    for(let i = 0; i < this.currImgs.length; i++) {
-      console.log(this.currImgs[i]);
-    }
     this.Index = _Index;
     this.displaySuitVal = !this.displaySuitVal;
   }
@@ -89,6 +94,7 @@ export class AppComponent implements OnInit {
   }
 
   async addCard() {
+    console.log("Suit:" + this.Suit + " Value:" + (Number(this.Val) - 1) + " Index:" + this.Index);
     await this.httpClient.post('/api/hand', {
       Suit: this.Suit,
       Val: Number(this.Val) - 1,

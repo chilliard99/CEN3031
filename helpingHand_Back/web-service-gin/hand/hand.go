@@ -67,7 +67,7 @@ func (r *UserHand) Add(card c.Card) {
 	//check validity of input
 	if card.Suit == "" {
 		r.Cards[card.Index].Suit = ""
-		r.Cards[card.Val].Val = 0
+		r.Cards[card.Index].Val = 0
 		return
 	}
 
