@@ -9,6 +9,11 @@ interface ICurrentHand {
 
 }
 
+interface ICurrentProb {
+  Handname: string
+  Prob: number
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -29,6 +34,7 @@ export class AppComponent implements OnInit {
   //   }
   // ]
   public currentHand: ICurrentHand[] = []
+  public currentProb: ICurrentProb[] = []
   public currImgs:string[] = new Array;
   constructor (
     private httpClient: HttpClient
@@ -52,6 +58,7 @@ export class AppComponent implements OnInit {
 
   async loadCards() {
     this.currentHand = await lastValueFrom(this.httpClient.get<ICurrentHand[]>('/api/hand'))
+    this.currentProb = await lastValueFrom(this.httpClient.get<ICurrentProb[]>('/api/prob'))
     //Probably a better way to do this with the backend or something
     this.currImgs = [];
     for(let i = 0; i < 7; i++) {

@@ -2,30 +2,30 @@
     <div id="screendarkener"></div>
     <div *ngIf="displaySuitVal" class="selectionWrapper">
         <h1 class="suitSelection">Select Suit</h1>
-        <img class="suitImg" (click)="setSuit('spade')" src="../assets/spade.png" alt="Spade">
-        <img class="suitImg" (click)="setSuit('heart')" src="../assets/heart.png" alt="Heart">
-        <img class="suitImg" (click)="setSuit('club')" src="../assets/club.png" alt="Club">
-        <img class="suitImg" (click)="setSuit('diamond')" src="../assets/diamond.png" alt="Diamond">
-        <img class="suitImg" (click)="setSuit('random')" src="../assets/dice.png" alt="Random">
+        <img class="suitImg" id="spade" (click)="setSuit('spade')" src="../assets/spade.png" alt="Spade">
+        <img class="suitImg" id="heart" (click)="setSuit('heart')" src="../assets/heart.png" alt="Heart">
+        <img class="suitImg" id="club" (click)="setSuit('club')" src="../assets/club.png" alt="Club">
+        <img class="suitImg" id="diamond" (click)="setSuit('diamond')" src="../assets/diamond.png" alt="Diamond">
+        <img class="suitImg" id="random" (click)="setSuit('random')" src="../assets/dice.png" alt="Random">
         <div class="buttwrapper">
             <button (click)="setSuit('back')" mat-raised-button >Back</button>
         </div>
     </div>
     <div *ngIf="displayVal" class="selectionWrapper">
         <h1 class="suitSelection">Select Value</h1>
-        <p class="valueSelect" (click)="setVal(1)">Ace</p>
-        <p class="valueSelect" (click)="setVal(2)">2</p>
-        <p class="valueSelect" (click)="setVal(3)">3</p>
-        <p class="valueSelect" (click)="setVal(4)">4</p>
-        <p class="valueSelect" (click)="setVal(5)">5</p>
-        <p class="valueSelect" (click)="setVal(6)">6</p>
-        <p class="valueSelect" (click)="setVal(7)">7</p>
-        <p class="valueSelect" (click)="setVal(8)">8</p>
-        <p class="valueSelect" (click)="setVal(9)">9</p>
-        <p class="valueSelect" (click)="setVal(10)">10</p>
-        <p class="valueSelect" (click)="setVal(11)">Jack</p>
-        <p class="valueSelect" (click)="setVal(12)">Queen</p>
-        <p class="valueSelect" (click)="setVal(13)">King</p>
+        <p class="valueSelect" id="ace" (click)="setVal(1)">Ace</p>
+        <p class="valueSelect" id="2" (click)="setVal(2)">2</p>
+        <p class="valueSelect" id="3" (click)="setVal(3)">3</p>
+        <p class="valueSelect" id="4" (click)="setVal(4)">4</p>
+        <p class="valueSelect" id="5" (click)="setVal(5)">5</p>
+        <p class="valueSelect" id="6" (click)="setVal(6)">6</p>
+        <p class="valueSelect" id="7" (click)="setVal(7)">7</p>
+        <p class="valueSelect" id="8" (click)="setVal(8)">8</p>
+        <p class="valueSelect" id="9" (click)="setVal(9)">9</p>
+        <p class="valueSelect" id="10" (click)="setVal(10)">10</p>
+        <p class="valueSelect" id="jack" (click)="setVal(11)">Jack</p>
+        <p class="valueSelect" id="queen" (click)="setVal(12)">Queen</p>
+        <p class="valueSelect" id="king" (click)="setVal(13)">King</p>
         <div class="buttwrapper">
             <button (click)="setVal(-1)" mat-raised-button >Back</button>
         </div>
@@ -38,8 +38,8 @@
         <div id="simulationLayer">
             
             <section id="topButtons">
-                <button class="indivbutts" (click)="removeAll()" mat-raised-button >Remove All</button>
-                <button class="indivbutts" (click)="randomizeAll()" mat-raised-button >Randomize</button>
+                <button id="removeAll" class="indivbutts" (click)="removeAll()" mat-raised-button >Remove All</button>
+                <button id="random" class="indivbutts" (click)="randomizeAll()" mat-raised-button >Randomize</button>
             </section>
             
 
@@ -58,7 +58,7 @@
                         <mat-card (click)="displaySuit(0)" id="holecard1" (contextmenu)="handleRightClick(0,1,'',$event)" *ngIf="currentHand[0].Suit != '' && i == 0">
                             <img mat-card-img src="{{images}}">
                         </mat-card>
-                        <mat-card (click)="displaySuit(1)" id="defaultcard0" *ngIf="currentHand[1].Suit == '' && i == 1">
+                        <mat-card (click)="displaySuit(1)" id="defaultcard1" *ngIf="currentHand[1].Suit == '' && i == 1">
                             <img mat-card-img src="../assets/back.png">
                         </mat-card>
                         <mat-card (click)="displaySuit(1)" id="holecard1" (contextmenu)="handleRightClick(1,1,'',$event)" *ngIf="currentHand[1].Suit != '' && i == 1">
@@ -73,31 +73,31 @@
             <section id="communitycards">
                 <h2 id="bottomCardTitle">Community Cards</h2>
                 <div id="bottomcardImgs" *ngFor="let images of currImgs | slice:2; let i=index;">
-                    <mat-card (click)="displaySuit(2)" *ngIf="currentHand[2].Suit == '' && i == 0">
+                    <mat-card (click)="displaySuit(2)" id="defaultcard2" *ngIf="currentHand[2].Suit == '' && i == 0">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
                     <mat-card (click)="displaySuit(2)" (contextmenu)="handleRightClick(2,1,'',$event)" *ngIf="currentHand[2].Suit != '' && i == 0">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(3)" *ngIf="currentHand[3].Suit == '' && i == 1">
+                    <mat-card (click)="displaySuit(3)" id="defaultcard3" *ngIf="currentHand[3].Suit == '' && i == 1">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
                     <mat-card (click)="displaySuit(3)" (contextmenu)="handleRightClick(3,1,'',$event)" *ngIf="currentHand[3].Suit != '' && i == 1">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(4)" *ngIf="currentHand[4].Suit == '' && i == 2">
+                    <mat-card (click)="displaySuit(4)" id="defaultcard4" *ngIf="currentHand[4].Suit == '' && i == 2">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
                     <mat-card (click)="displaySuit(4)" (contextmenu)="handleRightClick(4,1,'',$event)" *ngIf="currentHand[4].Suit != '' && i == 2">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(5)" *ngIf="currentHand[5].Suit == '' && i == 3">
+                    <mat-card (click)="displaySuit(5)" id="defaultcard5" *ngIf="currentHand[5].Suit == '' && i == 3">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
                     <mat-card (click)="displaySuit(5)" (contextmenu)="handleRightClick(5,1,'',$event)" *ngIf="currentHand[5].Suit != '' && i == 3">
                         <img mat-card-img src="{{images}}" alt="Image of a Card">
                     </mat-card>
-                    <mat-card (click)="displaySuit(6)" *ngIf="currentHand[6].Suit == '' && i == 4">
+                    <mat-card (click)="displaySuit(6)" id="defaultcard6" *ngIf="currentHand[6].Suit == '' && i == 4">
                         <img mat-card-img src="../assets/back.png" alt="Image of a Card">
                     </mat-card>
                     <mat-card (click)="displaySuit(6)" (contextmenu)="handleRightClick(6,1,'',$event)" *ngIf="currentHand[6].Suit != '' && i == 4">
@@ -112,7 +112,12 @@
         </div>
     </mat-tab>
 
-    <mat-tab label="Hand List"> Stuff </mat-tab>
+    <mat-tab label="Hand List"> Stuff 
+        <mat-card *ngFor="let currentProbItem of currentProb">
+            <div>Hand Name: {{ currentProbItem.Handname }}</div>
+            <div>Probability: {{ currentProbItem.Prob }}</div>
+        </mat-card>
+    </mat-tab>
 
     <mat-tab label="Poker Terms"> More Stuff </mat-tab>
 </mat-tab-group>
