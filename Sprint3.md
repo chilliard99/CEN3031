@@ -21,6 +21,7 @@ Backend:
   - Added RemovecardsFromArray. Similar functionality to RemoveCards except with solely arrays and not a deck object.
   - Added ContainsInt function for ints in addition to the preexisting one, Contains, for strings.
   - Added DetermineFutureProbability function, in progress, but should determine the probability to draw a given hand type in future draws. For now One Pair and partially Three of a Kind should work.
+  - Added GetHandArray function to grab the array of cards from the hand, for future use.
 
 Frontend Unit Tests:
 
@@ -52,6 +53,7 @@ Backend Unit Tests:
     - TestTwoPairCheck test for checking if an array of cards can be identified as having a two pair (2 pairs, each 2 cards of the same number but not same suit) within it.
     - TestThreeFourFullCheck test for checking if an array of cards can be identified as having 3 of a kind (3 cards of the same number but not same suit), 4 of a kind (all 4 cards of the same number but not same suit), or full house (one 1 pair and one 3 of a kind within a hand) within it. These tests were performed within the same testing function for easier comprehension. 
     - TestFutureProbabilityFourOfKind test for checking if the future probability correctly returns for a hand containing only one three of a kind and nothing else.
+    - Altered GetHandArray test to accommodate GetHandArray function.
   
   - Hand:
     - TestHandCardValues test for checking if card values and suits successfully insert into an array of card objects
