@@ -483,6 +483,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 	suits := map[string]struct{}{}
 	royalFlush := make(map[int]c.Card)
 	needCards := [5]bool{true, true, true, true, true}
+	targetSuit := ""
 
 	var dupe c.Card
 	var tempCard c.Card
@@ -493,7 +494,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 	for i := 0; i < cardCount; i++ {
 		tempCard = cards[i]
 
-		//***THIS PART COULD BE MADE INTO A FLUSHCHECK FUNCTION***
+		//Count suits
 		suits[tempCard.Suit] = struct{}{}
 
 		//If there are 3 different suits, then 5/7 cards cannot be the same suit for a flush
@@ -583,8 +584,10 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 					}
 
 					//compare card suits
-					if royalFlush[firstIndex].Suit != royalFlush[secondIndex].Suit {
+					if royalFlush[firstIndex].Suit != royalFlush[secondIndex].Suit && royalFlush[secondIndex].Suit != "" {
 						return 0.00
+					} else {
+						targetSuit = royalFlush[firstIndex].Suit
 					}
 				}
 			}
@@ -598,95 +601,43 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 		return 1.00 //if none needed, return true and 100.0%
 	}
 
-	//NON-FUNCTIONAL PROBABILITY CALCULATION
-	/*
-		totalProb := 0.00
-		//Calculate possibilities of getting other cards from the deck
-		for remaining > 0 {
-			boolIndex := 0
-			firstVal := 99
-			tempProb := 0.00
+	//Define targetVals
+	var targetVals []int
 
-			//Get the proper card value from boolean array
-			for i := 0; i < 5; i++ {
-				if needCards[i] {
-					switch i {
-					case 0:
-						firstVal = 12
-						boolIndex = 0
-					case 1:
-						firstVal = 11
-						boolIndex = 1
-					case 2:
-						firstVal = 10
-						boolIndex = 2
-					case 3:
-						firstVal = 9
-						boolIndex = 3
-					case 4:
-						firstVal = 0
-						boolIndex = 4
-					default:
-					}
-					break
-				}
-			}
-
-			//Go through deck, find the needed card, remove it, and add to the probability
-			for i := 0; i < deckCount; i++ {
-				if deckCopy[i].Suit == chosenSuit && deckCopy[i].Val == firstVal {
-					//Find probability
-					tempProb = 1.00 / float64(deckCount)
-
-					//Adjust boolean array and other variables for found card
-					needCards[boolIndex] = false
-					remaining--
-
-					//Remove the card from the deckCopy and break
-					var rem []c.Card
-					rem = append(rem, deckCopy[i])
-					deckCopy = RemoveCards(deckCopy, rem)
-					break
-				}
-
-			}
-
-			//needed card not found in deck, return false and 0.0%
-			if tempProb == 0.00 {
-				return false, 0.00
-			}
-
-			//Set totalProb if not already set
-			if totalProb == 0.00 {
-				totalProb = tempProb
-				tempProb = 0.00
-
-				//THIS CALCULATION ASSUMES DRAWING ALL CARDS IN THE ORDER OF CALCULATION (for 2 cards in any order, it is multiplied by 2. For 3 in any order, it is multiplied by 6, etc.)
-			} else {
-				totalProb = totalProb * tempProb
+	for i := 0; i < 5; i++ {
+		if needCards[i] {
+			switch i {
+			case 0:
+				targetVals = append(targetVals, 12)
+			case 1:
+				targetVals = append(targetVals, 11)
+			case 2:
+				targetVals = append(targetVals, 10)
+			case 3:
+				targetVals = append(targetVals, 9)
+			case 4:
+				targetVals = append(targetVals, 0)
 			}
 		}
+	}
 
-		//I have no idea if this accounts for the number of permutations/orderings for cards
-		switch needCount {
-		case 1:
-		case 2:
-			totalProb = totalProb * 2
-		case 3:
-			totalProb = totalProb * 6
-		case 4:
-			totalProb = totalProb * 24
-		case 5:
-			totalProb = totalProb * 120
-		case 6:
-			totalProb = totalProb * 720
-		case 7:
-			totalProb = totalProb * 5040
+	//testing for possibilities at each step of the game (UNFINISHED)
+	if cardCount == 6 {
+		if len(targetVals) > 1 {
+			return 0.00
 		}
+	} else if cardCount == 5 {
+		if len(targetVals) > 2 {
+			return 0.00
+		}
+	} else if cardCount == 2 {
+		targetSuit = ""
+	}
 
-		return true, totalProb
-	*/
-	return 0.00
+	//Find true probability
+	prob := FindCardProb(cards, targetVals, targetSuit, 0)
+	fmt.Printf("%f\n", prob)
+	return prob
 }
 
 // Returns probability of a straight with a boolean for if it is a straightFlush.

@@ -166,13 +166,75 @@ func TestRoyalFlushCheck(t *testing.T) {
 	var cards []card.Card
 
 	cards = append(cards, card1)
-	cards = append(cards, card2)
-	cards = append(cards, card3)
-	cards = append(cards, card4)
-	cards = append(cards, card5) //added line for half-measure test
 
 	t.Log("\n")
-	t.Logf("Test #8: RoyalFlushCheck")
+	t.Logf("Test 8.1: RoyalFlushCheck (probability)")
+
+	t.Logf("Input of deck, selection of 1 cards (for royal flush), output should be 1/51 * 1/50 * 1/49 * 1/48 or 0.000004")
+
+	prob := deck.RoyalFlush(tempDeck, cards)
+	compare1 := (math.Round(prob*1000000) / 1000000)
+
+	permutations := float64(deck.Factorial(4))
+	totalProb := ((1.00 / 51.00) * (1.00 / 50.00) * (1.00 / 49.00) * (1.00 / 48.00)) * permutations
+	compare2 := (math.Round(totalProb*1000000) / 1000000)
+
+	if compare1 != 0.000004 && compare2 != 0.000004 {
+		t.Fatal("Returned: ", prob, " Expected: ", 0.000004, " Hand Math: ", compare2)
+	}
+
+	cards = append(cards, card2)
+
+	t.Log("\n")
+	t.Logf("Test 8.2: RoyalFlushCheck (probability)")
+
+	t.Logf("Input of deck, selection of 2 cards (for royal flush), output should be 1/50 * 1/49 * 1/48 or 0.0208")
+
+	prob = deck.RoyalFlush(tempDeck, cards)
+	compare1 = (math.Round(prob*10000) / 10000)
+	permutations = float64(deck.Factorial(3))
+	totalProb = ((1.00 / 50.00) * (1.00 / 49.00) * (1.00 / 48.00)) * permutations
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	if compare1 != 0.000051 && compare2 != 0.000051 {
+		t.Fatal("Returned: ", prob, " Expected: ", 0.000051, " Hand Math: ", compare2)
+	}
+
+	cards = append(cards, card3)
+
+	t.Log("\n")
+	t.Logf("Test 8.3: RoyalFlushCheck (probability)")
+
+	t.Logf("Input of deck, selection of 2 cards (for royal flush), output should be 1/49 * 1/48 or 0.000850")
+
+	prob = deck.RoyalFlush(tempDeck, cards)
+	compare1 = (math.Round(prob*10000) / 10000)
+	permutations = float64(deck.Factorial(2))
+	totalProb = ((1.00 / 49.00) * (1.00 / 48.00)) * permutations
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	if compare1 != 0.000850 && compare2 != 0.000850 {
+		t.Fatal("Returned: ", prob, " Expected: ", 0.000850, " Hand Math: ", compare2)
+	}
+
+	cards = append(cards, card4)
+
+	t.Log("\n")
+	t.Logf("Test 8.4: RoyalFlushCheck (probability)")
+
+	t.Logf("Input of deck, selection of 4 cards (for royal flush), output should be 1/48 or 0.0208")
+
+	prob = deck.RoyalFlush(tempDeck, cards)
+	compare1 = (math.Round(prob*1000000) / 1000000)
+
+	if compare1 != 0.020833 {
+		t.Fatal("Returned: ", prob, " Expected: ", 0.020833)
+	}
+
+	cards = append(cards, card5)
+
+	t.Log("\n")
+	t.Logf("Test #8.5: RoyalFlushCheck (identification)")
 	//t.Logf("Input of deck, selection of 4 cards (for royal flush), output should be true as it only need ace of spades")
 
 	t.Logf("Input of deck, selection of 5 cards (for royal flush), output should be true") //added line for half-measure test
