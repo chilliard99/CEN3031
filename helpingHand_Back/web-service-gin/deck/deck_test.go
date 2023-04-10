@@ -152,7 +152,6 @@ func TestRemoveCards(t *testing.T) {
 	}
 }
 
-// **ONLY TESTS FOR ROYALFLUSH PRESENCE CURRENTLY**
 // Test to check whether the RoyalFlush function can return a true output given 4 of 5 cards required.
 func TestRoyalFlushCheck(t *testing.T) {
 	tempDeck := deck.NewDeck()
@@ -188,7 +187,7 @@ func TestRoyalFlushCheck(t *testing.T) {
 	t.Log("\n")
 	t.Logf("Test 8.2: RoyalFlushCheck (probability)")
 
-	t.Logf("Input of deck, selection of 2 cards (for royal flush), output should be 1/50 * 1/49 * 1/48 or 0.0208")
+	t.Logf("Input of deck, selection of 2 cards (for royal flush), output should be 1/50 * 1/49 * 1/48 or 0.000051")
 
 	prob = deck.RoyalFlush(tempDeck, cards)
 	compare1 = (math.Round(prob*10000) / 10000)
@@ -200,12 +199,38 @@ func TestRoyalFlushCheck(t *testing.T) {
 		t.Fatal("Returned: ", prob, " Expected: ", 0.000051, " Hand Math: ", compare2)
 	}
 
+	//new tests for multi-suit royals
+	t.Logf("Test 8.2.5: RoyalFlushCheck (prob-mix)")
+	cardsNew := cards
+
+	for i := 0; i < 3; i++ {
+		t.Log("\n")
+		if i == 0 {
+			t.Logf("Test 8.2.5.1: RoyalFlushCheck (prob-mix)")
+			cardHeart1 := card.NewCard(12, "Heart")
+			cardsNew = append(cardsNew, cardHeart1)
+		} else if i == 1 {
+			t.Logf("Test 8.2.5.2: RoyalFlushCheck (prob-mix)")
+			cardHeart2 := card.NewCard(11, "Heart")
+			cardsNew = append(cardsNew, cardHeart2)
+		} else if i == 2 {
+			t.Logf("Test 8.2.5.3: RoyalFlushCheck (prob-mix w/non-royal)")
+			cardHeart3 := card.NewCard(8, "Heart")
+			cardsNew = append(cardsNew, cardHeart3)
+		}
+
+		prob = deck.RoyalFlush(tempDeck, cardsNew)
+
+		t.Logf("Prob: %f", prob)
+		t.Log("\n")
+	}
+
 	cards = append(cards, card3)
 
 	t.Log("\n")
 	t.Logf("Test 8.3: RoyalFlushCheck (probability)")
 
-	t.Logf("Input of deck, selection of 2 cards (for royal flush), output should be 1/49 * 1/48 or 0.000850")
+	t.Logf("Input of deck, selection of 3 cards (for royal flush), output should be 1/49 * 1/48 or 0.000850")
 
 	prob = deck.RoyalFlush(tempDeck, cards)
 	compare1 = (math.Round(prob*10000) / 10000)
@@ -241,9 +266,13 @@ func TestRoyalFlushCheck(t *testing.T) {
 
 	probFloat := deck.RoyalFlush(tempDeck, cards)
 
-	if probFloat == 0.00 {
+	if probFloat != 1.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
 	}
+
+	//if true {
+	//	t.Logf("Intentional failure")
+	//}
 }
 
 // Test to check whether straight function will properly identify a straight (flush)

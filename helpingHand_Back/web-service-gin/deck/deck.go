@@ -513,7 +513,12 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 	suits := map[string]struct{}{}
 	royalFlush := make(map[int]c.Card)
 	needCards := [5]bool{true, true, true, true, true}
+	var currVals []int
 	targetSuit := ""
+	hR := 0 //Heart-Royal
+	dR := 0 //Diamond-Royal
+	cR := 0 //Club-Royal
+	sR := 0 //Spade-Royal
 
 	var dupe c.Card
 	var tempCard c.Card
@@ -527,11 +532,26 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 		//Count suits
 		suits[tempCard.Suit] = struct{}{}
 
+		//Copy down values
+		currVals = append(currVals, tempCard.Val)
+
 		//If there are 3 different suits, then 5/7 cards cannot be the same suit for a flush
 		if len(suits) == 3 {
 			return 0.00
 		}
-		//***THIS PART COULD BE MADE INTO A FLUSHCHECK FUNCTION***
+
+		if ContainsInt([]int{12, 11, 10, 9, 0}, tempCard.Val) {
+			switch tempCard.Suit {
+			case "Heart":
+				hR++
+			case "Diamond":
+				dR++
+			case "Club":
+				cR++
+			case "Spade":
+				sR++
+			}
+		}
 
 		//Switch case to ignore all cards not needed for a royal flush straight
 		switch tempCard.Val {
@@ -615,6 +635,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 
 					//compare card suits
 					if royalFlush[firstIndex].Suit != royalFlush[secondIndex].Suit && royalFlush[secondIndex].Suit != "" {
+						fmt.Println("Main loop suit inconsistency")
 						return 0.00
 					} else {
 						targetSuit = royalFlush[firstIndex].Suit
@@ -629,6 +650,58 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 		return 0.00
 	} else if needCount == 0 {
 		return 1.00 //if none needed, return true and 100.0%
+	}
+
+	//Find how many royal flushes are possible and calculate their probabilities
+	if cardCount <= 2 {
+		fmt.Println("Secondary loop all available")
+		//All royal flushes available
+		targetSuit = ""
+	} else {
+		fmt.Println("Secondary loop suits check")
+		prob := 0.00
+
+		for suitIndex := 0; suitIndex < 4; suitIndex++ {
+			//Assign amount needed based on suit
+			currSuit := 5
+			switch suitIndex {
+			case 0:
+				currSuit -= hR
+				targetSuit = "Heart"
+			case 1:
+				currSuit -= dR
+				targetSuit = "Diamond"
+			case 2:
+				currSuit -= cR
+				targetSuit = "Club"
+			case 3:
+				currSuit -= sR
+				targetSuit = "Spade"
+			}
+
+			//Check if possible for the suit and then assign targetVals appropriately
+			if currSuit <= remaining {
+				fmt.Println("Tertiary loop individual suits check. Current: ", targetSuit)
+				//Define targetVals
+				var targetVals []int
+
+				i := 12
+				for len(targetVals) < needCount {
+					//If value is NOT contained (to avoid searching for duplicates) add to targetVals. 5-8 were included to allow for value overlap between multiple suits (calc is the same 1/deck size)
+					if !ContainsInt([]int{12, 11, 10, 9, 8, 7, 6, 5, 0}, i) {
+						targetVals = append(targetVals, i)
+					}
+					i--
+				}
+
+				fmt.Println("Tertiary loop prob before: ", prob)
+				//Add probabilities for each hand together
+				prob += FindCardProb(cards, targetVals, targetSuit, 0)
+				fmt.Println("Tertiary loop prob after: ", prob)
+			}
+		}
+
+		return prob
 	}
 
 	//Define targetVals
@@ -651,22 +724,35 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 		}
 	}
 
-	//testing for possibilities at each step of the game (UNFINISHED)
-	if cardCount == 6 {
-		if len(targetVals) > 1 {
-			return 0.00
-		}
-	} else if cardCount == 5 {
-		if len(targetVals) > 2 {
-			return 0.00
-		}
-	} else if cardCount == 2 {
-		targetSuit = ""
-	}
+	prob := 0.00
 
-	//Find true probability
-	prob := FindCardProb(cards, targetVals, targetSuit, 0)
-	fmt.Printf("%f\n", prob)
+	for i := 0; i < 4; i++ {
+		currSuit := 5
+		switch i {
+		case 0:
+			currSuit -= hR
+			targetSuit = "Heart"
+		case 1:
+			currSuit -= dR
+			targetSuit = "Diamond"
+		case 2:
+			currSuit -= cR
+			targetSuit = "Club"
+		case 3:
+			currSuit -= sR
+			targetSuit = "Spade"
+		}
+
+		if currSuit == 5 {
+			baseTarget := []int{12, 11, 10, 9, 0}
+			prob += FindCardProb(cards, baseTarget, targetSuit, 0)
+			fmt.Printf("+base prob: %f\n", prob)
+		} else {
+			//Find true probability
+			prob += FindCardProb(cards, targetVals, targetSuit, 0)
+			fmt.Printf("+spec prob: %f\n", prob)
+		}
+	}
 	return prob
 }
 
