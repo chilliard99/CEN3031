@@ -763,14 +763,37 @@ func StraightCheck(deck Deck, cards []c.Card) (float64, bool) {
 	cardCount := len(cards)
 	flushBool := false
 	lowVal := 0
+	lowestVal := 0
 	highVal := 0
+	highestVal := 0
 	chain := 0
+	var currVals []int
+	currSuit := ""
 
 	//Checks the cards in hand for a straight by looking for 5 sequentially valued cards
 	for i := 0; i < cardCount-1; i++ {
 		tempCard := cards[i]
 		tempNext := cards[i+1]
 		diff := tempNext.Val - tempCard.Val
+
+		if i == 0 {
+			currVals = append(currVals, tempCard.Val)
+			lowestVal = tempCard.Val
+			highestVal = tempCard.Val
+			currSuit = tempCard.Suit
+		}
+		if cardCount != 1 {
+			currVals = append(currVals, tempNext.Val)
+			if tempNext.Val < lowestVal {
+				lowestVal = tempNext.Val
+			}
+			if tempNext.Val > highestVal {
+				highestVal = tempNext.Val
+			}
+			if currSuit != "" && tempNext.Suit != currSuit {
+				currSuit = ""
+			}
+		}
 
 		//fmt.Println("first: ", tempCard.Val, " second: ", tempNext.Val, " diff: ", diff)
 
@@ -830,7 +853,51 @@ func StraightCheck(deck Deck, cards []c.Card) (float64, bool) {
 		return 1.00, flushBool
 	}
 
-	return 0.00, flushBool
+	//Begin 0 < x < 1 calcs
+	prob := 0.00
+	numToDraw := 7 - cardCount
+	rangeVal := 0
+	highRangeVal := 0
+	var targetVals []int
+	//numSeq := 0
+
+	//Establish lowest end of range
+	if lowestVal < numToDraw {
+		rangeVal = 0
+	} else {
+		rangeVal = lowestVal - numToDraw
+	}
+
+	//Establish highest end of range
+	if highestVal > (12 - numToDraw) {
+		highRangeVal = 12
+	} else {
+		highRangeVal = highestVal + numToDraw
+	}
+
+	//Grab 5 values in sequential order including current values and repeat until all groupings of 5 have been found
+	for rangeVal < (highRangeVal) {
+		fmt.Println(rangeVal)
+		if !ContainsInt(currVals, rangeVal) {
+			targetVals = append(targetVals, rangeVal)
+		}
+
+		if len(targetVals) == 5 {
+			//if numSeq == 0 {
+			prob += FindCardProb(cards, targetVals, "", 0) //change "" to currSuit to begin implementing straight flush prob calc
+			//}
+			//numSeq++
+			targetVals = []int{}
+			rangeVal -= 3 //Go back 3 vals to check the next sequence from 1 higher
+		} else {
+			rangeVal++
+		}
+	}
+
+	//Multiply original probability by number of sequences (NECESSARY AS OTHERWISE THE FUNCTION TAKES TOO LONG)
+	//prob *= float64(numSeq)
+
+	return prob, flushBool
 }
 
 func FlushCheck(deck Deck, cards []c.Card) float64 {
