@@ -815,6 +815,15 @@ func StraightCheck(deck Deck, cards []c.Card) (float64, bool) {
 		}
 	}
 
+	//Loop is skipped if there is only 1 card
+	if cardCount == 1 {
+		lowVal = cards[0].Val
+		lowestVal = cards[0].Val
+		highVal = cards[0].Val
+		highestVal = cards[0].Val
+		currVals = append(currVals, cards[0].Val)
+	}
+
 	broadwayBool := (lowVal == 9 && highVal == 12 && chain == 4 && cards[0].Val == 0)
 
 	//Check for extra cards
@@ -858,37 +867,46 @@ func StraightCheck(deck Deck, cards []c.Card) (float64, bool) {
 	numToDraw := 7 - cardCount
 	rangeVal := 0
 	highRangeVal := 0
+	targetSizeOffset := 0
 	var targetVals []int
 	//numSeq := 0
 
+	//fmt.Println("lowestVal: ", lowestVal)
+
 	//Establish lowest end of range
-	if lowestVal < numToDraw {
+	if cardCount <= 2 || lowestVal < numToDraw {
 		rangeVal = 0
 	} else {
 		rangeVal = lowestVal - numToDraw
 	}
 
 	//Establish highest end of range
-	if highestVal > (12 - numToDraw) {
+	if cardCount <= 2 || highestVal > (12-numToDraw) {
 		highRangeVal = 12
 	} else {
 		highRangeVal = highestVal + numToDraw
 	}
 
 	//Grab 5 values in sequential order including current values and repeat until all groupings of 5 have been found
-	for rangeVal < (highRangeVal) {
-		fmt.Println(rangeVal)
+	for rangeVal <= (highRangeVal) {
 		if !ContainsInt(currVals, rangeVal) {
 			targetVals = append(targetVals, rangeVal)
+		} else {
+			//Simulate adding current values to targetVals
+			targetSizeOffset++
 		}
 
-		if len(targetVals) == 5 {
+		//fmt.Println("rangeVal: ", rangeVal, " length: ", len(targetVals), " offset: ", targetSizeOffset)
+
+		if len(targetVals)+targetSizeOffset == 5 {
 			//if numSeq == 0 {
 			prob += FindCardProb(cards, targetVals, "", 0) //change "" to currSuit to begin implementing straight flush prob calc
+			//fmt.Printf("Prob: %f\n", prob)
 			//}
 			//numSeq++
 			targetVals = []int{}
 			rangeVal -= 3 //Go back 3 vals to check the next sequence from 1 higher
+			targetSizeOffset = 0
 		} else {
 			rangeVal++
 		}

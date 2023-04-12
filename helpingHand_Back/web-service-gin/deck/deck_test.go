@@ -294,13 +294,13 @@ func TestStraightCheck(t *testing.T) {
 	t.Log("\n")
 	t.Logf("Test 9.1: StraightCheck (probability)")
 
-	t.Logf("Input of deck, selection of 1 card (for broadway straight), output should be 0.000872")
+	t.Logf("Input of deck, selection of 1 card (for broadway straight), output should be 0.004512")
 
 	probFloat, flushBool := deck.StraightCheck(tempDeck, cards)
 	compare1 := (math.Round(probFloat*1000000) / 1000000)
 
-	if compare1 != 0.000872 {
-		t.Fatal("Returned: ", probFloat, " Expected: ", 0.000872)
+	if compare1 != 0.004512 {
+		t.Fatal("Returned: ", probFloat, " Expected: ", 0.004512)
 	}
 
 	cards = append(cards, card2)
@@ -308,13 +308,13 @@ func TestStraightCheck(t *testing.T) {
 	t.Log("\n")
 	t.Logf("Test 9.2: StraightCheck (probability)")
 
-	t.Logf("Input of deck, selection of 2 cards (for broadway straight), output should be 0.000483") //WHY ARE THE PROBABILITIES GOING DOWN?????????
+	t.Logf("Input of deck, selection of 2 cards (for broadway straight), output should be 0.007760")
 
 	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
 	compare1 = (math.Round(probFloat*1000000) / 1000000)
 
-	if compare1 != 0.000483 {
-		t.Fatal("Returned: ", probFloat, " Expected: ", 0.000483)
+	if compare1 != 0.007760 {
+		t.Fatal("Returned: ", probFloat, " Expected: ", 0.007760)
 	}
 
 	cards = append(cards, card3)
@@ -322,13 +322,13 @@ func TestStraightCheck(t *testing.T) {
 	t.Log("\n")
 	t.Logf("Test 9.3: StraightCheck (probability)")
 
-	t.Logf("Input of deck, selection of 3 cards (for broadway straight), output should be 0.0") //WHY ARE THE PROBABILITIES GOING DOWN?????????
+	t.Logf("Input of deck, selection of 3 cards (for broadway straight), output should be 0.018287")
 
 	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
 	compare1 = (math.Round(probFloat*1000000) / 1000000)
 
-	if compare1 != 0.0 {
-		t.Fatal("Returned: ", probFloat, " Expected: ", 0.0)
+	if compare1 != 0.018287 {
+		t.Fatal("Returned: ", probFloat, " Expected: ", 0.018287)
 	}
 
 	cards = append(cards, card4)
@@ -336,13 +336,13 @@ func TestStraightCheck(t *testing.T) {
 	t.Log("\n")
 	t.Logf("Test 9.4: StraightCheck (probability)")
 
-	t.Logf("Input of deck, selection of 3 cards (for broadway straight), output should be 0.0") //WHY ARE THE PROBABILITIES GOING DOWN?????????
+	t.Logf("Input of deck, selection of 3 cards (for broadway straight), output should be 0.101218")
 
 	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
 	compare1 = (math.Round(probFloat*1000000) / 1000000)
 
-	if compare1 != 0.0 {
-		t.Fatal("Returned: ", probFloat, " Expected: ", 0.0)
+	if compare1 != 0.101218 {
+		t.Fatal("Returned: ", probFloat, " Expected: ", 0.101218)
 	}
 
 	cards = append(cards, card5)
