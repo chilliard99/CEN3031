@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, Injectable } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, Injectable, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { lastValueFrom } from 'rxjs'
 import { SpinnerService } from './spinner.service'
@@ -18,11 +18,13 @@ interface ICurrentProb {
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
   public displaySuitVal = false;
   public displayVal = false;
+  public darkMode = false;
   public title = 'helpingHand';
   public Val = 0
   public Suit = ''
@@ -65,7 +67,7 @@ export class AppComponent implements OnInit {
     this.currImgs = [];
     for(let i = 0; i < 7; i++) {
       if(i < this.currentHand.length) {
-        this.currImgs.push("../assets/" + (this.currentHand[i].Val + 1) + this.currentHand[i].Suit + ".png"); 
+        this.currImgs.push("../assets/" + (this.currentHand[i].Val + 1) + this.currentHand[i].Suit.toLowerCase() + ".png"); 
       }
       else {
         this.currImgs.push("unfilled");
@@ -88,6 +90,10 @@ export class AppComponent implements OnInit {
   async displaySuit(_Index: number) {
     this.Index = _Index;
     this.displaySuitVal = !this.displaySuitVal;
+  }
+
+  async toggleDarkMode() {
+    this.darkMode = !this.darkMode;
   }
 
   async removeAll() {
@@ -135,6 +141,7 @@ export class AppComponent implements OnInit {
   }
 
   async addCard() {
+    console.log(this.Suit + " " + this.Val + " " + this.Index)
     await this.httpClient.post('/api/hand', {
       Suit: this.Suit,
       Val: Number(this.Val) - 1,

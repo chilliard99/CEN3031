@@ -496,7 +496,6 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 
 	/* POSSIBLY NOT NEEDED
 	turnCount := 0
-
 	//determine which turn the game is in based on hand cards + community cards
 	switch cardCount {
 	case 0:
