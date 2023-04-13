@@ -260,17 +260,15 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 				thirdPair = index
 			}
 		}
-		for i := 0; i < canAddNumCards; i++ {
-			if thirdPair == -1 && secondPair == -1 && firstPair != -1 {
-				//only 1 pair
-				futureProbs = append(futureProbs, math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
-			} else if firstPair != -1 && secondPair != -1 && thirdPair == -1 {
-				//2 pairs, double 1 pair prob
-				futureProbs = append(futureProbs, float64(2)*math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
-			} else if firstPair != -1 && secondPair != -1 && thirdPair != -1 {
-				//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
-				futureProbs = append(futureProbs, float64(3)/float64(46))
-			}
+		if thirdPair == -1 && secondPair == -1 && firstPair != -1 {
+			//only 1 pair
+			futureProbs = append(futureProbs, math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
+		} else if firstPair != -1 && secondPair != -1 && thirdPair == -1 {
+			//2 pairs, double 1 pair prob
+			futureProbs = append(futureProbs, float64(2)*math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
+		} else if firstPair != -1 && secondPair != -1 && thirdPair != -1 {
+			//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
+			futureProbs = append(futureProbs, float64(3)/float64(46))
 		}
 	}
 	if Contains(futureHands, "Four of a Kind") {
@@ -288,13 +286,19 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 				secondTriple = index
 			}
 		}
-		for i := 0; i < canAddNumCards; i++ {
-			if secondTriple == -1 && firstTriple != -1 {
+		if secondTriple == -1 && firstTriple != -1 {
+			if canAddNumCards != 0 {
 				//only 1 triple so it's easier
 				futureProbs = append(futureProbs, math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
 			} else {
+				futureProbs = append(futureProbs, float64(0))
+			}
+		} else {
+			if canAddNumCards != 0 {
 				//should only be 6 cards so just double the prob of grabbing 1 card? (46 cards left, need 2 specific ones)
 				futureProbs = append(futureProbs, float64(1)/float64(23))
+			} else {
+				futureProbs = append(futureProbs, float64(0))
 			}
 		}
 	}
