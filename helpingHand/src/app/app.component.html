@@ -32,6 +32,7 @@
     </div>
 </div>
 
+<mat-spinner [diameter]="100" id="spinner" *ngIf="spinnerService.visibility | async"></mat-spinner>
 
 <mat-tab-group dynamicHeight id="mainPage">
     <mat-tab label="Simulation"> 

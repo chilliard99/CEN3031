@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http'
 import { lastValueFrom } from 'rxjs'
+import { SpinnerService } from './spinner.service'
 
 interface ICurrentHand {
   Val: number
@@ -37,7 +38,8 @@ export class AppComponent implements OnInit {
   public currentProb: ICurrentProb[] = []
   public currImgs:string[] = new Array;
   constructor (
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    public spinnerService: SpinnerService
   ) {}
 
   async ngOnInit() {
