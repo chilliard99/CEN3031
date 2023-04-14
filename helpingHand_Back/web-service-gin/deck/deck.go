@@ -293,7 +293,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 			if count == 3 && firstTriple == -1 {
 				firstTriple = index
 			}
-			if count == 3 && firstTriple != -1 {
+			if count == 3 && firstTriple != -1 && index != firstTriple {
 				secondTriple = index
 			}
 		}
@@ -304,7 +304,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 			} else {
 				futureProbs = append(futureProbs, float64(0))
 			}
-		} else {
+		} else if secondTriple != -1 && firstTriple != -1 {
 			if canAddNumCards != 0 {
 				//should only be 6 cards so just double the prob of grabbing 1 card? (46 cards left, need 2 specific ones)
 				futureProbs = append(futureProbs, float64(1)/float64(23))

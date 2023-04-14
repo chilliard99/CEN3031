@@ -705,6 +705,8 @@ func TestFutureProbabilityFourOfKind(t *testing.T) {
 	probability := math.Pow(float64(1)/float64(49), float64(4))
 	array := deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))
 	if array[0] != probability {
+		t.Log(math.Pow(float64(1)/float64(49), float64(4)))
+		t.Log(array[0])
 		t.Fatal("Four of a kind future probability is wrong")
 	}
 	t.Log("Four of a kind future probability is right")
