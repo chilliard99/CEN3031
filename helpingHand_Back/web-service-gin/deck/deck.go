@@ -72,6 +72,7 @@ func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
 
 	for i := 0; i < len(cards_); i++ {
 		if cards_[i].Suit != "" {
+			//fmt.Println("Card #", i, ": val=", cards_[i].Val, " suit=", cards_[i].Suit)
 			cards = append(cards, cards_[i])
 		}
 	}
@@ -87,21 +88,31 @@ func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
 	currUserProb[0].Prob = HighCard(deckCopy, cards)
 	if Contains(handTypes, "One Pair") {
 		currUserProb[1].Prob = 1.00
+	} else {
+		currUserProb[1].Prob = 0.00
 	}
 	if Contains(handTypes, "Two Pair") {
 		currUserProb[2].Prob = 1.00
+	} else {
+		currUserProb[2].Prob = 0.00
 	}
 	if Contains(handTypes, "Three of a Kind") {
 		currUserProb[3].Prob = 1.00
+	} else {
+		currUserProb[3].Prob = 0.00
 	}
 	currUserProb[4].Prob = straightProb
 	currUserProb[5].Prob = FlushCheck(deckCopy, cards)
 
 	if Contains(handTypes, "Full House") {
 		currUserProb[6].Prob = 1.00
+	} else {
+		currUserProb[6].Prob = 0.00
 	}
 	if Contains(handTypes, "Four of a Kind") {
 		currUserProb[7].Prob = 1.00
+	} else {
+		currUserProb[7].Prob = 0.00
 	}
 
 	if straightFlushBool {
@@ -481,13 +492,23 @@ func ValSortCardsAsc(cards []c.Card) []c.Card {
 
 // Check the probability of a high card
 func HighCard(deck Deck, cards []c.Card) float64 {
-	return 1.00
+	if len(cards) > 0 {
+		return 1.00
+	} else {
+		return 0.00
+	}
 }
 
 // Check whether the hand and community cards provided can form a royal straight flush with the rest of the deck and return boolean and probability
 func RoyalFlush(deck Deck, cards []c.Card) float64 {
 	cardCount := len(cards)
 	remaining := 7 - cardCount
+
+	//fmt.Println("[FRONTEND CHECK] count: ", cardCount)
+
+	if cardCount == 0 {
+		return 0.00
+	}
 
 	//Variables for probability calculation (which is commented out)
 	//deckCopy := RemoveCards(deck, cards)
@@ -562,6 +583,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 
 			//If map slot is empty, add card
 			if royalFlush[tempCard.Val].Suit == "" {
+				//fmt.Println("[FRONTEND CHECK] map initialization check: success")
 				royalFlush[tempCard.Val] = tempCard
 				//chosenSuit = tempCard.Suit
 
@@ -648,6 +670,8 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 		}
 	}
 
+	//fmt.Println("[FRONTEND CHECK] needcount: ", needCount, " remaining: ", remaining)
+
 	//If more cards are needed than should be drawn, return false and 0.0%
 	if needCount > remaining {
 		return 0.00
@@ -657,11 +681,11 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 
 	//Find how many royal flushes are possible and calculate their probabilities
 	if cardCount <= 2 {
-		fmt.Println("Secondary loop all available")
+		//fmt.Println("[FRONTEND CHECK] Secondary loop all available")
 		//All royal flushes available
 		targetSuit = ""
 	} else {
-		fmt.Println("Secondary loop suits check")
+		//fmt.Println("[FRONTEND CHECK] Secondary loop suits check")
 		prob := 0.00
 
 		for suitIndex := 0; suitIndex < 4; suitIndex++ {
@@ -684,7 +708,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 
 			//Check if possible for the suit and then assign targetVals appropriately
 			if currSuit <= remaining {
-				fmt.Println("Tertiary loop individual suits check. Current: ", targetSuit)
+				//fmt.Println("[FRONTEND CHECK] Tertiary loop individual suits check. Current: ", targetSuit)
 				//Define targetVals
 				var targetVals []int
 
@@ -697,10 +721,12 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 					i--
 				}
 
-				fmt.Println("Tertiary loop prob before: ", prob)
+				//fmt.Println("[FRONTEND CHECK] Tertiary loop prob before: ", prob)
+
 				//Add probabilities for each hand together
 				prob += FindCardProb(cards, targetVals, targetSuit, 0)
-				fmt.Println("Tertiary loop prob after: ", prob)
+
+				//fmt.Println("[FRONTEND CHECK] Tertiary loop prob after: ", prob)
 			}
 		}
 
@@ -749,11 +775,11 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 		if currSuit == 5 {
 			baseTarget := []int{12, 11, 10, 9, 0}
 			prob += FindCardProb(cards, baseTarget, targetSuit, 0)
-			fmt.Printf("+base prob: %f\n", prob)
+			//fmt.Printf("[FRONTEND CHECK] +base prob: %f\n", prob)
 		} else {
 			//Find true probability
 			prob += FindCardProb(cards, targetVals, targetSuit, 0)
-			fmt.Printf("+spec prob: %f\n", prob)
+			//fmt.Printf("[FRONTEND CHECK] +spec prob: %f\n", prob)
 		}
 	}
 	return prob
@@ -762,8 +788,13 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 // Returns probability of a straight with a boolean for if it is a straightFlush.
 func StraightCheck(deck Deck, cards []c.Card) (float64, bool) {
 	//deckCopy := RemoveCards(deck, cards)
-	cards = ValSortCardsAsc(cards)
 	cardCount := len(cards)
+
+	if cardCount == 0 {
+		return 0.00, false
+	}
+
+	cards = ValSortCardsAsc(cards)
 	flushBool := false
 	lowVal := 0
 	lowestVal := 0
@@ -868,6 +899,11 @@ func StraightCheck(deck Deck, cards []c.Card) (float64, bool) {
 	//Begin 0 < x < 1 calcs
 	prob := 0.00
 	numToDraw := 7 - cardCount
+
+	if numToDraw == 0 {
+		return prob, flushBool
+	}
+
 	rangeVal := 0
 	highRangeVal := 0
 	targetSizeOffset := 0
@@ -924,6 +960,11 @@ func StraightCheck(deck Deck, cards []c.Card) (float64, bool) {
 func FlushCheck(deck Deck, cards []c.Card) float64 {
 	//deckCopy := RemoveCards(deck, cards)
 	cardCount := len(cards)
+
+	if cardCount == 0 {
+		return 0.00
+	}
+
 	suits := make(map[string]int)
 	var tempCard c.Card
 
@@ -1003,7 +1044,7 @@ func GetCardIndex(deck Deck, v int, s string) int {
 
 	//Probably better ways to throw errors, but setting it to Ace of Hearts seems safe for now
 	if index > 51 || v > 12 || v < 0 || suitMod > 3 {
-		fmt.Println("Invalid range (int 0-12, suit Heart/Diamond/Club/Spade)")
+		fmt.Println("Invalid range (int 0-12, suit Heart/Diamond/Club/Spade) [PART OF TestGetCardIndex4]")
 		index = 0
 		return index
 	}

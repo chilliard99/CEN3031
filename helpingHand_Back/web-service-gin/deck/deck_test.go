@@ -336,7 +336,7 @@ func TestStraightCheck(t *testing.T) {
 	t.Log("\n")
 	t.Logf("Test 9.4: StraightCheck (probability)")
 
-	t.Logf("Input of deck, selection of 3 cards (for broadway straight), output should be 0.101218")
+	t.Logf("Input of deck, selection of 4 cards (for broadway straight), output should be 0.101218")
 
 	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
 	compare1 = (math.Round(probFloat*1000000) / 1000000)

@@ -4,18 +4,20 @@ import (
 	"example/web-service-gin/deck"
 	"example/web-service-gin/hand"
 	"example/web-service-gin/handler"
-	"fmt"
 
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	currDeck := deck.NewDeck()
-	fmt.Println(deck.GetCardIndex(currDeck, 0, "Heart"))
-	currentHand := hand.NewHand("initial")
-	hand.AddCardHandRandom(currentHand)
-	fmt.Println("current length of hand is: ")
-	fmt.Println(len(currentHand.ActualHand))
+
+	//Lines from the very beginning of development. I believe they're all non-functional.
+	//fmt.Println(deck.GetCardIndex(currDeck, 0, "Heart"))
+	//currentHand := hand.NewHand("initial")
+	//hand.AddCardHandRandom(currentHand)
+	//fmt.Println("current length of hand is: ")
+	//fmt.Println(len(currentHand.ActualHand))
+
 	//user
 	currUserHand := hand.New()
 	currUserProb := deck.New()
