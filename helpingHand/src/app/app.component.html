@@ -2,10 +2,10 @@
     <div id="screendarkener"></div>
     <div *ngIf="displaySuitVal" class="selectionWrapper">
         <h1 class="suitSelection">Select Suit</h1>
-        <img class="suitImg" id="spade" (click)="setSuit('spade')" src="../assets/spade.png" alt="Spade">
-        <img class="suitImg" id="heart" (click)="setSuit('heart')" src="../assets/heart.png" alt="Heart">
-        <img class="suitImg" id="club" (click)="setSuit('club')" src="../assets/club.png" alt="Club">
-        <img class="suitImg" id="diamond" (click)="setSuit('diamond')" src="../assets/diamond.png" alt="Diamond">
+        <img class="suitImg" id="spade" (click)="setSuit('Spade')" src="../assets/spade.png" alt="Spade">
+        <img class="suitImg" id="heart" (click)="setSuit('Heart')" src="../assets/heart.png" alt="Heart">
+        <img class="suitImg" id="club" (click)="setSuit('Club')" src="../assets/club.png" alt="Club">
+        <img class="suitImg" id="diamond" (click)="setSuit('Diamond')" src="../assets/diamond.png" alt="Diamond">
         <img class="suitImg" id="random" (click)="setSuit('random')" src="../assets/dice.png" alt="Random">
         <div class="buttwrapper">
             <button (click)="setSuit('back')" mat-raised-button >Back</button>
@@ -32,18 +32,34 @@
     </div>
 </div>
 
+<mat-spinner [diameter]="100" id="spinner" *ngIf="spinnerService.visibility | async"></mat-spinner>
 
 <mat-tab-group dynamicHeight id="mainPage">
-    <mat-tab label="Simulation"> 
+    <mat-tab label="Simulation">
+
+        <div [ngClass]="{
+            'colortester': darkMode
+         }"></div>
+
         <div id="simulationLayer">
             
             <section id="topButtons">
-                <button id="removeAll" class="indivbutts" (click)="removeAll()" mat-raised-button >Remove All</button>
-                <button id="random" class="indivbutts" (click)="randomizeAll()" mat-raised-button >Randomize</button>
+                <button id="removeAll" [ngClass]="{
+                    'indivbutts': !darkMode,
+                    'indivbuttsdark': darkMode
+                 }" (click)="removeAll()" mat-raised-button >Remove All</button>
+                <button id="random" [ngClass]="{
+                    'indivbutts': !darkMode,
+                    'indivbuttsdark': darkMode
+                 }" (click)="randomizeAll()" mat-raised-button >Randomize</button>
             </section>
-            
 
-            <section id="holecards">
+            <mat-slide-toggle (change)="toggleDarkMode()" id="darkModeToggle"></mat-slide-toggle>
+
+            <section [ngClass]="{
+                'holecards': !darkMode,
+                'holecardsdark': darkMode
+             }">
                 <div id="holecardswrapper">
                     <h2 id="cardtitles">Hole Cards</h2>
                     <div id="cardImgs" *ngFor="let images of currImgs | slice:0:2; let i=index;">
@@ -68,9 +84,10 @@
                 </div>
             </section>
 
-            
-
-            <section id="communitycards">
+            <section [ngClass]="{
+                'communitycards': !darkMode,
+                'communitycardsdark': darkMode
+             }">
                 <h2 id="bottomCardTitle">Community Cards</h2>
                 <div id="bottomcardImgs" *ngFor="let images of currImgs | slice:2; let i=index;">
                     <mat-card (click)="displaySuit(2)" id="defaultcard2" *ngIf="currentHand[2].Suit == '' && i == 0">
@@ -108,7 +125,6 @@
                 </div>
             </section>
 
-            
         </div>
     </mat-tab>
 

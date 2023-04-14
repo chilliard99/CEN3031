@@ -152,7 +152,6 @@ func TestRemoveCards(t *testing.T) {
 	}
 }
 
-// **ONLY TESTS FOR ROYALFLUSH PRESENCE CURRENTLY**
 // Test to check whether the RoyalFlush function can return a true output given 4 of 5 cards required.
 func TestRoyalFlushCheck(t *testing.T) {
 	tempDeck := deck.NewDeck()
@@ -166,22 +165,114 @@ func TestRoyalFlushCheck(t *testing.T) {
 	var cards []card.Card
 
 	cards = append(cards, card1)
-	cards = append(cards, card2)
-	cards = append(cards, card3)
-	cards = append(cards, card4)
-	cards = append(cards, card5) //added line for half-measure test
 
 	t.Log("\n")
-	t.Logf("Test #8: RoyalFlushCheck")
+	t.Logf("Test 8.1: RoyalFlushCheck (probability)")
+
+	t.Logf("Input of deck, selection of 1 cards (for royal flush), output should be 1/51 * 1/50 * 1/49 * 1/48 or 0.000004")
+
+	prob := deck.RoyalFlush(tempDeck, cards)
+	compare1 := (math.Round(prob*1000000) / 1000000)
+
+	permutations := float64(deck.Factorial(4))
+	totalProb := ((1.00 / 51.00) * (1.00 / 50.00) * (1.00 / 49.00) * (1.00 / 48.00)) * permutations
+	compare2 := (math.Round(totalProb*1000000) / 1000000)
+
+	if compare1 != 0.000004 && compare2 != 0.000004 {
+		t.Fatal("Returned: ", prob, " Expected: ", 0.000004, " Hand Math: ", compare2)
+	}
+
+	cards = append(cards, card2)
+
+	t.Log("\n")
+	t.Logf("Test 8.2: RoyalFlushCheck (probability)")
+
+	t.Logf("Input of deck, selection of 2 cards (for royal flush), output should be 1/50 * 1/49 * 1/48 or 0.000051")
+
+	prob = deck.RoyalFlush(tempDeck, cards)
+	compare1 = (math.Round(prob*10000) / 10000)
+	permutations = float64(deck.Factorial(3))
+	totalProb = ((1.00 / 50.00) * (1.00 / 49.00) * (1.00 / 48.00)) * permutations
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	if compare1 != 0.000051 && compare2 != 0.000051 {
+		t.Fatal("Returned: ", prob, " Expected: ", 0.000051, " Hand Math: ", compare2)
+	}
+
+	//new tests for multi-suit royals
+	t.Logf("Test 8.2.5: RoyalFlushCheck (prob-mix)")
+	cardsNew := cards
+
+	for i := 0; i < 3; i++ {
+		t.Log("\n")
+		if i == 0 {
+			t.Logf("Test 8.2.5.1: RoyalFlushCheck (prob-mix)")
+			cardHeart1 := card.NewCard(12, "Heart")
+			cardsNew = append(cardsNew, cardHeart1)
+		} else if i == 1 {
+			t.Logf("Test 8.2.5.2: RoyalFlushCheck (prob-mix)")
+			cardHeart2 := card.NewCard(11, "Heart")
+			cardsNew = append(cardsNew, cardHeart2)
+		} else if i == 2 {
+			t.Logf("Test 8.2.5.3: RoyalFlushCheck (prob-mix w/non-royal)")
+			cardHeart3 := card.NewCard(8, "Heart")
+			cardsNew = append(cardsNew, cardHeart3)
+		}
+
+		prob = deck.RoyalFlush(tempDeck, cardsNew)
+
+		t.Logf("Prob: %f", prob)
+		t.Log("\n")
+	}
+
+	cards = append(cards, card3)
+
+	t.Log("\n")
+	t.Logf("Test 8.3: RoyalFlushCheck (probability)")
+
+	t.Logf("Input of deck, selection of 3 cards (for royal flush), output should be 1/49 * 1/48 or 0.000850")
+
+	prob = deck.RoyalFlush(tempDeck, cards)
+	compare1 = (math.Round(prob*10000) / 10000)
+	permutations = float64(deck.Factorial(2))
+	totalProb = ((1.00 / 49.00) * (1.00 / 48.00)) * permutations
+	compare2 = (math.Round(totalProb*1000000) / 1000000)
+
+	if compare1 != 0.000850 && compare2 != 0.000850 {
+		t.Fatal("Returned: ", prob, " Expected: ", 0.000850, " Hand Math: ", compare2)
+	}
+
+	cards = append(cards, card4)
+
+	t.Log("\n")
+	t.Logf("Test 8.4: RoyalFlushCheck (probability)")
+
+	t.Logf("Input of deck, selection of 4 cards (for royal flush), output should be 1/48 or 0.0208")
+
+	prob = deck.RoyalFlush(tempDeck, cards)
+	compare1 = (math.Round(prob*1000000) / 1000000)
+
+	if compare1 != 0.020833 {
+		t.Fatal("Returned: ", prob, " Expected: ", 0.020833)
+	}
+
+	cards = append(cards, card5)
+
+	t.Log("\n")
+	t.Logf("Test #8.5: RoyalFlushCheck (identification)")
 	//t.Logf("Input of deck, selection of 4 cards (for royal flush), output should be true as it only need ace of spades")
 
 	t.Logf("Input of deck, selection of 5 cards (for royal flush), output should be true") //added line for half-measure test
 
 	probFloat := deck.RoyalFlush(tempDeck, cards)
 
-	if probFloat == 0.00 {
+	if probFloat != 1.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
 	}
+
+	//if true {
+	//	t.Logf("Intentional failure")
+	//}
 }
 
 // Test to check whether straight function will properly identify a straight (flush)
@@ -199,16 +290,68 @@ func TestStraightCheck(t *testing.T) {
 	var cards []card.Card
 
 	cards = append(cards, card1)
+
+	t.Log("\n")
+	t.Logf("Test 9.1: StraightCheck (probability)")
+
+	t.Logf("Input of deck, selection of 1 card (for broadway straight), output should be 0.004512")
+
+	probFloat, flushBool := deck.StraightCheck(tempDeck, cards)
+	compare1 := (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.004512 {
+		t.Fatal("Returned: ", probFloat, " Expected: ", 0.004512)
+	}
+
 	cards = append(cards, card2)
+
+	t.Log("\n")
+	t.Logf("Test 9.2: StraightCheck (probability)")
+
+	t.Logf("Input of deck, selection of 2 cards (for broadway straight), output should be 0.007760")
+
+	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
+	compare1 = (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.007760 {
+		t.Fatal("Returned: ", probFloat, " Expected: ", 0.007760)
+	}
+
 	cards = append(cards, card3)
+
+	t.Log("\n")
+	t.Logf("Test 9.3: StraightCheck (probability)")
+
+	t.Logf("Input of deck, selection of 3 cards (for broadway straight), output should be 0.018287")
+
+	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
+	compare1 = (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.018287 {
+		t.Fatal("Returned: ", probFloat, " Expected: ", 0.018287)
+	}
+
 	cards = append(cards, card4)
+
+	t.Log("\n")
+	t.Logf("Test 9.4: StraightCheck (probability)")
+
+	t.Logf("Input of deck, selection of 4 cards (for broadway straight), output should be 0.101218")
+
+	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
+	compare1 = (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.101218 {
+		t.Fatal("Returned: ", probFloat, " Expected: ", 0.101218)
+	}
+
 	cards = append(cards, card5)
 
 	t.Log("\n")
-	t.Logf("Test #9: StraightCheck")
+	t.Logf("Test #9: StraightCheck (identifying)")
 	t.Logf("Input of deck, selection of 5 cards (for broadway straight), output should be true")
 
-	probFloat, flushBool := deck.StraightCheck(tempDeck, cards)
+	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
 
 	if probFloat == 0.00 {
 		t.Fatal("Returned 0.0 when it should be greater")

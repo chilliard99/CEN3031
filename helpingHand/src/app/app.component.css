@@ -1,3 +1,6 @@
+.mat-tab-label {
+    background-color: red;
+  }
 
 .cardWrapper {
     display: flex;
@@ -6,19 +9,35 @@
     align-content: flex-start;
 }
 
-#holecards {
+.holecards {
     width: 100%;
+}
+
+.holecardsdark {
+    width: 100%;
+    color:white;
+}
+
+#darkModeToggle {
+    margin-top: 1%;
+    width:5%;
 }
 
 #topButtons {
     margin-left: 7%;
     margin-bottom: 1%;
     margin-top: 1%;
-    width: 100%;
+    width: 85%;
 }
 
 .indivbutts {
     margin-left: 1%;
+}
+
+.indivbuttsdark {
+    margin-left: 1%;
+    background-color: #474747 !important;
+    color:white !important;
 }
 
 #holecardswrapper {
@@ -30,10 +49,19 @@
 }
 
 
-#communitycards {
+.communitycards {
     margin-left: 6.5%;
     margin-top: 2%;
     width: 100%;
+    display:flex;
+    flex-wrap: wrap;
+}
+
+.communitycardsdark {
+    margin-left: 6.5%;
+    margin-top: 2%;
+    width: 100%;
+    color:white;
     display:flex;
     flex-wrap: wrap;
 }
@@ -99,6 +127,24 @@
 #simulationLayer {
     display:flex;
     flex-wrap: wrap;
+    width:94.8vw;
+    height:94.8vh;
+}
+
+.colortester {
+    height:100%;
+    width:100%;
+    background-color:#121212;
+    position:absolute;
+    z-index: -1;
+}
+
+#spinner {
+    left: 50%;
+    right: 50%;
+    top: 40%;
+    position:absolute;
+    z-index: 1001;
 }
 
 #screendarkener {   
@@ -146,3 +192,4 @@
     margin-right: 1%;
     font-size: 300%;
 }
+
