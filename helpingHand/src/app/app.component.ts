@@ -97,12 +97,17 @@ export class AppComponent implements OnInit {
   }
 
   async removeAll() {
-    for(let i = 0; i < this.currentHand.length; i++) {
-       this.Val = 1;
-       this.Index = i;
-       this.Suit = "";
-       this.addCard();
-    }
+    // for(let i = 0; i < this.currentHand.length; i++) {
+    //    this.Val = 1;
+    //    this.Index = i;
+    //    this.Suit = "";
+    //    this.addCard();
+    // }
+    console.log("in remove all")
+    this.currentHand = await lastValueFrom(this.httpClient.get<ICurrentHand[]>('/api/removeAll'))
+    this.currentProb = await lastValueFrom(this.httpClient.get<ICurrentProb[]>('/api/prob'))
+    //this.currentProb = await lastValueFrom(this.httpClient.get<ICurrentProb[]>('/api/removeALL'))
+    //await this.httpClient.get('/api/removeAll')
   }
  
   async randomizeAll() {
