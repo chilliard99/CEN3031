@@ -27,7 +27,7 @@ func main() {
 	{
 		api.GET("/ping", handler.PingGet())
 		api.GET("/hand", handler.HandGet(CurrUserHand))
-		api.GET("/prob", handler.ProbGet(CurrUserProb))
+		api.GET("/prob", handler.ProbGet(CurrUserHand, CurrDeck, CurrUserProb))
 		api.POST("/hand", handler.HandPost(CurrUserHand, CurrUserHand, CurrDeck, CurrUserProb)) //deck object
 		api.GET("/removeAll", handler.HandDelete(CurrUserHand, CurrUserProb))
 	}
