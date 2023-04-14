@@ -18,6 +18,7 @@ type Hand struct {
 
 type Getter interface {
 	GetAll() []c.Card
+	Reset()
 }
 
 type Adder interface {
@@ -43,6 +44,14 @@ func New() *UserHand {
 		Cards: []c.Card{{Val: 0, Suit: "", Index: 0}, {Val: 0, Suit: "", Index: 1}, {Val: 0, Suit: "", Index: 2}, {Val: 0, Suit: "", Index: 3},
 			{Val: 0, Suit: "", Index: 4}, {Val: 0, Suit: "", Index: 5}, {Val: 0, Suit: "", Index: 6}},
 	}
+}
+
+func (r *UserHand) Reset() {
+	for i := 0; i < len(r.Cards); i++ {
+		r.Cards[i].Suit = ""
+		r.Cards[i].Val = 0
+	}
+	//for i := 0 i < len()
 }
 
 func (r *UserHand) Add(card c.Card) {
