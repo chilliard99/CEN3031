@@ -150,7 +150,7 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 	var indProbs []float64
 
 	//Default 0.00 if not enough cards will be drawn
-	if len(targetVals) > numToDraw {
+	if numNeeded != 0 && numNeeded > numToDraw {
 		return 0.00
 	}
 
@@ -173,6 +173,8 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 			//Calculate chance and append to list of individual probabilities
 			tempFloat := float64(validCardCount) / float64(deckLength)
 			indProbs = append(indProbs, tempFloat)
+			fmt.Print("[FLUSH TEST] valid/decksize: ", validCardCount, " / ", deckLength, " = ")
+			fmt.Printf("[FLUSH TEST] float: %f\n", tempFloat)
 
 			//Remove the latest valid card to simulate drawing it
 			var toRemove []c.Card
@@ -181,12 +183,13 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 		}
 
 		//Multiply individual probabilities
-		for i := 0; i < numNeeded; i++ {
+		for i := 0; i < numSuitNeed; i++ {
 			totalProb *= indProbs[i]
+			fmt.Println("[FLUSH TEST] probs: ", totalProb)
 		}
 
 		//Calculate number of orderings as the draw order doesn't matter (including free draws). Max is 7! = 5040
-		numPermutations := Factorial(numToDraw)
+		numPermutations := Factorial(numSuitNeed)
 
 		totalProb *= float64(numPermutations)
 
@@ -972,10 +975,24 @@ func FlushCheck(deck Deck, cards []c.Card) float64 {
 
 	suits := make(map[string]int)
 	var tempCard c.Card
+	hR := 0
+	dR := 0
+	cR := 0
+	sR := 0
 
 	//Populate suits map with count of each suit
 	for i := 0; i < cardCount; i++ {
 		tempCard = cards[i]
+		switch tempCard.Suit {
+		case "Heart":
+			hR++
+		case "Diamond":
+			dR++
+		case "Club":
+			cR++
+		case "Spade":
+			sR++
+		}
 
 		if suits[tempCard.Suit] > 0 {
 			suits[tempCard.Suit]++
@@ -994,8 +1011,37 @@ func FlushCheck(deck Deck, cards []c.Card) float64 {
 	}
 
 	//proceed with calculations
+	remaining := 7 - cardCount
+	targetSuit := ""
 
-	return 0.00
+	prob := 0.00
+
+	for suitIndex := 0; suitIndex < 4; suitIndex++ {
+		//Assign amount needed based on suit
+		currSuit := 5
+		switch suitIndex {
+		case 0:
+			currSuit -= hR
+			targetSuit = "Heart"
+		case 1:
+			currSuit -= dR
+			targetSuit = "Diamond"
+		case 2:
+			currSuit -= cR
+			targetSuit = "Club"
+		case 3:
+			currSuit -= sR
+			targetSuit = "Spade"
+		}
+
+		//Check if possible for the suit and then find probability
+		if currSuit <= remaining {
+			prob += FindCardProb(cards, []int{}, targetSuit, currSuit)
+			fmt.Println("[FLUSH TEST] total prob: ", prob)
+		}
+	}
+
+	return prob
 }
 
 // Create a new deck filling it with 52 cards: 4 suits, 13 cards each from 0 to 12

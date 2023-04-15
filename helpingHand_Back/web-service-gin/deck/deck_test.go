@@ -375,16 +375,94 @@ func TestFlushCheck(t *testing.T) {
 	var cards []card.Card
 
 	cards = append(cards, card1)
+
+	t.Log("\n")
+	t.Logf("Test #10.1: FlushCheck (probability)")
+	t.Logf("Input of deck, selection of 1 spade card, output should be 0.244775")
+
+	probFloat := deck.FlushCheck(tempDeck, cards)
+	compare1 := (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.244775 {
+		t.Fatal("Returned: ", compare1, " Expected: ", 0.244775)
+	}
+
 	cards = append(cards, card2)
+
+	t.Log("\n")
+	t.Logf("Test #10.2: FlushCheck (probability)")
+	t.Logf("Input of deck, selection of 2 spade cards, output should be 0.269185")
+
+	probFloat = deck.FlushCheck(tempDeck, cards)
+	compare1 = (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.269185 {
+		t.Fatal("Returned: ", compare1, " Expected: ", 0.269185)
+	}
+
+	cardCopy := cards
+
+	t.Log("\n")
+	t.Logf("Test #10.2.5.1: FlushCheck (probability)")
+	t.Logf("Input of deck, selection of 2 spades, 1 heart, output should be 0.109805")
+
+	cardHeart1 := card.NewCard(1, "Heart")
+	cardCopy = append(cardCopy, cardHeart1)
+
+	probFloat = deck.FlushCheck(tempDeck, cardCopy)
+	compare1 = (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.109805 { //The probability drops significantly. Only 2 suits available now.
+		t.Fatal("Returned: ", compare1, " Expected: ", 0.109805)
+	}
+
+	t.Log("\n")
+	t.Logf("Test #10.2.5.2: FlushCheck (probability)")
+	t.Logf("Input of deck, selection of 2 spades, 2 hearts, output should be 0.114477")
+
+	cardHeart2 := card.NewCard(2, "Heart")
+	cardCopy = append(cardCopy, cardHeart2)
+
+	probFloat = deck.FlushCheck(tempDeck, cardCopy)
+	compare1 = (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.114477 {
+		t.Fatal("Returned: ", compare1, " Expected: ", 0.114477)
+	}
+
 	cards = append(cards, card3)
+
+	t.Log("\n")
+	t.Logf("Test #10.3: FlushCheck (probability)")
+	t.Logf("Input of deck, selection of 3 spade cards, output should be 0.076531")
+
+	probFloat = deck.FlushCheck(tempDeck, cards)
+	compare1 = (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.076531 { //The probability drops significantly as you can no longer get flushes from the other suits.
+		t.Fatal("Returned: ", compare1, " Expected: ", 0.076531)
+	}
+
 	cards = append(cards, card4)
+
+	t.Log("\n")
+	t.Logf("Test #10.4: FlushCheck (probability)")
+	t.Logf("Input of deck, selection of 4 spade cards, output should be 0.1875")
+
+	probFloat = deck.FlushCheck(tempDeck, cards)
+	compare1 = (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.1875 { //The probability increases significantly again as it's almost a 1/4 chance to get the right suit on the last card.
+		t.Fatal("Returned: ", compare1, " Expected: ", 0.1875)
+	}
+
 	cards = append(cards, card5)
 
 	t.Log("\n")
-	t.Logf("Test #10: FlushCheck")
+	t.Logf("Test #10: FlushCheck (identifying)")
 	t.Logf("Input of deck, selection of 5 cards (flush), output should be true")
 
-	probFloat := deck.FlushCheck(tempDeck, cards)
+	probFloat = deck.FlushCheck(tempDeck, cards)
 
 	if probFloat == 0.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
