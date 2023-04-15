@@ -695,6 +695,23 @@ func TestFutureHand(t *testing.T) {
 	t.Log(("Future hand function works for three of a kind!"))
 }
 
+func TestFutureProbabilityOnePair(t *testing.T) {
+	t.Log("Testing future probability for one pair")
+	temphand := hand.NewHand("None")
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	probability := 0.0
+	for i := 0; i < 7; i++ {
+		probability += float64(3) / float64(52-i) * math.Pow(float64(51)/float64(52-i), float64(i-1))
+	}
+	array := deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))
+	if array[0] != probability {
+		t.Log(array[0])
+		t.Log(probability)
+		t.Fatal("One Pair future probability is wrong")
+	}
+	t.Log("One Pair future probability is right")
+}
+
 // attempt 1 at future probability function test
 func TestFutureProbabilityFourOfKind(t *testing.T) {
 	t.Log("Testing future probability for four of a kind with one triple")
@@ -705,8 +722,6 @@ func TestFutureProbabilityFourOfKind(t *testing.T) {
 	probability := math.Pow(float64(1)/float64(49), float64(4))
 	array := deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))
 	if array[0] != probability {
-		t.Log(math.Pow(float64(1)/float64(49), float64(4)))
-		t.Log(array[0])
 		t.Fatal("Four of a kind future probability is wrong")
 	}
 	t.Log("Four of a kind future probability is right")

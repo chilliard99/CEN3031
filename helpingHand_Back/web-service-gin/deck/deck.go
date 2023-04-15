@@ -247,6 +247,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 		for i := 1; i < canAddNumCards+1; i++ {
 			onePairProb += float64(3*len(hand.ActualHand)) / float64(52-i+1-len(hand.ActualHand)) * math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-i+1-len(hand.ActualHand)), float64(i-1))
 		}
+		futureProbs = append(futureProbs, onePairProb)
 	}
 	if Contains(futureHands, "Two Pair") {
 
@@ -260,6 +261,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 		firstPair := -1
 		secondPair := -1
 		thirdPair := -1
+		currentProb := 0.0
 		for index, count := range pairVals {
 			if count == 3 && firstPair == -1 && secondPair == -1 {
 				firstPair = index
@@ -271,15 +273,18 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 				thirdPair = index
 			}
 		}
-		if thirdPair == -1 && secondPair == -1 && firstPair != -1 {
-			//only 1 pair
-			futureProbs = append(futureProbs, math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
-		} else if firstPair != -1 && secondPair != -1 && thirdPair == -1 {
-			//2 pairs, double 1 pair prob
-			futureProbs = append(futureProbs, float64(2)*math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
-		} else if firstPair != -1 && secondPair != -1 && thirdPair != -1 {
-			//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
-			futureProbs = append(futureProbs, float64(3)/float64(46))
+		for i := 0; i < len(hand.ActualHand); i++ {
+			if thirdPair == -1 && secondPair == -1 && firstPair != -1 {
+				//only 1 pair
+				currentProb += math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards))
+			} else if firstPair != -1 && secondPair != -1 && thirdPair == -1 {
+				//2 pairs, double 1 pair prob
+				currentProb += float64(2) * math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards))
+			} else if firstPair != -1 && secondPair != -1 && thirdPair != -1 {
+				//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
+				currentProb += float64(3) / float64(46)
+				break
+			}
 		}
 	}
 	if Contains(futureHands, "Four of a Kind") {
