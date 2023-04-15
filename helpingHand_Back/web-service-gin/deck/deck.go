@@ -77,7 +77,7 @@ func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
 		}
 	}
 
-	fmt.Println(len(cards))
+	//fmt.Println(len(cards))
 
 	handTypes := CheckHandType(cards)
 
@@ -173,8 +173,8 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 			//Calculate chance and append to list of individual probabilities
 			tempFloat := float64(validCardCount) / float64(deckLength)
 			indProbs = append(indProbs, tempFloat)
-			fmt.Print("[FLUSH TEST] valid/decksize: ", validCardCount, " / ", deckLength, " = ")
-			fmt.Printf("[FLUSH TEST] float: %f\n", tempFloat)
+			//fmt.Print("[FLUSH TEST] valid/decksize: ", validCardCount, " / ", deckLength, " = ")
+			//fmt.Printf("[FLUSH TEST] float: %f\n", tempFloat)
 
 			//Remove the latest valid card to simulate drawing it
 			var toRemove []c.Card
@@ -185,7 +185,7 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 		//Multiply individual probabilities
 		for i := 0; i < numSuitNeed; i++ {
 			totalProb *= indProbs[i]
-			fmt.Println("[FLUSH TEST] probs: ", totalProb)
+			//fmt.Println("[FLUSH TEST] probs: ", totalProb)
 		}
 
 		//Calculate number of orderings as the draw order doesn't matter (including free draws). Max is 7! = 5040
@@ -567,8 +567,8 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 		//Copy down values
 		currVals = append(currVals, tempCard.Val)
 
-		//If there are 3 different suits, then 5/7 cards cannot be the same suit for a flush
-		if len(suits) == 3 {
+		//If there are 4 different suits, then 5/7 cards cannot be the same suit for a flush
+		if len(suits) == 4 {
 			return 0.00
 		}
 
@@ -668,7 +668,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 
 					//compare card suits
 					if royalFlush[firstIndex].Suit != royalFlush[secondIndex].Suit && royalFlush[secondIndex].Suit != "" {
-						fmt.Println("Main loop suit inconsistency")
+						//fmt.Println("Main loop suit inconsistency")
 						return 0.00
 					} else {
 						targetSuit = royalFlush[firstIndex].Suit
@@ -1000,13 +1000,15 @@ func FlushCheck(deck Deck, cards []c.Card) float64 {
 			suits[tempCard.Suit] = 1
 		}
 
-		//If there are 3 different suits, then 5/7 cards cannot be the same suit for a flush
-		if len(suits) == 3 {
+		//If there are 4 different suits, then 5/7 cards cannot be the same suit for a flush
+		if len(suits) == 4 {
 			return 0.00
 		}
 	}
 
-	if suits["Heart"] == 5 || suits["Diamond"] == 5 || suits["Club"] == 5 || suits["Spade"] == 5 {
+	//fmt.Println("[FLUSH CHECK] hr:", hR, " dr:", dR, " cr:", cR, " sR:", sR)
+
+	if hR >= 5 || dR >= 5 || cR >= 5 || sR >= 5 {
 		return 1.00
 	}
 
@@ -1037,7 +1039,7 @@ func FlushCheck(deck Deck, cards []c.Card) float64 {
 		//Check if possible for the suit and then find probability
 		if currSuit <= remaining {
 			prob += FindCardProb(cards, []int{}, targetSuit, currSuit)
-			fmt.Println("[FLUSH TEST] total prob: ", prob)
+			//fmt.Println("[FLUSH TEST] total prob: ", prob)
 		}
 	}
 

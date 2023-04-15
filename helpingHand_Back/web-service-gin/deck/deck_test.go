@@ -430,6 +430,34 @@ func TestFlushCheck(t *testing.T) {
 		t.Fatal("Returned: ", compare1, " Expected: ", 0.114477)
 	}
 
+	t.Log("\n")
+	t.Logf("Test #10.2.5.3: FlushCheck (probability)")
+	t.Logf("Input of deck, selection of 2 spades, 3 hearts, output should be 0.083256")
+
+	cardHeart3 := card.NewCard(3, "Heart")
+	cardCopy = append(cardCopy, cardHeart3)
+
+	probFloat = deck.FlushCheck(tempDeck, cardCopy)
+	compare1 = (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.083256 {
+		t.Fatal("Returned: ", compare1, " Expected: ", 0.083256)
+	}
+
+	t.Log("\n")
+	t.Logf("Test #10.2.5.4: FlushCheck (probability)")
+	t.Logf("Input of deck, selection of 2 spades, 4 hearts, output should be 0.195652")
+
+	cardHeart4 := card.NewCard(4, "Heart")
+	cardCopy = append(cardCopy, cardHeart4)
+
+	probFloat = deck.FlushCheck(tempDeck, cardCopy)
+	compare1 = (math.Round(probFloat*1000000) / 1000000)
+
+	if compare1 != 0.195652 {
+		t.Fatal("Returned: ", compare1, " Expected: ", 0.195652)
+	}
+
 	cards = append(cards, card3)
 
 	t.Log("\n")
