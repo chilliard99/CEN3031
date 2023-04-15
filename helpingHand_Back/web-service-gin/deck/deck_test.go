@@ -700,8 +700,8 @@ func TestFutureProbabilityOnePair(t *testing.T) {
 	temphand := hand.NewHand("None")
 	hand.AddCardHandSpecific(temphand, 1, "Heart")
 	probability := 0.0
-	for i := 0; i < 7; i++ {
-		probability += float64(3) / float64(52-i) * math.Pow(float64(51)/float64(52-i), float64(i-1))
+	for i := 1; i < 7; i++ {
+		probability += float64(3) / float64(52-i) * math.Pow(float64(48)/float64(52-i), float64(i-1))
 	}
 	array := deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))
 	if array[0] != probability {
