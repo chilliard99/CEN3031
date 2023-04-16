@@ -201,3 +201,7 @@
     width: 400px;
     min-height: 400px;
 }
+
+.content > mat-button {
+    color: blue;
+}

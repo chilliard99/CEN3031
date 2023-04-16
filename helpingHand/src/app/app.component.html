@@ -200,15 +200,15 @@
                         <img mat-card-image src="../assets/highCard.PNG">
                         <mat-card-content>
                             <p>
-                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
-                                What does one pair beat?
-                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
-                                current Probability:  {{ currentProb[1].Prob }}
+                                <br>Just like its four card counterpart, a 3 of a kind consists of three cards of the same rank – for instance, your five-card hand contains 8-8-8-5-2.
+                                What does 3-of-a-kind beat?
+                                While it might not be one of the highest poker hands, 3 of a kind still beats two pairs, one pair and high card.<br><br><br>
+                                current Probability:  {{ currentProb[3].Prob }}
                             </p>
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}, {Suit: 'Club', Val: 1, Index: 4}])" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -220,15 +220,16 @@
                         <img mat-card-image src="../assets/highCard.PNG">
                         <mat-card-content>
                             <p>
-                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
-                                What does one pair beat?
-                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
-                                current Probability:  {{ currentProb[1].Prob }}
+                                <br>If you have a straight, you’ll hold five consecutive cards which are not all the same suit. For example, 8-7-6-5-4 in different suits. The highest possible straight sequence is A-K-Q-J-10.
+                                What does straight beat?
+                                A poker straight always beats a 3 of a kind, two pair or a single pair. It does not beat a flush or better.<br><br><br>
+                                current Probability:  {{ currentProb[4].Prob }}
                             </p>
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 5, Index: 2}, {Suit: 'Heart', Val: 6, Index: 3},
+                            {Suit: 'Heart', Val: 7, Index: 4}, {Suit: 'Diamond', Val: 8, Index: 5}, {Suit: 'Club', Val: 9, Index: 6}])" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -240,15 +241,14 @@
                         <img mat-card-image src="../assets/highCard.PNG">
                         <mat-card-content>
                             <p>
-                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
-                                What does one pair beat?
-                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
-                                current Probability:  {{ currentProb[1].Prob }}
+                                <br>A flush in poker consists of five cards which are all part of the same suit, but not in a consecutive order, such as A-K-8-7-3 in hearts.<br><br><br>
+                                current Probability:  {{ currentProb[5].Prob }}
                             </p>
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Spade', Val: 3, Index: 3},
+                            {Suit: 'Spade', Val: 8, Index: 4}, {Suit: 'Spade', Val: 11, Index: 5}, {Suit: 'Spade', Val: 6, Index: 6}])" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -260,15 +260,17 @@
                         <img mat-card-image src="../assets/highCard.PNG">
                         <mat-card-content>
                             <p>
-                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
-                                What does one pair beat?
-                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
-                                current Probability:  {{ currentProb[1].Prob }}
+                                <br>A full house poker hand is made up of a matching three of a kind together with a pair of a different value. For example, 10-10-10-8-8 – which is 
+                                known as a ‘tens full of eights’. The only hands which can beat a full house are four of a kind, straight flush or royal flush. When two 
+                                people have a full house, the highest three of a kind wins. If that rank happens to be the same, 
+                                the one with the highest matching pair wins the hand. <br><br><br>
+                                current Probability:  {{ currentProb[6].Prob }}
                             </p>
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Diamond', Val: 1, Index: 3},
+                            {Suit: 'Heart', Val: 4, Index: 4}, {Suit: 'Club', Val: 4, Index: 5}, {Suit: 'Spade', Val: 4, Index: 6}])" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -280,15 +282,16 @@
                         <img mat-card-image src="../assets/highCard.PNG">
                         <mat-card-content>
                             <p>
-                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
-                                What does one pair beat?
-                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
-                                current Probability:  {{ currentProb[1].Prob }}
+                                <br>A four of a kind in poker is simply four cards of the same value. So if you end up with 7-7-7-7-4 in your five-card hand, congratulations, you’ve got ‘quads’!
+                                This is very often a winning poker hand, beating anything other than a straight/royal flush. If another player also has a four of a kind, the rank of the four cards 
+                                will determine who wins. For example, J-J-J-J-4 beats A-7-7-7-7.<br><br><br>
+                                current Probability:  {{ currentProb[7].Prob }}
                             </p>
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Diamond', Val: 1, Index: 3},
+                            {Suit: 'Heart', Val: 1, Index: 4}, {Suit: 'Club', Val: 1, Index: 5}, {Suit: '', Val: 0, Index: 6}])" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -300,15 +303,15 @@
                         <img mat-card-image src="../assets/highCard.PNG">
                         <mat-card-content>
                             <p>
-                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
-                                What does one pair beat?
-                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
-                                current Probability:  {{ currentProb[1].Prob }}
+                                <br>A straight flush is made up of five consecutive cards, all in the same suit. For example, 9-8-7-6-5 all in diamonds.
+                                This beats all other poker hands, except for a higher straight flush.<br><br><br>
+                                current Probability:  {{ currentProb[8].Prob }}
                             </p>
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 2, Index: 2}, {Suit: 'Spade', Val: 3, Index: 3},
+                            {Suit: 'Spade', Val: 4, Index: 4}, {Suit: 'Spade', Val: 5, Index: 5}, {Suit: 'Spade', Val: 6, Index: 6}])" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -320,24 +323,21 @@
                         <img mat-card-image src="../assets/highCard.PNG">
                         <mat-card-content>
                             <p>
-                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
-                                What does one pair beat?
-                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
-                                current Probability:  {{ currentProb[1].Prob }}
+                                <br>Sitting at the very top of the poker hierarchy, you’ll find the royal flush.
+                                 The strongest poker hand of all is a type of straight flush where you have 
+                                 A-K-Q-J-10 – all in the same suit. As the highest poker hand, a royal flush beats every other hand your opponents might hold.<br><br><br>
+                                current Probability:  {{ currentProb[9].Prob }}
                             </p>
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 10, Index: 2}, {Suit: 'Spade', Val: 11, Index: 3},
+                            {Suit: 'Spade', Val: 12, Index: 4}, {Suit: 'Spade', Val: 13, Index: 5}, {Suit: 'Spade', Val: 1, Index: 6}])" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
             </div>
         </div>
-        <mat-card *ngFor="let currentProbItem of currentProb">
-            <div>Hand Name: {{ currentProbItem.Handname }}</div>
-            <div>Probability: {{ currentProbItem.Prob }}</div>
-        </mat-card>
     </mat-tab>
 
     <mat-tab label="Poker Terms"> More Stuff </mat-tab>
