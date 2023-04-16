@@ -128,7 +128,21 @@
         </div>
     </mat-tab>
 
-    <mat-tab id="handList" label="Hand List"> Stuff 
+    <mat-tab id="handList" label="Hand List">
+        <div class="content">
+            <mat-card class="high-card">
+                <mat-card-header>
+                    <mat-card-title>High Card</mat-card-title>
+                </mat-card-header>
+                <img mat-card-image src="../assets/1spade.png">
+                <mat-card-content>
+                    <p>
+                        High card test <br> current Probability:  {{ currentProb[0].Prob }}
+                    </p>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
         <mat-card *ngFor="let currentProbItem of currentProb">
             <div>Hand Name: {{ currentProbItem.Handname }}</div>
             <div>Probability: {{ currentProbItem.Prob }}</div>
