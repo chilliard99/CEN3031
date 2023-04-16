@@ -130,25 +130,209 @@
 
     <mat-tab id="handList" label="Hand List">
         <div class="content">
-            <mat-card class="high-card">
-                <mat-card-header>
-                    <mat-card-title>High Card</mat-card-title>
-                </mat-card-header>
-                <img mat-card-image src="../assets/highCard.PNG">
-                <mat-card-content>
-                    <p>
-                        <br> High card is the lowest possible hand, made up of five cards which do not produce any of the above.
-                        What does high card beat?
-                        If you end up with a high card, you need to hope your opponents have this too, as even a pair beats it. 
-                        When your opponents also lack so much as a pair, the highest value card wins.<br><br>
-                        current Probability:  {{ currentProb[0].Prob }}
-                    </p>
-
-                </mat-card-content>
-                <mat-card-actions>
-                    <button (click)="setHand([{Suit: 'Spade', Val: 1, Index: 2}])" mat-button>Show in Simulation</button>
-                </mat-card-actions>
-            </mat-card>
+            <div fxLayout="row wrap" fxLayoutGap="16px grid">
+                <div fxFlex="20%">
+                    <mat-card class="high-card">
+                        <mat-card-header>
+                            <mat-card-title>High Card</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../assets/highCard.PNG">
+                        <mat-card-content>
+                            <p>
+                                <br> High card is the lowest possible hand, made up of five cards which do not produce any of the above.
+                                What does high card beat?
+                                If you end up with a high card, you need to hope your opponents have this too, as even a pair beats it. 
+                                When your opponents also lack so much as a pair, the highest value card wins.<br><br>
+                                current Probability:  {{ currentProb[0].Prob }}
+                            </p>
+        
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}])" mat-button>Show in Simulation</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                <div fxFlex="20%">
+                    <mat-card class="One Pair">
+                        <mat-card-header>
+                            <mat-card-title>One Pair</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../assets/highCard.PNG">
+                        <mat-card-content>
+                            <p>
+                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
+                                What does one pair beat?
+                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
+                                current Probability:  {{ currentProb[1].Prob }}
+                            </p>
+        
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                <div fxFlex="20%">
+                    <mat-card class="Two Pair">
+                        <mat-card-header>
+                            <mat-card-title>Two Pair</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../assets/highCard.PNG">
+                        <mat-card-content>
+                            <p>
+                                <br>Two pair is exactly what it says, two pairs, each being a different rank. For example, 8-8-5-5-3 would be two pairs.
+                                What does two pair beat?
+                                Two pairs are better than one, so you're sure to beat one pair.<br><br><br>
+                                current Probability:  {{ currentProb[2].Prob }}
+                            </p>
+        
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3},{Suit: 'Spade', Val: 2, Index: 4}, {Suit: 'Heart', Val: 2, Index: 5}])" mat-button>Show in Simulation</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                <div fxFlex="20%">
+                    <mat-card class="Three of Kind">
+                        <mat-card-header>
+                            <mat-card-title>Three of Kind</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../assets/highCard.PNG">
+                        <mat-card-content>
+                            <p>
+                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
+                                What does one pair beat?
+                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
+                                current Probability:  {{ currentProb[1].Prob }}
+                            </p>
+        
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                <div fxFlex="20%">
+                    <mat-card class="Straight">
+                        <mat-card-header>
+                            <mat-card-title>Straight</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../assets/highCard.PNG">
+                        <mat-card-content>
+                            <p>
+                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
+                                What does one pair beat?
+                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
+                                current Probability:  {{ currentProb[1].Prob }}
+                            </p>
+        
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                <div fxFlex="20%">
+                    <mat-card class="Flush">
+                        <mat-card-header>
+                            <mat-card-title>Flush</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../assets/highCard.PNG">
+                        <mat-card-content>
+                            <p>
+                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
+                                What does one pair beat?
+                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
+                                current Probability:  {{ currentProb[1].Prob }}
+                            </p>
+        
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                <div fxFlex="20%">
+                    <mat-card class="Full House">
+                        <mat-card-header>
+                            <mat-card-title>Full House</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../assets/highCard.PNG">
+                        <mat-card-content>
+                            <p>
+                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
+                                What does one pair beat?
+                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
+                                current Probability:  {{ currentProb[1].Prob }}
+                            </p>
+        
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                <div fxFlex="20%">
+                    <mat-card class="Four of Kind">
+                        <mat-card-header>
+                            <mat-card-title>Four of a Kind</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../assets/highCard.PNG">
+                        <mat-card-content>
+                            <p>
+                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
+                                What does one pair beat?
+                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
+                                current Probability:  {{ currentProb[1].Prob }}
+                            </p>
+        
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                <div fxFlex="20%">
+                    <mat-card class="Straight Flush">
+                        <mat-card-header>
+                            <mat-card-title>Straight Flush</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../assets/highCard.PNG">
+                        <mat-card-content>
+                            <p>
+                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
+                                What does one pair beat?
+                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
+                                current Probability:  {{ currentProb[1].Prob }}
+                            </p>
+        
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                <div fxFlex="20%">
+                    <mat-card class="Royal Flush">
+                        <mat-card-header>
+                            <mat-card-title>Royal Flush</mat-card-title>
+                        </mat-card-header>
+                        <img mat-card-image src="../assets/highCard.PNG">
+                        <mat-card-content>
+                            <p>
+                                <br> One pair is simply two cards of the same value, such as having two kings in your hand.
+                                What does one pair beat?
+                                One pair can only beat a high card or a lower value pair. But if you bluff hard enough, it could still be a winning poker hand.<br><br><br>
+                                current Probability:  {{ currentProb[1].Prob }}
+                            </p>
+        
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+            </div>
         </div>
         <mat-card *ngFor="let currentProbItem of currentProb">
             <div>Hand Name: {{ currentProbItem.Handname }}</div>

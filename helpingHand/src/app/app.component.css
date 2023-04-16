@@ -199,4 +199,5 @@
 
 .content > mat-card {
     width: 400px;
+    min-height: 400px;
 }

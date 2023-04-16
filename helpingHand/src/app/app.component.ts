@@ -135,13 +135,15 @@ export class AppComponent implements OnInit {
   }
 
   async setHand(input : ICurrentHand[]) {
-    this.removeAll();
+    await this.removeAll();
+    console.log(this.currentHand);
     for (let i = 0; i < input.length; i++) {
       this.Index = input[i].Index;
       this.Suit = input[i].Suit
       this.Val = input[i].Val
       this.addCard();
     }
+    console.log(this.currentHand);
   }
 
   async setVal(_Val :number) {
