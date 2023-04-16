@@ -118,6 +118,8 @@ func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
 
 	if straightFlushProb > 0.00 {
 		currUserProb[8].Prob = straightFlushProb
+	} else if straightProb <= 0.0000001 && flushProb <= 0.0000001 {
+		currUserProb[8].Prob = 0.00
 	} else if straightProb > 0 && flushProb > 0 {
 		currUserProb[8].Prob = straightProb * flushProb
 	}
