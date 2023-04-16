@@ -296,7 +296,7 @@ func TestStraightCheck(t *testing.T) {
 
 	t.Logf("Input of deck, selection of 1 card (for broadway straight), output should be 0.004512")
 
-	probFloat, flushBool := deck.StraightCheck(tempDeck, cards)
+	probFloat, straightFlushProb := deck.StraightCheck(tempDeck, cards)
 	compare1 := (math.Round(probFloat*1000000) / 1000000)
 
 	if compare1 != 0.004512 {
@@ -310,7 +310,7 @@ func TestStraightCheck(t *testing.T) {
 
 	t.Logf("Input of deck, selection of 2 cards (for broadway straight), output should be 0.007760")
 
-	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
+	probFloat, straightFlushProb = deck.StraightCheck(tempDeck, cards)
 	compare1 = (math.Round(probFloat*1000000) / 1000000)
 
 	if compare1 != 0.007760 {
@@ -324,7 +324,7 @@ func TestStraightCheck(t *testing.T) {
 
 	t.Logf("Input of deck, selection of 3 cards (for broadway straight), output should be 0.018287")
 
-	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
+	probFloat, straightFlushProb = deck.StraightCheck(tempDeck, cards)
 	compare1 = (math.Round(probFloat*1000000) / 1000000)
 
 	if compare1 != 0.018287 {
@@ -338,7 +338,7 @@ func TestStraightCheck(t *testing.T) {
 
 	t.Logf("Input of deck, selection of 4 cards (for broadway straight), output should be 0.101218")
 
-	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
+	probFloat, straightFlushProb = deck.StraightCheck(tempDeck, cards)
 	compare1 = (math.Round(probFloat*1000000) / 1000000)
 
 	if compare1 != 0.101218 {
@@ -351,13 +351,13 @@ func TestStraightCheck(t *testing.T) {
 	t.Logf("Test #9: StraightCheck (identifying)")
 	t.Logf("Input of deck, selection of 5 cards (for broadway straight), output should be true")
 
-	probFloat, flushBool = deck.StraightCheck(tempDeck, cards)
+	probFloat, straightFlushProb = deck.StraightCheck(tempDeck, cards)
 
 	if probFloat == 0.00 {
 		t.Fatal("Returned 0.0 when it should be greater")
 	}
-	if flushBool == false {
-		t.Fatal("Returned false for flush when it should have been true")
+	if straightFlushProb == 0.00 {
+		t.Fatal("Returned 0.0 for straight flush when it should be greater")
 	}
 }
 
@@ -668,6 +668,170 @@ func TestFindCardProb(t *testing.T) {
 	}
 
 	*/
+}
+
+func TestDebugLogic(t *testing.T) {
+	tempDeck := deck.NewDeck()
+	card1 := card.NewCard(12, "Spade")
+	card2 := card.NewCard(11, "Spade")
+	card3 := card.NewCard(10, "Spade")
+	card4 := card.NewCard(9, "Spade")
+	card5 := card.NewCard(0, "Spade")
+	cardE1 := card.NewCard(12, "Heart")
+	cardE5 := card.NewCard(0, "Heart")
+	cardE3 := card.NewCard(11, "Club")
+
+	var cards []card.Card
+
+	cardCopy := cards
+	cardCopy = append(cardCopy, cardE1)
+	cardCopy = append(cardCopy, card2)
+
+	t.Log("\n")
+	t.Logf("Debug Logic Test:")
+	t.Logf("1 royal spade, 1 royal heart")
+
+	royalProb := deck.RoyalFlush(tempDeck, cardCopy)
+	straightProb, straightFlushProb := deck.StraightCheck(tempDeck, cardCopy)
+	rProb := (math.Round(royalProb*100) / 100)
+	sProb := (math.Round(straightProb*100) / 100)
+	//sfProb := (math.Round(straightFlushProb*100) / 100)
+
+	t.Log("")
+
+	if rProb != 0.00 && rProb != 1.00 {
+		t.Fatal("RoyalFlush failure. output is 0 or 1: ", royalProb)
+	}
+	t.Logf("RoyalFlush success: %f\n", royalProb)
+	if sProb != 0.00 && sProb != 1.00 {
+	} else {
+		t.Fatal("Straight failure. output between 0 and 1: ", straightProb)
+	}
+	t.Logf("Straight success: %f\n", straightProb)
+
+	flushProb := deck.FlushCheck(tempDeck, cardCopy)
+	if straightFlushProb > 0.00 {
+		t.Logf("straight flush output??")
+	} else if straightProb > 0 && flushProb > 0 {
+		straightFlushProb = straightProb * flushProb
+	} else {
+		straightFlushProb = 0.00
+	}
+	t.Logf("Straight Flush success: %f\n", straightFlushProb)
+
+	cardCopy = append(cardCopy, card3)
+
+	t.Log("\n")
+	t.Logf("Debug Logic Test:")
+	t.Logf("2 royal spades, 1 royal heart")
+
+	royalProb = deck.RoyalFlush(tempDeck, cardCopy)
+	straightProb, straightFlushProb = deck.StraightCheck(tempDeck, cardCopy)
+	rProb = (math.Round(royalProb*100) / 100)
+	sProb = (math.Round(straightProb*100) / 100)
+	//sfProb = (math.Round(straightFlushProb*100) / 100)
+
+	t.Log("")
+
+	if rProb != 0.00 && rProb != 1.00 {
+		t.Fatal("RoyalFlush failure. output is 0 or 1: ", royalProb)
+	}
+	t.Logf("RoyalFlush success: %f\n", royalProb)
+	if sProb != 0.00 && sProb != 1.00 {
+	} else {
+		t.Fatal("Straight failure. output between 0 and 1: ", straightProb)
+	}
+	t.Logf("Straight success: %f\n", straightProb)
+
+	flushProb = deck.FlushCheck(tempDeck, cardCopy)
+	if straightFlushProb > 0.00 {
+		t.Logf("straight flush output??")
+	} else if straightProb > 0 && flushProb > 0 {
+		straightFlushProb = straightProb * flushProb
+	} else {
+		straightFlushProb = 0.00
+	}
+	t.Logf("Straight Flush success: %f\n", straightFlushProb)
+
+	cardCopy = append(cardCopy, card4)
+	cardCopy = append(cardCopy, cardE5)
+
+	t.Log("\n")
+	t.Logf("Debug Logic Test:")
+	t.Logf("3 royal spades, 2 royal heart")
+
+	royalProb = deck.RoyalFlush(tempDeck, cardCopy)
+	straightProb, straightFlushProb = deck.StraightCheck(tempDeck, cardCopy)
+	rProb = (math.Round(royalProb*100) / 100)
+	sProb = (math.Round(straightProb*100) / 100)
+	//sfProb = (math.Round(straightFlushProb*100) / 100)
+
+	t.Log("")
+
+	if rProb != 0.00 && rProb != 1.00 {
+		t.Fatal("RoyalFlush failure. output is 0 or 1: ", royalProb)
+	}
+	t.Logf("RoyalFlush success: %f\n", royalProb)
+	if sProb != 0.00 && sProb != 1.00 {
+		t.Fatal("Straight output failure. between 0 and 1: ", straightProb)
+	}
+	t.Logf("Straight success: %f\n", straightProb)
+
+	flushProb = deck.FlushCheck(tempDeck, cardCopy)
+	if straightFlushProb > 0.00 {
+		t.Logf("straight flush output??")
+	} else if straightProb > 0 && flushProb > 0 {
+		straightFlushProb = straightProb * flushProb
+	} else {
+		straightFlushProb = 0.00
+	}
+	t.Logf("Straight Flush success: %f\n", straightFlushProb)
+
+	cards = append(cards, card1)
+	cards = append(cards, card2)
+	cards = append(cards, card3)
+	cards = append(cards, card4)
+
+	cardCopy = cards
+
+	t.Log("")
+	t.Logf("Debug Logic Test:")
+	t.Logf("4 royal spades, 1 royal heart")
+
+	cardCopy = append(cardCopy, cardE5)
+
+	royalProb = deck.RoyalFlush(tempDeck, cardCopy)
+	straightProb, straightFlushProb = deck.StraightCheck(tempDeck, cardCopy)
+	rProb = (math.Round(royalProb*100) / 100)
+	sProb = (math.Round(straightProb*100) / 100)
+	//sfProb = (math.Round(straightFlushProb*100) / 100)
+
+	t.Log("")
+
+	if rProb != 0.00 && rProb != 1.00 {
+	} else {
+		t.Fatal("RoyalFlush failure. output is 0 or 1: ", royalProb)
+	}
+	t.Logf("RoyalFlush success: %f\n", royalProb)
+	if sProb != 0.00 && sProb != 1.00 {
+		t.Fatal("Straight output failure. between 0 and 1: ", straightProb)
+	}
+	t.Logf("Straight success: %f\n", straightProb)
+
+	flushProb = deck.FlushCheck(tempDeck, cardCopy)
+	if straightFlushProb > 0.00 {
+		t.Logf("straight flush output??")
+	} else if straightProb > 0 && flushProb > 0 {
+		straightFlushProb = straightProb * flushProb
+	} else {
+		straightFlushProb = 0.00
+	}
+	t.Logf("Straight Flush success: %f\n", straightFlushProb)
+
+	cardCopy = append(cardCopy, cardE1)
+	cardCopy = append(cardCopy, cardE3)
+	cards = append(cards, card5)
+
 }
 
 func TestFactorial(t *testing.T) {
