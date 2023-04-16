@@ -134,13 +134,20 @@
                 <mat-card-header>
                     <mat-card-title>High Card</mat-card-title>
                 </mat-card-header>
-                <img mat-card-image src="../assets/1spade.png">
+                <img mat-card-image src="../assets/highCard.PNG">
                 <mat-card-content>
                     <p>
-                        High card test <br> current Probability:  {{ currentProb[0].Prob }}
+                        <br> High card is the lowest possible hand, made up of five cards which do not produce any of the above.
+                        What does high card beat?
+                        If you end up with a high card, you need to hope your opponents have this too, as even a pair beats it. 
+                        When your opponents also lack so much as a pair, the highest value card wins.<br><br>
+                        current Probability:  {{ currentProb[0].Prob }}
                     </p>
 
                 </mat-card-content>
+                <mat-card-actions>
+                    <button (click)="setHand([{Suit: 'Spade', Val: 1, Index: 2}])" mat-button>Show in Simulation</button>
+                </mat-card-actions>
             </mat-card>
         </div>
         <mat-card *ngFor="let currentProbItem of currentProb">
