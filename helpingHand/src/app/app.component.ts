@@ -111,7 +111,7 @@ export class AppComponent implements OnInit {
   }
  
   async randomizeAll() {
-    let suits: string[] = ["spade", "club", "heart", "diamond"];
+    let suits: string[] = ["Spade", "Club", "Heart", "Diamond"];
     for(let i = 0; i < this.currentHand.length; i++) {
        this.Val = Math.floor(Math.random() * 13) + 1;
        this.Index = i;
@@ -123,7 +123,7 @@ export class AppComponent implements OnInit {
   async setSuit(_Suit : string) {
     this.displaySuitVal = false;
     if(_Suit === "random") {
-      let suits: string[] = ["spade", "club", "heart", "diamond"];
+      let suits: string[] = ["Spade", "Club", "Heart", "Diamond"];
       this.Suit = suits[Math.floor(Math.random() * 3)];
       this.Val = Math.floor(Math.random() * 13) + 1;
       this.addCard();

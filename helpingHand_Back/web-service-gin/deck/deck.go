@@ -77,7 +77,7 @@ func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
 		}
 	}
 
-	fmt.Println(len(cards))
+	//fmt.Println(len(cards))
 
 	handTypes := CheckHandType(cards)
 
@@ -150,7 +150,7 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 	var indProbs []float64
 
 	//Default 0.00 if not enough cards will be drawn
-	if len(targetVals) > numToDraw {
+	if numNeeded != 0 && numNeeded > numToDraw {
 		return 0.00
 	}
 
@@ -173,6 +173,8 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 			//Calculate chance and append to list of individual probabilities
 			tempFloat := float64(validCardCount) / float64(deckLength)
 			indProbs = append(indProbs, tempFloat)
+			//fmt.Print("[FLUSH TEST] valid/decksize: ", validCardCount, " / ", deckLength, " = ")
+			//fmt.Printf("[FLUSH TEST] float: %f\n", tempFloat)
 
 			//Remove the latest valid card to simulate drawing it
 			var toRemove []c.Card
@@ -181,12 +183,13 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 		}
 
 		//Multiply individual probabilities
-		for i := 0; i < numNeeded; i++ {
+		for i := 0; i < numSuitNeed; i++ {
 			totalProb *= indProbs[i]
+			//fmt.Println("[FLUSH TEST] probs: ", totalProb)
 		}
 
 		//Calculate number of orderings as the draw order doesn't matter (including free draws). Max is 7! = 5040
-		numPermutations := Factorial(numToDraw)
+		numPermutations := Factorial(numSuitNeed)
 
 		totalProb *= float64(numPermutations)
 
@@ -247,6 +250,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 		for i := 1; i < canAddNumCards+1; i++ {
 			onePairProb += float64(3*len(hand.ActualHand)) / float64(52-i+1-len(hand.ActualHand)) * math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-i+1-len(hand.ActualHand)), float64(i-1))
 		}
+		futureProbs = append(futureProbs, onePairProb)
 	}
 	if Contains(futureHands, "Two Pair") {
 
@@ -260,6 +264,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 		firstPair := -1
 		secondPair := -1
 		thirdPair := -1
+		currentProb := 0.0
 		for index, count := range pairVals {
 			if count == 3 && firstPair == -1 && secondPair == -1 {
 				firstPair = index
@@ -271,15 +276,18 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 				thirdPair = index
 			}
 		}
-		if thirdPair == -1 && secondPair == -1 && firstPair != -1 {
-			//only 1 pair
-			futureProbs = append(futureProbs, math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
-		} else if firstPair != -1 && secondPair != -1 && thirdPair == -1 {
-			//2 pairs, double 1 pair prob
-			futureProbs = append(futureProbs, float64(2)*math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards)))
-		} else if firstPair != -1 && secondPair != -1 && thirdPair != -1 {
-			//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
-			futureProbs = append(futureProbs, float64(3)/float64(46))
+		for i := 0; i < len(hand.ActualHand); i++ {
+			if thirdPair == -1 && secondPair == -1 && firstPair != -1 {
+				//only 1 pair
+				currentProb += math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards))
+			} else if firstPair != -1 && secondPair != -1 && thirdPair == -1 {
+				//2 pairs, double 1 pair prob
+				currentProb += float64(2) * math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards))
+			} else if firstPair != -1 && secondPair != -1 && thirdPair != -1 {
+				//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
+				currentProb += float64(3) / float64(46)
+				break
+			}
 		}
 	}
 	if Contains(futureHands, "Four of a Kind") {
@@ -293,7 +301,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 			if count == 3 && firstTriple == -1 {
 				firstTriple = index
 			}
-			if count == 3 && firstTriple != -1 {
+			if count == 3 && firstTriple != -1 && index != firstTriple {
 				secondTriple = index
 			}
 		}
@@ -304,7 +312,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 			} else {
 				futureProbs = append(futureProbs, float64(0))
 			}
-		} else {
+		} else if secondTriple != -1 && firstTriple != -1 {
 			if canAddNumCards != 0 {
 				//should only be 6 cards so just double the prob of grabbing 1 card? (46 cards left, need 2 specific ones)
 				futureProbs = append(futureProbs, float64(1)/float64(23))
@@ -559,8 +567,8 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 		//Copy down values
 		currVals = append(currVals, tempCard.Val)
 
-		//If there are 3 different suits, then 5/7 cards cannot be the same suit for a flush
-		if len(suits) == 3 {
+		//If there are 4 different suits, then 5/7 cards cannot be the same suit for a flush
+		if len(suits) == 4 {
 			return 0.00
 		}
 
@@ -660,7 +668,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 
 					//compare card suits
 					if royalFlush[firstIndex].Suit != royalFlush[secondIndex].Suit && royalFlush[secondIndex].Suit != "" {
-						fmt.Println("Main loop suit inconsistency")
+						//fmt.Println("Main loop suit inconsistency")
 						return 0.00
 					} else {
 						targetSuit = royalFlush[firstIndex].Suit
@@ -967,10 +975,24 @@ func FlushCheck(deck Deck, cards []c.Card) float64 {
 
 	suits := make(map[string]int)
 	var tempCard c.Card
+	hR := 0
+	dR := 0
+	cR := 0
+	sR := 0
 
 	//Populate suits map with count of each suit
 	for i := 0; i < cardCount; i++ {
 		tempCard = cards[i]
+		switch tempCard.Suit {
+		case "Heart":
+			hR++
+		case "Diamond":
+			dR++
+		case "Club":
+			cR++
+		case "Spade":
+			sR++
+		}
 
 		if suits[tempCard.Suit] > 0 {
 			suits[tempCard.Suit]++
@@ -978,19 +1000,50 @@ func FlushCheck(deck Deck, cards []c.Card) float64 {
 			suits[tempCard.Suit] = 1
 		}
 
-		//If there are 3 different suits, then 5/7 cards cannot be the same suit for a flush
-		if len(suits) == 3 {
+		//If there are 4 different suits, then 5/7 cards cannot be the same suit for a flush
+		if len(suits) == 4 {
 			return 0.00
 		}
 	}
 
-	if suits["Heart"] == 5 || suits["Diamond"] == 5 || suits["Club"] == 5 || suits["Spade"] == 5 {
+	//fmt.Println("[FLUSH CHECK] hr:", hR, " dr:", dR, " cr:", cR, " sR:", sR)
+
+	if hR >= 5 || dR >= 5 || cR >= 5 || sR >= 5 {
 		return 1.00
 	}
 
 	//proceed with calculations
+	remaining := 7 - cardCount
+	targetSuit := ""
 
-	return 0.00
+	prob := 0.00
+
+	for suitIndex := 0; suitIndex < 4; suitIndex++ {
+		//Assign amount needed based on suit
+		currSuit := 5
+		switch suitIndex {
+		case 0:
+			currSuit -= hR
+			targetSuit = "Heart"
+		case 1:
+			currSuit -= dR
+			targetSuit = "Diamond"
+		case 2:
+			currSuit -= cR
+			targetSuit = "Club"
+		case 3:
+			currSuit -= sR
+			targetSuit = "Spade"
+		}
+
+		//Check if possible for the suit and then find probability
+		if currSuit <= remaining {
+			prob += FindCardProb(cards, []int{}, targetSuit, currSuit)
+			//fmt.Println("[FLUSH TEST] total prob: ", prob)
+		}
+	}
+
+	return prob
 }
 
 // Create a new deck filling it with 52 cards: 4 suits, 13 cards each from 0 to 12
