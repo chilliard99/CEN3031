@@ -253,7 +253,28 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 		futureProbs = append(futureProbs, onePairProb)
 	}
 	if Contains(futureHands, "Two Pair") {
-
+		pairVals := make([]int, 13)
+		for _, card := range hand.ActualHand {
+			pairVals[card.Val]++
+		}
+		firstPair := -1
+		for index, count := range pairVals {
+			if count >= 2 {
+				firstPair = index
+			}
+		}
+		twoPairProb := 0.0
+		if firstPair != -1 {
+			for i := 1; i < canAddNumCards+1; i++ {
+				//basically 1 pair but take out 2 cards
+				twoPairProb += float64(3*(len(hand.ActualHand)-2)) / float64(52-i-1-len(hand.ActualHand)) * math.Pow(float64(52-4*(len(hand.ActualHand)-2))/float64(52-i-1-len(hand.ActualHand)), float64(i-1))
+			}
+		} else {
+			for i := 1; i < canAddNumCards+1; i++ {
+				twoPairProb += float64(3*len(hand.ActualHand)) / float64(52-i+1-len(hand.ActualHand)) * math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-i+1-len(hand.ActualHand)), float64(i-1))
+			}
+		}
+		futureProbs = append(futureProbs, twoPairProb)
 	}
 	if Contains(futureHands, "Three of a Kind") {
 		//either 1 pair, 2 pair, 3 pair, or just single cards
