@@ -116,11 +116,11 @@ func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
 		currUserProb[7].Prob = 0.00
 	}
 
-	if straightFlushProb > 0.00 {
-		currUserProb[8].Prob = straightFlushProb
-	} else if straightProb <= 0.0000001 && flushProb <= 0.0000001 {
+	if flushProb <= 0.0000001 || straightProb <= 0.0000001 {
 		currUserProb[8].Prob = 0.00
-	} else if straightProb > 0 && flushProb > 0 {
+	} else if straightFlushProb > 0.00 {
+		currUserProb[8].Prob = straightFlushProb
+	} else {
 		currUserProb[8].Prob = straightProb * flushProb
 	}
 	currUserProb[9].Prob = RoyalFlush(deckCopy, cards)
@@ -1124,7 +1124,12 @@ func StraightCheck(deck Deck, cards []c.Card) (float64, float64) {
 
 		if len(targetVals)+targetSizeOffset == 5 {
 			//if numSeq == 0 {
-			prob += FindCardProb(cards, targetVals, "", 0) //change "" to currSuit to begin implementing straight flush prob calc
+
+			if !broadwayBool && !(highVal-lowVal == 4 && chain == 5) {
+				prob += FindCardProb(cards, targetVals, "", 0) //change "" to currSuit to begin implementing straight flush prob calc
+			} else {
+				prob = 1.00
+			}
 
 			if flushBool {
 				straightFlushProb += FindCardProb(cards, targetVals, targetSuit, 0)

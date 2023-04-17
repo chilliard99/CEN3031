@@ -890,18 +890,18 @@ func TestMassTest(t *testing.T) {
 		sfProb := 0.00
 		rProb := (math.Round(royalProb*10000000.0) / 10000000.0)
 
-		if straightFlushProb > 0.00 {
-			sfProb = (math.Round(straightFlushProb*10000000.0) / 10000000.0)
-		} else if straightProb <= 0.0000001 && flushProb <= 0.0000001 {
+		if straightProb <= 0.0000001 || flushProb <= 0.0000001 {
 			sfProb = 0.00
-		} else if straightProb > 0.00 && flushProb > 0.00 {
+		} else if straightFlushProb > 0.00 {
+			sfProb = (math.Round(straightFlushProb*10000000.0) / 10000000.0)
+		} else {
 			sfProb = (math.Round((straightProb*flushProb)*10000000.0) / 10000000.0)
 		}
 		t.Log(sProb, " \t", fProb, " \t", sfProb, " \t", rProb, "\n")
 	}
 
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
-	//t.Fatal("Test Complete")
+	t.Fatal("Test Complete")
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
 }
 
