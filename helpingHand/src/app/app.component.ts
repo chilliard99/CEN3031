@@ -120,10 +120,16 @@ export class AppComponent implements OnInit {
   async randomizeAll() {
     let suits: string[] = ["Spade", "Club", "Heart", "Diamond"];
     for(let i = 0; i < this.currentHand.length; i++) {
-       this.Val = Math.floor(Math.random() * 13) + 1;
-       this.Index = i;
-       this.Suit = suits[Math.floor(Math.random() * 3)];
-       this.addCard();
+      this.Val = Math.floor(Math.random() * 13) + 1;
+      this.Index = i;
+      this.Suit = suits[Math.floor(Math.random() * 3)];
+      if(this.Val === 11 || this.Val === 12 || this.Val === 13 || this.Val === 1) {
+        if(this.checkForRepeats(this.Val, this.Suit)) {
+          i--;
+          continue;
+        }
+      }
+      this.addCard();
     }
   }
 
@@ -153,9 +159,23 @@ export class AppComponent implements OnInit {
     console.log(this.currentHand);
   }
 
+  checkForRepeats(_Val : number, _Suit : string) {
+    for(let i = 0; i < this.currentHand.length; i++) {
+      if(this.currentHand[i].Val === (_Val - 1) && this.currentHand[i].Suit === _Suit) {
+          return true;
+      }
+    }
+    return false;
+  }
+
   async setVal(_Val :number) {
     this.displayVal = false;
     if(_Val !== -1) {
+      if(_Val === 11 || _Val === 12 || _Val === 13 || _Val === 1) {
+        if(this.checkForRepeats(_Val, this.Suit)) {
+          //Fill this in like 10 minutes from now.
+        }
+      }
       this.Val = _Val;
       this.addCard();
     }
