@@ -13,7 +13,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'; 
 import { CustomHttpInterceptor } from './interceptor';
-import { FlexLayoutModule } from '@angular/flex-layout'
+import { FlexLayoutModule } from "@angular/flex-layout";
 @NgModule({
   declarations: [
     AppComponent

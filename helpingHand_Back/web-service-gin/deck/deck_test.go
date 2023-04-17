@@ -5,6 +5,7 @@ import (
 	"example/web-service-gin/deck"
 	"example/web-service-gin/hand"
 	"math"
+	"math/rand"
 	"strconv"
 	"testing"
 )
@@ -832,6 +833,76 @@ func TestDebugLogic(t *testing.T) {
 	cardCopy = append(cardCopy, cardE3)
 	cards = append(cards, card5)
 
+}
+
+// Runs 50 5-card draws and prints the results of StraightCheck, FlushCheck, and RoyalFlush
+func TestMassTest(t *testing.T) {
+
+	deckCopy := deck.NewDeck()
+
+	t.Logf("Str8 \tFlush\tStr8 F\tR Flush")
+
+	for i := 0; i < 50; i++ {
+		var cardStrings []string
+		cards := []card.Card{}
+		var intArr []int
+
+		for n := 0; n < 5; n++ {
+			tempVal := 0
+			var tempCard card.Card
+
+			for deck.ContainsInt(intArr, tempVal) {
+				tempVal = rand.Intn(51)
+			}
+
+			intArr = append(intArr, tempVal)
+			tempCard = deckCopy[tempVal]
+			cards = append(cards, tempCard)
+
+			valString := ""
+
+			valString = strconv.Itoa(cards[n].Val)
+
+			switch cards[n].Suit {
+			case "Heart":
+				tempString := valString + "H"
+				cardStrings = append(cardStrings, tempString)
+			case "Diamond":
+				tempString := valString + "D"
+				cardStrings = append(cardStrings, tempString)
+			case "Club":
+				tempString := valString + "C"
+				cardStrings = append(cardStrings, tempString)
+			case "Spade":
+				tempString := valString + "S"
+				cardStrings = append(cardStrings, tempString)
+			}
+		}
+
+		t.Log(cardStrings[0], " ", cardStrings[1], " ", cardStrings[2], " ", cardStrings[3], " ", cardStrings[4])
+
+		straightProb, straightFlushProb := deck.StraightCheck(deckCopy, cards)
+		flushProb := deck.FlushCheck(deckCopy, cards)
+		royalProb := deck.RoyalFlush(deckCopy, cards)
+
+		sProb := (math.Round(straightProb*10000000.0) / 10000000.0)
+		fProb := (math.Round(flushProb*10000000.0) / 10000000.0)
+		sfProb := 0.00
+		rProb := (math.Round(royalProb*10000000.0) / 10000000.0)
+
+		if straightProb <= 0.0000001 || flushProb <= 0.0000001 {
+			sfProb = 0.00
+		} else if straightFlushProb > 0.00 {
+			sfProb = (math.Round(straightFlushProb*10000000.0) / 10000000.0)
+		} else {
+			sfProb = (math.Round((straightProb*flushProb)*10000000.0) / 10000000.0)
+		}
+		t.Log(sProb, " \t", fProb, " \t", sfProb, " \t", rProb, "\n")
+	}
+
+	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
+	t.Fatal("Test Complete")
+	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
 }
 
 func TestFactorial(t *testing.T) {

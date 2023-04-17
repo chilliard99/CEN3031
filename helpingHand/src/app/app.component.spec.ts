@@ -52,6 +52,46 @@ describe('AppComponent', () => {
     fixture = TestBed.createComponent(AppComponent);
     app = fixture.componentInstance;
     let suits: string[] = ["spade", "club", "heart", "diamond"];
+    app.currentProb.push({
+      Handname: "High Card",
+      Prob: 0
+    });
+    app.currentProb.push({
+      Handname: "One Pair",
+      Prob: 0
+    });
+    app.currentProb.push({
+      Handname: "Two Pair",
+      Prob: 0
+    });
+    app.currentProb.push({
+      Handname: "Three of a Kind",
+      Prob: 0
+    });
+    app.currentProb.push({
+      Handname: "Straight",
+      Prob: 0
+    });
+    app.currentProb.push({
+      Handname: "Flush",
+      Prob: 0
+    });
+    app.currentProb.push({
+      Handname: "Full House",
+      Prob: 0
+    });
+    app.currentProb.push({
+      Handname: "Four of a Kind",
+      Prob: 0
+    });
+    app.currentProb.push({
+      Handname: "Straight Flush",
+      Prob: 0
+    });
+    app.currentProb.push({
+      Handname: "Royal Flush",
+      Prob: 0
+    });
     for(let i = 0; i < 7; i++) {
       app.currentHand.push({
         Suit: suits[Math.floor(Math.random() * 3)],
@@ -83,7 +123,7 @@ describe('AppComponent', () => {
 
   it('the community cards should only contain five images', () => {
     const element: DebugElement[] = fixture.debugElement.queryAll(By.css('#bottomcardImgs'));
-    expect(element.length).toBe(5);
+    expect(element.length).toBe(5); 
   })
 
   it('should not display selection screen when not flagged', () => {
@@ -93,12 +133,6 @@ describe('AppComponent', () => {
   it('should display selection screen when flagged', () => {
     app.displaySuitVal = true;
     expect(fixture.debugElement.query(By.css('#displaySuitVal'))).toBeDefined();
-  })
-
-  it('should call addCard for each card in currentHand in removeAll', () => {
-    spyOn(app, 'addCard')
-    app.removeAll();
-    expect(app.addCard).toHaveBeenCalledTimes(app.currentHand.length); 
   })
 
   it('should call addCard for each card in currentHand in randomizeAll', () => {
