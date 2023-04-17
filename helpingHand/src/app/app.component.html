@@ -2,11 +2,14 @@
     <div id="screendarkener"></div>
     <div *ngIf="displaySuitVal" class="selectionWrapper">
         <h1 class="suitSelection">Select Suit</h1>
-        <img class="suitImg" id="spade" (click)="setSuit('Spade')" src="../assets/spade.png" alt="Spade">
+        <img *ngIf="!darkMode" class="suitImg" id="spade" (click)="setSuit('Spade')" src="../assets/spade.png" alt="Spade">
+        <img *ngIf="darkMode" class="suitImg" id="spade" (click)="setSuit('Spade')" src="../assets/spadelight.png" alt="Spade">
         <img class="suitImg" id="heart" (click)="setSuit('Heart')" src="../assets/heart.png" alt="Heart">
-        <img class="suitImg" id="club" (click)="setSuit('Club')" src="../assets/club.png" alt="Club">
+        <img *ngIf="!darkMode" class="suitImg" id="club" (click)="setSuit('Club')" src="../assets/club.png" alt="Club">
+        <img *ngIf="darkMode" class="suitImg" id="club" (click)="setSuit('Club')" src="../assets/clublight.png" alt="Club">
         <img class="suitImg" id="diamond" (click)="setSuit('Diamond')" src="../assets/diamond.png" alt="Diamond">
-        <img class="suitImg" id="random" (click)="setSuit('random')" src="../assets/dice.png" alt="Random">
+        <img *ngIf="!darkMode" class="suitImg" id="random" (click)="setSuit('random')" src="../assets/dice.png" alt="Random">
+        <img *ngIf="darkMode" class="suitImg" id="random" (click)="setSuit('random')" src="../assets/dicelight.png" alt="Random">
         <div class="buttwrapper">
             <button (click)="setSuit('back')" mat-raised-button >Back</button>
         </div>
