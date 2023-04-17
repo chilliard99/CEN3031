@@ -770,7 +770,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 						}
 
 						if compare1 > compare2 {
-							fmt.Println("Deleting second comparison: ", c.GetCardName(royalFlush[secondIndex]))
+							//fmt.Println("Deleting second comparison: ", c.GetCardName(royalFlush[secondIndex]))
 							switch royalFlush[secondIndex].Val {
 							case 12:
 								needCards[0] = true
@@ -792,7 +792,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 							skipLoop = true
 
 						} else {
-							fmt.Println("Deleting first comparison: ", c.GetCardName(royalFlush[firstIndex]))
+							//fmt.Println("Deleting first comparison: ", c.GetCardName(royalFlush[firstIndex]))
 							switch royalFlush[firstIndex].Val {
 							case 12:
 								needCards[0] = true
@@ -831,10 +831,10 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 
 	//If more cards are needed than should be drawn, return false and 0.0%
 	if needCount > remaining {
-		fmt.Println("First case (impossible)")
+		//fmt.Println("First case (impossible)")
 		return 0.00
 	} else if needCount == 0 {
-		fmt.Println("Second case (found)")
+		//fmt.Println("Second case (found)")
 		return 1.00 //if none needed, return true and 100.0%
 	}
 
@@ -889,7 +889,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 			}
 		}
 
-		fmt.Println("Third case (some)")
+		//fmt.Println("Third case (some)")
 		return prob
 	}
 
@@ -942,7 +942,7 @@ func RoyalFlush(deck Deck, cards []c.Card) float64 {
 			//fmt.Printf("[FRONTEND CHECK] +spec prob: %f\n", prob)
 		}
 	}
-	fmt.Println("Fourth case (all)")
+	//fmt.Println("Fourth case (all)")
 	return prob
 }
 
@@ -1045,7 +1045,7 @@ func StraightCheck(deck Deck, cards []c.Card) (float64, float64) {
 
 	//Run flush check to test for a straight flush
 	for i := 0; i < len(straightCards); i++ {
-		fmt.Println("Straight Card #", i, ": ", c.GetCardName(straightCards[i]))
+		//fmt.Println("Straight Card #", i, ": ", c.GetCardName(straightCards[i]))
 		if targetSuit == "" {
 			targetSuit = straightCards[0].Suit
 		} else if straightCards[i].Suit != targetSuit {
@@ -1063,7 +1063,7 @@ func StraightCheck(deck Deck, cards []c.Card) (float64, float64) {
 	//BROADWAY STRAIGHT (functionally the same as a straight with ace high but not flush)
 	if broadwayBool {
 		if flushBool {
-			fmt.Println("Broadway flush??")
+			//fmt.Println("Broadway flush??")
 			return 1.00, 1.00
 		} else {
 			return 1.00, 0.00
@@ -1073,7 +1073,7 @@ func StraightCheck(deck Deck, cards []c.Card) (float64, float64) {
 	//Regular straight
 	if highVal-lowVal == 4 && chain == 5 {
 		if flushBool {
-			fmt.Println("Normal straight flush??")
+			//fmt.Println("Normal straight flush??")
 			return 1.00, 1.00
 		} else {
 			//return 1.00, 0.00
