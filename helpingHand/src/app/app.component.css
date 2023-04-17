@@ -49,15 +49,18 @@
 }
 
 #holecardswrapper #cardImgs:hover{
-    transform: scale(1.1)
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 .communitycards #bottomcardImgs:hover{
-    transform: scale(1.1)
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 .communitycardsdark #bottomcardImgs:hover{
-    transform: scale(1.1)
+    transform: scale(1.1);
+    cursor: pointer;
 }
 
 .communitycards {

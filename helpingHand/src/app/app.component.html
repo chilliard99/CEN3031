@@ -34,7 +34,7 @@
 
 <mat-spinner [diameter]="100" id="spinner" *ngIf="spinnerService.visibility | async"></mat-spinner>
 
-<mat-tab-group dynamicHeight id="mainPage">
+<mat-tab-group dynamicHeight id="mainPage" [(selectedIndex)]="selectedIndex">
     <mat-tab label="Simulation">
 
         <div [ngClass]="{
@@ -148,7 +148,7 @@
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}]); changeTab(0)" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -168,7 +168,7 @@
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}]); changeTab(0)" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -188,7 +188,7 @@
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3},{Suit: 'Spade', Val: 2, Index: 4}, {Suit: 'Heart', Val: 2, Index: 5}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3},{Suit: 'Spade', Val: 2, Index: 4}, {Suit: 'Heart', Val: 2, Index: 5}]); changeTab(0)" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -208,7 +208,7 @@
         
                         </mat-card-content>
                         <mat-card-actions>
-                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}, {Suit: 'Club', Val: 1, Index: 4}])" mat-button>Show in Simulation</button>
+                            <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Heart', Val: 1, Index: 3}, {Suit: 'Club', Val: 1, Index: 4}]); changeTab(0)" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -229,7 +229,7 @@
                         </mat-card-content>
                         <mat-card-actions>
                             <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 5, Index: 2}, {Suit: 'Heart', Val: 6, Index: 3},
-                            {Suit: 'Heart', Val: 7, Index: 4}, {Suit: 'Diamond', Val: 8, Index: 5}, {Suit: 'Club', Val: 9, Index: 6}])" mat-button>Show in Simulation</button>
+                            {Suit: 'Heart', Val: 7, Index: 4}, {Suit: 'Diamond', Val: 8, Index: 5}, {Suit: 'Club', Val: 9, Index: 6}]); changeTab(0)" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -248,7 +248,7 @@
                         </mat-card-content>
                         <mat-card-actions>
                             <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Spade', Val: 3, Index: 3},
-                            {Suit: 'Spade', Val: 8, Index: 4}, {Suit: 'Spade', Val: 11, Index: 5}, {Suit: 'Spade', Val: 6, Index: 6}])" mat-button>Show in Simulation</button>
+                            {Suit: 'Spade', Val: 8, Index: 4}, {Suit: 'Spade', Val: 11, Index: 5}, {Suit: 'Spade', Val: 6, Index: 6}]); changeTab(0)" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -270,7 +270,7 @@
                         </mat-card-content>
                         <mat-card-actions>
                             <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Diamond', Val: 1, Index: 3},
-                            {Suit: 'Heart', Val: 4, Index: 4}, {Suit: 'Club', Val: 4, Index: 5}, {Suit: 'Spade', Val: 4, Index: 6}])" mat-button>Show in Simulation</button>
+                            {Suit: 'Heart', Val: 4, Index: 4}, {Suit: 'Club', Val: 4, Index: 5}, {Suit: 'Spade', Val: 4, Index: 6}]); changeTab(0)" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -291,7 +291,7 @@
                         </mat-card-content>
                         <mat-card-actions>
                             <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 1, Index: 2}, {Suit: 'Diamond', Val: 1, Index: 3},
-                            {Suit: 'Heart', Val: 1, Index: 4}, {Suit: 'Club', Val: 1, Index: 5}, {Suit: '', Val: 0, Index: 6}])" mat-button>Show in Simulation</button>
+                            {Suit: 'Heart', Val: 1, Index: 4}, {Suit: 'Club', Val: 1, Index: 5}, {Suit: '', Val: 0, Index: 6}]); changeTab(0)" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -311,7 +311,7 @@
                         </mat-card-content>
                         <mat-card-actions>
                             <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 2, Index: 2}, {Suit: 'Spade', Val: 3, Index: 3},
-                            {Suit: 'Spade', Val: 4, Index: 4}, {Suit: 'Spade', Val: 5, Index: 5}, {Suit: 'Spade', Val: 6, Index: 6}])" mat-button>Show in Simulation</button>
+                            {Suit: 'Spade', Val: 4, Index: 4}, {Suit: 'Spade', Val: 5, Index: 5}, {Suit: 'Spade', Val: 6, Index: 6}]); changeTab(0)" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>
@@ -332,7 +332,7 @@
                         </mat-card-content>
                         <mat-card-actions>
                             <button (click)="removeAll(); setHand([{Suit: 'Spade', Val: 10, Index: 2}, {Suit: 'Spade', Val: 11, Index: 3},
-                            {Suit: 'Spade', Val: 12, Index: 4}, {Suit: 'Spade', Val: 13, Index: 5}, {Suit: 'Spade', Val: 1, Index: 6}])" mat-button>Show in Simulation</button>
+                            {Suit: 'Spade', Val: 12, Index: 4}, {Suit: 'Spade', Val: 13, Index: 5}, {Suit: 'Spade', Val: 1, Index: 6}]); changeTab(0)" mat-button>Show in Simulation</button>
                         </mat-card-actions>
                     </mat-card>
                 </div>

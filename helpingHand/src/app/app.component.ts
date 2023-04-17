@@ -29,6 +29,9 @@ export class AppComponent implements OnInit {
   public Val = 0
   public Suit = ''
   public Index = 0
+  public selectedIndex = 0;
+
+  
   // public currentHand: ICurrentHand[] = [
   //   {
   //     Val: 0,
@@ -94,6 +97,10 @@ export class AppComponent implements OnInit {
 
   async toggleDarkMode() {
     this.darkMode = !this.darkMode;
+  }
+
+  async changeTab(tabNum: number) {
+    this.selectedIndex = tabNum;
   }
 
   async removeAll() {
