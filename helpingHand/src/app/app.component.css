@@ -48,6 +48,17 @@
     justify-content: center;
 }
 
+#holecardswrapper #cardImgs:hover{
+    transform: scale(1.1)
+}
+
+.communitycards #bottomcardImgs:hover{
+    transform: scale(1.1)
+}
+
+.communitycardsdark #bottomcardImgs:hover{
+    transform: scale(1.1)
+}
 
 .communitycards {
     margin-left: 6.5%;
