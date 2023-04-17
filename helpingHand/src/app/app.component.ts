@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   public displaySuitVal = false;
   public displayVal = false;
   public darkMode = false;
+  public multipleError = false;
   public title = 'helpingHand';
   public Val = 0
   public Suit = ''
@@ -173,7 +174,12 @@ export class AppComponent implements OnInit {
     if(_Val !== -1) {
       if(_Val === 11 || _Val === 12 || _Val === 13 || _Val === 1) {
         if(this.checkForRepeats(_Val, this.Suit)) {
-          //Fill this in like 10 minutes from now.
+          console.log("we made it here");
+          this.multipleError = true;
+          await new Promise(resolve => setTimeout(resolve, 4000));
+          this.multipleError = false;
+          console.log("now here");
+          return;
         }
       }
       this.Val = _Val;

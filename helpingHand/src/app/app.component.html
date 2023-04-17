@@ -1,4 +1,4 @@
-<div *ngIf="displaySuitVal || displayVal" class="overlayClass">
+<div *ngIf="displaySuitVal || displayVal || multipleError" class="overlayClass">
     <div id="screendarkener"></div>
     <div *ngIf="displaySuitVal" class="selectionWrapper">
         <h1 class="suitSelection">Select Suit</h1>
@@ -29,6 +29,10 @@
         <div class="buttwrapper">
             <button (click)="setVal(-1)" mat-raised-button >Back</button>
         </div>
+    </div>
+    
+    <div *ngIf="multipleError" class="selectionWrapper">
+        <h1 class="errorWarning">There is only 1 ace, jack, king, and queen of each suit in a deck!</h1>
     </div>
 </div>
 

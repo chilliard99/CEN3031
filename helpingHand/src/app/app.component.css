@@ -192,6 +192,15 @@
     text-align: center !important;
 }
 
+.errorWarning {
+    margin-top: 20% !important;
+    color:red !important;
+    font-weight: bold !important;
+    font-size: 200% !important;
+    font-family: Roboto !important;
+    text-align: center !important;
+}
+
 .suitImg {
     width:5%;
     margin:2%;
