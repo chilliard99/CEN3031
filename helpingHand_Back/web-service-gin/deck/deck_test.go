@@ -1039,9 +1039,24 @@ func TestFutureHand(t *testing.T) {
 func TestFutureProbabilityOnePair(t *testing.T) {
 	t.Log("Testing future probability for one pair")
 	temphand := hand.NewHand("None")
-	hand.AddCardHandSpecific(temphand, 1, "Heart")
 	var handArray []float64
 	var probabilityArray []float64
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	hand.AddCardHandSpecific(temphand, 2, "Heart")
+	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	hand.AddCardHandSpecific(temphand, 3, "Heart")
+	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	hand.AddCardHandSpecific(temphand, 4, "Heart")
+	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	hand.AddCardHandSpecific(temphand, 5, "Heart")
+	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	hand.AddCardHandSpecific(temphand, 6, "Heart")
 	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
 	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
 	for index, _ := range probabilityArray {
@@ -1055,7 +1070,7 @@ func TestFutureProbabilityOnePair(t *testing.T) {
 }
 func FindFutureProbability(handLength int, canAddNumCards int) float64 {
 	probability := 0.0
-	for i := 1; i <= 6; i++ {
+	for i := 1; i <= canAddNumCards; i++ {
 		notOnePairProb := math.Pow(float64(52-4*handLength)/float64(52-handLength), float64(canAddNumCards-i))
 		probability += float64(canAddNumCards) * notOnePairProb * math.Pow(float64(3*handLength)/float64(52-handLength), float64(i))
 	}
