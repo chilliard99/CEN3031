@@ -1040,17 +1040,26 @@ func TestFutureProbabilityOnePair(t *testing.T) {
 	t.Log("Testing future probability for one pair")
 	temphand := hand.NewHand("None")
 	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	var handArray []float64
+	var probabilityArray []float64
+	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	for index, _ := range probabilityArray {
+		if handArray[index] != probabilityArray[index] {
+			t.Log(handArray[index])
+			t.Log(probabilityArray[index])
+			t.Fatal("One Pair future probability is wrong at" + strconv.Itoa(index))
+		}
+		t.Log("One Pair future probability is all right")
+	}
+}
+func FindFutureProbability(handLength int, canAddNumCards int) float64 {
 	probability := 0.0
-	for i := 1; i < 7; i++ {
-		probability += float64(3) / float64(52-i) * math.Pow(float64(48)/float64(52-i), float64(i-1))
+	for i := 1; i <= 6; i++ {
+		notOnePairProb := math.Pow(float64(52-4*handLength)/float64(52-handLength), float64(canAddNumCards-i))
+		probability += float64(canAddNumCards) * notOnePairProb * math.Pow(float64(3*handLength)/float64(52-handLength), float64(i))
 	}
-	array := deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))
-	if array[0] != probability {
-		t.Log(array[0])
-		t.Log(probability)
-		t.Fatal("One Pair future probability is wrong")
-	}
-	t.Log("One Pair future probability is right")
+	return probability
 }
 
 // attempt 1 at future probability function test

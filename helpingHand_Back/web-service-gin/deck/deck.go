@@ -263,8 +263,9 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 		if firstPair != -1 {
 			onePairProb = 1
 		} else {
-			for i := 1; i < canAddNumCards+1; i++ {
-				onePairProb += float64(3*len(hand.ActualHand)) / float64(52-i+1-len(hand.ActualHand)) * math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-i+1-len(hand.ActualHand)), float64(i-1))
+			for i := 1; i <= canAddNumCards; i++ {
+				notOnePairProb := math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(canAddNumCards-i))
+				onePairProb += float64(canAddNumCards) * notOnePairProb * math.Pow(float64(3*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(i))
 			}
 		}
 		futureProbs = append(futureProbs, onePairProb)
@@ -340,7 +341,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 					currentProb += Factorial(52-len(hand.ActualHand)) / Factorial(canAddNumCards-i) * math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(7-canAddNumCards+i)) * math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards-i)) / float64(2)
 				} else if firstPair != -1 && secondPair != -1 && thirdPair != -1 {
 					//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
-					currentProb += float64(3) / float64(46)
+					currentProb = float64(3) / float64(46)
 					break
 				}
 			}
