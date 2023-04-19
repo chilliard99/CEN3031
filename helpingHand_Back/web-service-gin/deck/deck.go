@@ -278,13 +278,9 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 			pairVals[card.Val]++
 		}
 		firstPair := -1
-		secondPair := -1
 		for index, count := range pairVals {
 			if count >= 2 && firstPair == -1 {
 				firstPair = index
-			}
-			if count >= 2 && firstPair != -1 {
-				secondPair = index
 			}
 		}
 		twoPairProb := 0.0
@@ -296,7 +292,7 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 				notTwoPairProb := math.Pow(float64(52-4*len(hand))/float64(52-len(hand)), float64(canAddNumCards-i))
 				twoPairProb += float64(canAddNumCards) * notTwoPairProb * math.Pow(float64(3*len(hand))/float64(52-len(hand)), float64(i))
 			}
-		} else if secondPair == -1 {
+		} else if firstPair == -1 {
 			for i := 1; i <= canAddNumCards; i++ {
 				//1 card only or at least 1 card but no pairs
 				notTwoPairProb := math.Pow(float64(52-4*len(hand))/float64(52-len(hand)), float64(canAddNumCards-i-2))
@@ -403,9 +399,11 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 				} else if thirdPair != -1 && firstTriple == -1 {
 					//6 cards in hand, can't make full house
 					currentProb = 0.00
+					break
 				} else if firstTriple != -1 && secondTriple != -1 {
-					//1 card left,
+					//1 card left, but a full house is already there
 					currentProb = 1.00
+					break
 				}
 			}
 		}
