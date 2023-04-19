@@ -80,7 +80,7 @@ func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
 	//fmt.Println(len(cards))
 
 	handTypes := CheckHandType(cards)
-
+	futureHandProbs := DetermineFutureProbability(cards, handTypes)
 	deckCopy := RemoveCards(deck, cards)
 
 	straightProb, straightFlushProb := StraightCheck(deckCopy, cards)
@@ -90,17 +90,17 @@ func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
 	if Contains(handTypes, "One Pair") {
 		currUserProb[1].Prob = 1.00
 	} else {
-		currUserProb[1].Prob = 0.00
+		currUserProb[1].Prob = futureHandProbs[0]
 	}
 	if Contains(handTypes, "Two Pair") {
 		currUserProb[2].Prob = 1.00
 	} else {
-		currUserProb[2].Prob = 0.00
+		currUserProb[2].Prob = futureHandProbs[1]
 	}
 	if Contains(handTypes, "Three of a Kind") {
 		currUserProb[3].Prob = 1.00
 	} else {
-		currUserProb[3].Prob = 0.00
+		currUserProb[3].Prob = futureHandProbs[2]
 	}
 	currUserProb[4].Prob = straightProb
 	currUserProb[5].Prob = flushProb
@@ -108,12 +108,12 @@ func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
 	if Contains(handTypes, "Full House") {
 		currUserProb[6].Prob = 1.00
 	} else {
-		currUserProb[6].Prob = 0.00
+		currUserProb[6].Prob = futureHandProbs[3] //should be 3 after function is updated
 	}
 	if Contains(handTypes, "Four of a Kind") {
 		currUserProb[7].Prob = 1.00
 	} else {
-		currUserProb[7].Prob = 0.00
+		currUserProb[7].Prob = futureHandProbs[4]
 	}
 
 	if flushProb <= 0.0000001 || straightProb <= 0.0000001 {
@@ -244,12 +244,12 @@ func FindCardProb(cards []c.Card, targetVals []int, targetSuit string, numSuitNe
 }
 
 // Determining probability of future hands from DetermineFutureHands
-func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
+func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 	var futureProbs []float64
-	canAddNumCards := 7 - len(hand.ActualHand)
+	canAddNumCards := 7 - len(hand)
 	if Contains(futureHands, "One Pair") {
 		pairVals := make([]int, 13)
-		for _, card := range hand.ActualHand {
+		for _, card := range hand {
 			pairVals[card.Val]++
 		}
 		firstPair := -1
@@ -266,15 +266,15 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 			onePairProb = 1
 		} else {
 			for i := 1; i <= canAddNumCards; i++ {
-				notOnePairProb := math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(canAddNumCards-i))
-				onePairProb += float64(canAddNumCards) * notOnePairProb * math.Pow(float64(3*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(i))
+				notOnePairProb := math.Pow(float64(52-4*len(hand))/float64(52-len(hand)), float64(canAddNumCards-i))
+				onePairProb += float64(canAddNumCards) * notOnePairProb * math.Pow(float64(3*len(hand))/float64(52-len(hand)), float64(i))
 			}
 		}
 		futureProbs = append(futureProbs, onePairProb)
 	}
 	if Contains(futureHands, "Two Pair") {
 		pairVals := make([]int, 13)
-		for _, card := range hand.ActualHand {
+		for _, card := range hand {
 			pairVals[card.Val]++
 		}
 		firstPair := -1
@@ -293,15 +293,15 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 		} else if firstPair != -1 {
 			for i := 1; i <= canAddNumCards; i++ {
 				//basically 1 pair?
-				notTwoPairProb := math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(canAddNumCards-i))
-				twoPairProb += float64(canAddNumCards) * notTwoPairProb * math.Pow(float64(3*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(i))
+				notTwoPairProb := math.Pow(float64(52-4*len(hand))/float64(52-len(hand)), float64(canAddNumCards-i))
+				twoPairProb += float64(canAddNumCards) * notTwoPairProb * math.Pow(float64(3*len(hand))/float64(52-len(hand)), float64(i))
 			}
 		} else if secondPair == -1 {
 			for i := 1; i <= canAddNumCards; i++ {
 				//1 card only or at least 1 card but no pairs
-				notTwoPairProb := math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(canAddNumCards-i-2))
-				otherPairProb := Factorial(26-2*len(hand.ActualHand)) / (Factorial(2) * Factorial(26-2*len(hand.ActualHand)-2)) * (float64(52-4*len(hand.ActualHand)) / 2) / float64(52-len(hand.ActualHand))
-				twoPairProb += float64(canAddNumCards-2) * otherPairProb * notTwoPairProb * math.Pow(float64(3*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(i))
+				notTwoPairProb := math.Pow(float64(52-4*len(hand))/float64(52-len(hand)), float64(canAddNumCards-i-2))
+				otherPairProb := Factorial(26-2*len(hand)) / (Factorial(2) * Factorial(26-2*len(hand)-2)) * (float64(52-4*len(hand)) / 2) / float64(52-len(hand))
+				twoPairProb += float64(canAddNumCards-2) * otherPairProb * notTwoPairProb * math.Pow(float64(3*len(hand))/float64(52-len(hand)), float64(i))
 			}
 		} else {
 			//already 2 pairs in hand
@@ -312,7 +312,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 	if Contains(futureHands, "Three of a Kind") {
 		//either 1 pair, 2 pair, 3 pair, or just single cards
 		pairVals := make([]int, 13)
-		for _, card := range hand.ActualHand {
+		for _, card := range hand {
 			pairVals[card.Val]++
 		}
 		firstPair := -1
@@ -343,11 +343,11 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 			for i := 1; i < canAddNumCards; i++ {
 				if thirdPair == -1 && secondPair == -1 && firstPair != -1 {
 					//only 1 pair
-					ThreeNotGottenProb := math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(7-canAddNumCards+i))
-					currentProb += Factorial(52-len(hand.ActualHand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand.ActualHand)-canAddNumCards+i)) * ThreeNotGottenProb * math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards-i))
+					ThreeNotGottenProb := math.Pow(float64(1)/float64(52-len(hand)), float64(7-canAddNumCards+i))
+					currentProb += Factorial(52-len(hand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand)-canAddNumCards+i)) * ThreeNotGottenProb * math.Pow(float64(1)/float64(52-len(hand)), float64(canAddNumCards-i))
 				} else if firstPair != -1 && secondPair != -1 && thirdPair == -1 {
 					//2 pairs, half 1 pair prob
-					currentProb += Factorial(52-len(hand.ActualHand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand.ActualHand)-canAddNumCards+i)) * math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(7-canAddNumCards+i)) * math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards-i)) / float64(2)
+					currentProb += Factorial(52-len(hand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand)-canAddNumCards+i)) * math.Pow(float64(1)/float64(52-len(hand)), float64(7-canAddNumCards+i)) * math.Pow(float64(1)/float64(52-len(hand)), float64(canAddNumCards-i)) / float64(2)
 				} else if firstPair != -1 && secondPair != -1 && thirdPair != -1 {
 					//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
 					currentProb = float64(3) / float64(46)
@@ -359,7 +359,7 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 	}
 	if Contains(futureHands, "Four of a Kind") {
 		tripleVals := make([]int, 13)
-		for _, card := range hand.ActualHand {
+		for _, card := range hand {
 			tripleVals[card.Val]++
 		}
 		firstTriple := -1
@@ -388,8 +388,8 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 				if secondTriple == -1 && firstTriple != -1 {
 					if canAddNumCards != 0 {
 						//only 1 triple so it's easier
-						FourNotGottenProb := math.Pow(float64(48)/float64(52-len(hand.ActualHand)), float64(7-canAddNumCards+i))
-						fourOfAKindProb += Factorial(52-len(hand.ActualHand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand.ActualHand)-canAddNumCards+i)) * FourNotGottenProb * math.Pow(float64(1)/float64(52-len(hand.ActualHand)), float64(canAddNumCards))
+						FourNotGottenProb := math.Pow(float64(48)/float64(52-len(hand)), float64(7-canAddNumCards+i))
+						fourOfAKindProb += Factorial(52-len(hand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand)-canAddNumCards+i)) * FourNotGottenProb * math.Pow(float64(1)/float64(52-len(hand)), float64(canAddNumCards))
 					} else {
 						fourOfAKindProb = float64(0)
 						break
@@ -412,22 +412,22 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 }
 
 // Determining what hands can be created using the current hand and cards in the deck
-func DetermineFutureHands(hand *h.Hand, currentHands []string) []string {
+func DetermineFutureHands(hand []c.Card, currentHands []string) []string {
 	futureHands := make([]string, 0)
-	if len(hand.ActualHand) < 7 {
+	if len(hand) < 7 {
 		if Contains(currentHands, "Full House") {
 			futureHands = append(futureHands, "Placeholder - Full House")
 		} else if Contains(currentHands, "Three of a Kind") {
 			futureHands = append(futureHands, "Four of a Kind")
 		} else if Contains(currentHands, "One Pair") {
 			futureHands = append(futureHands, "Three of a Kind")
-			if len(hand.ActualHand) < 6 {
+			if len(hand) < 6 {
 				futureHands = append(futureHands, "Four of a Kind")
 				futureHands = append(futureHands, "Two Pair")
 			}
 		} else if Contains(currentHands, "Two Pair") {
 			futureHands = append(futureHands, "Three of a Kind")
-			if len(hand.ActualHand) < 6 {
+			if len(hand) < 6 {
 				futureHands = append(futureHands, "Four of a Kind")
 			}
 		} else {

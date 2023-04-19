@@ -1030,7 +1030,7 @@ func TestFutureHand(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Spade")
 	hand.AddCardHandSpecific(temphand, 1, "Club")
 	temparray := deck.GetHandArray(temphand)
-	if deck.Contains(deck.DetermineFutureHands(temphand, deck.CheckHandType(temparray)), "Four of a Kind") != true {
+	if deck.Contains(deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temparray)), "Four of a Kind") != true {
 		t.Fatal("Future hand function does not work for three of a kind!")
 	}
 	t.Log(("Future hand function works for three of a kind!"))
@@ -1043,22 +1043,22 @@ func TestFutureProbabilityOnePair(t *testing.T) {
 	var probabilityArray []float64
 	hand.AddCardHandSpecific(temphand, 1, "Heart")
 	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
-	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))[0])
 	hand.AddCardHandSpecific(temphand, 2, "Heart")
 	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
-	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))[0])
 	hand.AddCardHandSpecific(temphand, 3, "Heart")
 	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
-	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))[0])
 	hand.AddCardHandSpecific(temphand, 4, "Heart")
 	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
-	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))[0])
 	hand.AddCardHandSpecific(temphand, 5, "Heart")
 	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
-	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))[0])
 	hand.AddCardHandSpecific(temphand, 6, "Heart")
 	probabilityArray = append(probabilityArray, FindFutureProbability(len(temphand.ActualHand), 7-len(temphand.ActualHand)))
-	handArray = append(handArray, deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))[0])
+	handArray = append(handArray, deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))[0])
 	for index, _ := range probabilityArray {
 		if handArray[index] != probabilityArray[index] {
 			t.Log(handArray[index])
@@ -1106,7 +1106,7 @@ func TestFutureProbabilityFourOfKind(t *testing.T) {
 		FourNotGottenProb := math.Pow(float64(48)/float64(49), float64(3+i))
 		probability += Factorial(49) / (Factorial(4-i) * Factorial(45+i)) * FourNotGottenProb * math.Pow(float64(1)/float64(49), float64(4))
 	}
-	array := deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))
+	array := deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))
 	if array[0] != probability {
 		t.Log(array[0])
 		t.Log(probability)
