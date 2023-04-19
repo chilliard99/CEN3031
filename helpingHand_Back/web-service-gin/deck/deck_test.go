@@ -950,7 +950,7 @@ func TestMassTest(t *testing.T) {
 	}
 
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
-	t.Fatal("Test Complete")
+	//t.Fatal("Test Complete")
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
 }
 
