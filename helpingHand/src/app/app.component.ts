@@ -91,6 +91,10 @@ export class AppComponent implements OnInit {
           }
         }
     }
+    //changing probs to percentages
+    for(let i = 0; i < this.newProbs.length; i++) {
+      this.newProbs[i].Prob = Number((this.newProbs[i].Prob * 100).toFixed(5)); 
+    }
 
   }
     //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')

@@ -18,6 +18,44 @@
     color:white;
 }
 
+.simulationNums {
+    width:20%;
+    text-align:center;
+    box-shadow: 0.5rem 0.5rem black, -0.5rem -0.5rem #ccc;
+}
+
+#topProbCombined {
+    margin: 5%;
+    margin-top: 10%;
+}
+
+#bottomProbs {
+    font-family:Roboto;
+    font-size:0.9vw;
+}
+
+#moreInfoButton {
+    margin-top:2.5%;
+}
+
+#topName {
+    font-family:Roboto;
+    font-size:1.5vw;
+}
+
+#topProb {
+    font-family:Roboto;
+    font-size:1.5vw;
+    font-weight:bold;
+}
+
+#probTitle {
+    font-weight:bold;
+    font-family:Roboto;
+    font-size:2vw;
+    margin-top: 2%;
+}
+
 #darkModeToggle {
     margin-top: 1%;
     width:5%;

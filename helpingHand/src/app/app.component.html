@@ -97,10 +97,20 @@
                 'simulationNums': !darkMode,
                 'simulationNumsDark': darkMode
              }">
-             <div *ngFor="let prob of newProbs;">
-                {{prob.Handname}}
-                {{prob.Prob}}
+             <h1 id="probTitle">Probabilities</h1>
+             <div id="topProbCombined" *ngFor="let prob of newProbs.slice().reverse() | slice:0:1;">
+                <span id="topName">
+                    {{prob.Handname}}
+                </span>
+                <span id="topProb">
+                    {{prob.Prob}}%
+                </span>
              </div>
+             <div id="bottomProbs" *ngFor="let prob of newProbs.slice().reverse() | slice:1;">
+                {{prob.Handname}}
+                {{prob.Prob}}%
+             </div>
+             <button id="moreInfoButton" (click)="changeTab(1)" mat-raised-button >More Info</button>
             </section>
 
             <section [ngClass]="{
