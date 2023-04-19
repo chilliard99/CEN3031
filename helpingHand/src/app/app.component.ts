@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
   // ]
   public currentHand: ICurrentHand[] = []
   public currentProb: ICurrentProb[] = []
+  public probNums: number[] = []
   public currImgs:string[] = new Array;
   constructor (
     private httpClient: HttpClient,
@@ -78,10 +79,20 @@ export class AppComponent implements OnInit {
       }
     }
     console.log(this.currentHand.length)
-
-
-    //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')
+    for(let i = 0; i < this.currentProb.length; i++) {
+      this.probNums.push(this.currentProb[i].Prob);
+    }
+    //taken from https://www.geeksforgeeks.org/bubble-sort-algorithms-by-using-javascript/
+    for (var i = 0; i < this.currentProb.length; i++) {
+      for (var j = 0; j < (this.currentProb.length - i - 1); j++) {
+          if (this.currentProb[j].Prob > this.currentProb[j + 1].Prob) {}
+              var temp = this.currentProb[j]
+              this.currentProb[j] = this.currentProb[j + 1]
+              this.currentProb[j + 1] = temp
+          }
+      }
   }
+    //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')
 
   async handleRightClick(_Index: number, _Value: number, _Suit: string, event: any) {
     event.preventDefault();
