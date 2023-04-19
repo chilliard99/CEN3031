@@ -110,7 +110,11 @@
                 {{prob.Handname}}
                 {{prob.Prob}}%
              </div>
-             <button id="moreInfoButton" (click)="changeTab(1)" mat-raised-button >More Info</button>
+             <button [ngClass]="{
+                'moreInfoButton': !darkMode,
+                'moreInfoButtonDark': darkMode
+             }"
+             (click)="changeTab(1)" mat-raised-button >More Info</button>
             </section>
 
             <section [ngClass]="{
