@@ -1081,6 +1081,18 @@ func FindFutureProbability(handLength int, canAddNumCards int) float64 {
 	}
 	return probability
 }
+func Factorial(n int) float64 {
+	factVal := 1.0000000
+	if n < 0 {
+		factVal = -1
+	} else {
+		for i := 1; i <= n; i++ {
+			factVal *= float64(i) // mismatched types int64 and int
+		}
+
+	}
+	return factVal /* return from function*/
+}
 
 // attempt 1 at future probability function test
 func TestFutureProbabilityFourOfKind(t *testing.T) {
@@ -1089,9 +1101,15 @@ func TestFutureProbabilityFourOfKind(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Heart")
 	hand.AddCardHandSpecific(temphand, 1, "Spade")
 	hand.AddCardHandSpecific(temphand, 1, "Club")
-	probability := math.Pow(float64(1)/float64(49), float64(4))
+	probability := 0.0
+	for i := 1; i < 5; i++ {
+		FourNotGottenProb := math.Pow(float64(48)/float64(49), float64(3+i))
+		probability += Factorial(49) / (Factorial(4-i) * Factorial(45+i)) * FourNotGottenProb * math.Pow(float64(1)/float64(49), float64(4))
+	}
 	array := deck.DetermineFutureProbability(temphand, deck.DetermineFutureHands(temphand, deck.CheckHandType(temphand.ActualHand)))
 	if array[0] != probability {
+		t.Log(array[0])
+		t.Log(probability)
 		t.Fatal("Four of a kind future probability is wrong")
 	}
 	t.Log("Four of a kind future probability is right")
