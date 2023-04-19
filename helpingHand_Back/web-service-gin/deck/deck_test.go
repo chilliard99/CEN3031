@@ -911,7 +911,8 @@ func TestMassTest(t *testing.T) {
 		pair3Prob := 0.00
 		pair4Prob := 0.00
 		pair5Prob := 0.00
-
+		t.Log(cards)
+		t.Log(handTypes)
 		if deck.Contains(handTypes, "One Pair") {
 			pair1Prob = 1.00
 		} else {
@@ -936,7 +937,7 @@ func TestMassTest(t *testing.T) {
 			pair4Prob = 1.00
 		} else {
 			//pair4Prob = futureHandProbs[4]	this would be 4
-			pair4Prob = futureHandProbs[3]
+			pair4Prob = futureHandProbs[4]
 		}
 
 		t.Log(pair1Prob, " \t", pair2Prob, " \t", pair3Prob, " \t", pair4Prob, "\t", pair5Prob, "\n")
