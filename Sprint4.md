@@ -19,7 +19,14 @@ Backend:
 
 Frontend Unit Tests:
 
-  - 
+  - Test to ensuare that darkmode elements are not displayed when darkmode is not toggled
+  - Test to ensure that darkmode elements are displayed when darkmode is toggled
+  - Test to ensure that the function toggleDarkmode toggles darkmode. 
+  - Test to check if currentProb has a member for each hand type
+  - Test to check if the sum of current probs is 0 at the start of the program.
+  - Test to check if testForRepeats can detect a repeat face value card
+  - Test to ensure that changeTab function switches the matTab
+  - Test to check that addCard is not called if a repeat face card is passed into setVal.
 
 Backend Unit Tests:
 
