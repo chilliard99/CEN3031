@@ -10,7 +10,7 @@
 }
 
 .holecards {
-    width: 100%;
+    width: 80%;
 }
 
 .holecardsdark {
@@ -41,8 +41,8 @@
 }
 
 #holecardswrapper {
-    margin-left: 5%;
-    width: 25%;
+    margin-left: 6%;
+    width: 32%;
     display:flex;
     flex-wrap: wrap;
     justify-content: center;

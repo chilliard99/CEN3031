@@ -63,6 +63,8 @@
 
             <mat-slide-toggle (change)="toggleDarkMode()" id="darkModeToggle"></mat-slide-toggle>
 
+
+
             <section [ngClass]="{
                 'holecards': !darkMode,
                 'holecardsdark': darkMode
@@ -89,6 +91,16 @@
                         </mat-card>
                     </div>
                 </div>
+            </section>
+
+            <section [ngClass]="{
+                'simulationNums': !darkMode,
+                'simulationNumsDark': darkMode
+             }">
+             <div *ngFor="let prob of newProbs;">
+                {{prob.Handname}}
+                {{prob.Prob}}
+             </div>
             </section>
 
             <section [ngClass]="{

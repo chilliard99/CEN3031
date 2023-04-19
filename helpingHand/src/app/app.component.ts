@@ -43,8 +43,6 @@ export class AppComponent implements OnInit {
   public currentHand: ICurrentHand[] = []
   public currentProb: ICurrentProb[] = []
   public newProbs: ICurrentProb[] = []
-  public probNames: string[] = []
-  public probNums: number[] = []
   public currImgs:string[] = new Array;
   constructor (
     private httpClient: HttpClient,
@@ -82,7 +80,7 @@ export class AppComponent implements OnInit {
     }
     console.log(this.currentHand.length)
     
-    this.newProbs = this.currentProb;
+    this.newProbs = this.currentProb.slice();
     //taken from https://www.geeksforgeeks.org/bubble-sort-algorithms-by-using-javascript/
     for (var i = 0; i < this.newProbs.length; i++) {
       for (var j = 0; j < (this.newProbs.length - i - 1); j++) {
@@ -128,6 +126,7 @@ export class AppComponent implements OnInit {
     console.log("in remove all")
     this.currentHand = await lastValueFrom(this.httpClient.get<ICurrentHand[]>('/api/removeAll'))
     this.currentProb = await lastValueFrom(this.httpClient.get<ICurrentProb[]>('/api/prob'))
+    await this.loadCards()
     //this.currentProb = await lastValueFrom(this.httpClient.get<ICurrentProb[]>('/api/removeALL'))
     //await this.httpClient.get('/api/removeAll')
   }
