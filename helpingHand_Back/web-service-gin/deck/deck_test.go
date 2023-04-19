@@ -911,8 +911,8 @@ func TestMassTest(t *testing.T) {
 		pair3Prob := 0.00
 		pair4Prob := 0.00
 		pair5Prob := 0.00
-		//t.Log(cards)
-		//t.Log(handTypes)
+		t.Log(cards)
+		t.Log(handTypes)
 		if deck.Contains(handTypes, "One Pair") {
 			pair1Prob = 1.00
 		} else {
@@ -950,7 +950,7 @@ func TestMassTest(t *testing.T) {
 	}
 
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
-	//t.Fatal("Test Complete")
+	t.Fatal("Test Complete")
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
 }
 
@@ -1142,6 +1142,25 @@ func Factorial(n int) float64 {
 	}
 	return factVal /* return from function*/
 }
+func TestFutureProbabilityThreeOfKind(t *testing.T) {
+	t.Log("Testing future probability for three of a kind with one pair")
+	temphand := hand.NewHand("None")
+	hand.AddCardHandSpecific(temphand, 1, "Heart")
+	hand.AddCardHandSpecific(temphand, 1, "Spade")
+	canAddNumCards := 7 - len(temphand.ActualHand)
+	probability := 0.0
+	for i := 1; i < 5; i++ {
+		ThreeNotGottenProb := math.Pow(float64(1)/float64(52-len(temphand.ActualHand)), float64(7-canAddNumCards+i))
+		probability += Factorial(52-len(temphand.ActualHand)) / (Factorial(canAddNumCards) * Factorial(52-len(temphand.ActualHand)-canAddNumCards)) * ThreeNotGottenProb * math.Pow(float64(1)/float64(52-len(temphand.ActualHand)), float64(canAddNumCards-i))
+	}
+	array := deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))
+	if array[2] != probability {
+		t.Log(array[2])
+		t.Log(probability)
+		t.Fatal("Three of a kind future probability is wrong")
+	}
+	t.Log("Three of a kind future probability is right")
+}
 
 // attempt 1 at future probability function test
 func TestFutureProbabilityFourOfKind(t *testing.T) {
@@ -1150,14 +1169,15 @@ func TestFutureProbabilityFourOfKind(t *testing.T) {
 	hand.AddCardHandSpecific(temphand, 1, "Heart")
 	hand.AddCardHandSpecific(temphand, 1, "Spade")
 	hand.AddCardHandSpecific(temphand, 1, "Club")
+	canAddNumCards := 7 - len(temphand.ActualHand)
 	probability := 0.0
-	for i := 1; i < 5; i++ {
-		FourNotGottenProb := math.Pow(float64(48)/float64(49), float64(3+i))
-		probability += Factorial(49) / (Factorial(4-i) * Factorial(45+i)) * FourNotGottenProb * math.Pow(float64(1)/float64(49), float64(4))
+	for i := 1; i <= 4; i++ {
+		FourNotGottenProb := math.Pow(float64(48)/float64(52-len(temphand.ActualHand)), float64(7-canAddNumCards+i))
+		probability += Factorial(52-len(temphand.ActualHand)) / (Factorial(canAddNumCards) * Factorial(52-len(temphand.ActualHand)-canAddNumCards)) * FourNotGottenProb * math.Pow(float64(1)/float64(52-len(temphand.ActualHand)), float64(canAddNumCards-i))
 	}
 	array := deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))
-	if array[0] != probability {
-		t.Log(array[0])
+	if array[4] != probability {
+		t.Log(array[4])
 		t.Log(probability)
 		t.Fatal("Four of a kind future probability is wrong")
 	}
