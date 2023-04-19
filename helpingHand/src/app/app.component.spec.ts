@@ -17,7 +17,7 @@ import {MatTabsModule} from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
 import { lastValueFrom } from 'rxjs'
 import { By } from '@angular/platform-browser'
-
+//Errors in this file are from conflict between cypress & jasmine, tests run fine.
 describe('AppComponent', () => {
   let debugElement: DebugElement;
   let fixture: ComponentFixture<AppComponent>;
