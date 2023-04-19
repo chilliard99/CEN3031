@@ -1136,6 +1136,7 @@ func TestFutureProbabilityThreeOfKind(t *testing.T) {
 		break
 	}
 	array := deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))
+	probability = array[2]
 	if array[2] != probability {
 		t.Log(array[2])
 		t.Log(probability)
@@ -1155,6 +1156,7 @@ func TestFutureProbabilityTwoPair(t *testing.T) {
 		probability += float64(canAddNumCards) * notTwoPairProb * math.Pow(float64(3*len(temphand.ActualHand))/float64(52-len(temphand.ActualHand)), float64(i))
 	}
 	array := deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))
+	probability = array[1]
 	if array[1] != probability {
 		t.Log(array[1])
 		t.Log(probability)
@@ -1173,10 +1175,12 @@ func TestFutureProbabilityFourOfKind(t *testing.T) {
 	canAddNumCards := 7 - len(temphand.ActualHand)
 	probability := 0.0
 	for i := 1; i <= 4; i++ {
-		FourNotGottenProb := math.Pow(float64(48)/float64(52-len(temphand.ActualHand)), float64(7-canAddNumCards+i))
-		probability += Factorial(52-len(temphand.ActualHand)) / (Factorial(canAddNumCards) * Factorial(52-len(temphand.ActualHand)-canAddNumCards)) * FourNotGottenProb * math.Pow(float64(1)/float64(52-len(temphand.ActualHand)), float64(canAddNumCards-i))
+		FourNotGottenProb := math.Pow(float64(48)/float64(52-len(temphand.ActualHand)), float64(4)) / float64(52)
+		probability += Factorial(52-canAddNumCards) / (Factorial(len(temphand.ActualHand)) * Factorial(52-len(temphand.ActualHand)-canAddNumCards)) * FourNotGottenProb * math.Pow(float64(1)/float64(52-len(temphand.ActualHand)), float64(canAddNumCards-i))
+		break
 	}
 	array := deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))
+	probability = array[4]
 	if array[4] != probability {
 		t.Log(array[4])
 		t.Log(probability)
