@@ -11,13 +11,6 @@ import (
 func main() {
 	CurrDeck := deck.NewDeck()
 
-	//Lines from the very beginning of development. I believe they're all non-functional.
-	//fmt.Println(deck.GetCardIndex(currDeck, 0, "Heart"))
-	//currentHand := hand.NewHand("initial")
-	//hand.AddCardHandRandom(currentHand)
-	//fmt.Println("current length of hand is: ")
-	//fmt.Println(len(currentHand.ActualHand))
-
 	//user
 	CurrUserHand := hand.New()
 	CurrUserProb := deck.New()

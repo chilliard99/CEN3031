@@ -42,6 +42,7 @@ export class AppComponent implements OnInit {
   // ]
   public currentHand: ICurrentHand[] = []
   public currentProb: ICurrentProb[] = []
+  public newProbs: ICurrentProb[] = []
   public currImgs:string[] = new Array;
   constructor (
     private httpClient: HttpClient,
@@ -78,10 +79,30 @@ export class AppComponent implements OnInit {
       }
     }
     console.log(this.currentHand.length)
+    
+    this.newProbs = [];
 
+    for(let i = 0; i < this.currentProb.length;i++) {
+      this.newProbs.push({Prob: this.currentProb[i].Prob, Handname: this.currentProb[i].Handname})
+    }
 
-    //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')
+    //taken from https://www.geeksforgeeks.org/bubble-sort-algorithms-by-using-javascript/
+    for (var i = 0; i < this.newProbs.length; i++) {
+      for (var j = 0; j < (this.newProbs.length - i - 1); j++) {
+          if (this.newProbs[j].Prob > this.newProbs[j + 1].Prob) {
+            var temp = this.newProbs[j]
+            this.newProbs[j] = this.newProbs[j + 1]
+            this.newProbs[j + 1] = temp
+          }
+        }
+    }
+    //changing probs to percentages
+    for(let i = 0; i < this.newProbs.length; i++) {
+      this.newProbs[i].Prob = Number((this.newProbs[i].Prob * 100).toFixed(5)); 
+    }
+
   }
+    //this.currentHand = await this.httpClient.get<ICurrentHand[]>('/api/hand')
 
   async handleRightClick(_Index: number, _Value: number, _Suit: string, event: any) {
     event.preventDefault();
@@ -114,6 +135,7 @@ export class AppComponent implements OnInit {
     console.log("in remove all")
     this.currentHand = await lastValueFrom(this.httpClient.get<ICurrentHand[]>('/api/removeAll'))
     this.currentProb = await lastValueFrom(this.httpClient.get<ICurrentProb[]>('/api/prob'))
+    await this.loadCards()
     //this.currentProb = await lastValueFrom(this.httpClient.get<ICurrentProb[]>('/api/removeALL'))
     //await this.httpClient.get('/api/removeAll')
   }

@@ -10,17 +10,68 @@
 }
 
 .holecards {
-    width: 100%;
+    width: 80%;
 }
 
 .holecardsdark {
-    width: 100%;
+    width: 80%;
     color:white;
+}
+
+.simulationNums {
+    width:20%;
+    text-align:center;
+    box-shadow: 0.5rem 0.5rem black, -0.5rem -0.5rem #ccc;
+}
+
+.simulationNumsDark {
+    width:20%;
+    text-align:center;
+    color:white;
+    box-shadow: 0.5rem 0.5rem white, -0.5rem -0.5rem rgb(131, 131, 131);
+}
+
+#topProbCombined {
+    margin: 5%;
+    margin-top: 10%;
+}
+
+#bottomProbs {
+    font-family:Roboto;
+    font-size:0.9vw;
+}
+
+.moreInfoButton {
+    margin-top:2.5%;
+}
+
+.moreInfoButtonDark {
+    margin-top:2.5%;
+    background-color: #474747 !important;
+    color:white !important;
+}
+
+#topName {
+    font-family:Roboto;
+    font-size:1.5vw;
+}
+
+#topProb { 
+    font-family:Roboto;
+    font-size:1.5vw;
+    font-weight:bold;
+}
+
+#probTitle {
+    font-weight:bold;
+    font-family:Roboto;
+    font-size:2vw;
+    margin-top: 2%;
 }
 
 #darkModeToggle {
     margin-top: 1%;
-    width:5%;
+    width:5%; 
 }
 
 #topButtons {
@@ -41,8 +92,8 @@
 }
 
 #holecardswrapper {
-    margin-left: 5%;
-    width: 25%;
+    margin-left: 6%;
+    width: 32%;
     display:flex;
     flex-wrap: wrap;
     justify-content: center;
