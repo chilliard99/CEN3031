@@ -260,7 +260,9 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 		}
 		//just multiply by num cards in hand and do
 		onePairProb := 0.0
-		if firstPair != -1 {
+		if canAddNumCards == 0 {
+			onePairProb = 0
+		} else if firstPair != -1 {
 			onePairProb = 1
 		} else {
 			for i := 1; i <= canAddNumCards; i++ {
@@ -286,15 +288,20 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 			}
 		}
 		twoPairProb := 0.0
-		if firstPair != -1 {
-			for i := 1; i < canAddNumCards; i++ {
-				//basically 1 pair but take out 2 cards
-				twoPairProb += float64(3*(len(hand.ActualHand)-2)) / float64(52-i-1-len(hand.ActualHand)) * math.Pow(float64(52-4*(len(hand.ActualHand)-2))/float64(52-i-1-len(hand.ActualHand)), float64(i-1))
+		if canAddNumCards == 0 {
+			twoPairProb = 0
+		} else if firstPair != -1 {
+			for i := 1; i <= canAddNumCards; i++ {
+				//basically 1 pair?
+				notTwoPairProb := math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(canAddNumCards-i))
+				twoPairProb += float64(canAddNumCards) * notTwoPairProb * math.Pow(float64(3*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(i))
 			}
 		} else if secondPair == -1 {
-			for i := 1; i < canAddNumCards; i++ {
+			for i := 1; i <= canAddNumCards; i++ {
 				//1 card only or at least 1 card but no pairs
-				twoPairProb += float64(3*len(hand.ActualHand)) / float64(52-i+1-len(hand.ActualHand)) * math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-i+1-len(hand.ActualHand)), float64(i-1))
+				notTwoPairProb := math.Pow(float64(52-4*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(canAddNumCards-i-2))
+				otherPairProb := Factorial(26-2*len(hand.ActualHand)) / (Factorial(2) * Factorial(26-2*len(hand.ActualHand)-2)) * (float64(52-4*len(hand.ActualHand)) / 2) / float64(52-len(hand.ActualHand))
+				twoPairProb += float64(canAddNumCards-2) * otherPairProb * notTwoPairProb * math.Pow(float64(3*len(hand.ActualHand))/float64(52-len(hand.ActualHand)), float64(i))
 			}
 		} else {
 			//already 2 pairs in hand
@@ -328,7 +335,9 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 				thirdPair = index
 			}
 		}
-		if alreadyThreeOfAKind {
+		if canAddNumCards == 0 {
+			currentProb = 0
+		} else if alreadyThreeOfAKind {
 			currentProb = 1.00
 		} else {
 			for i := 1; i < canAddNumCards; i++ {
@@ -370,7 +379,9 @@ func DetermineFutureProbability(hand *h.Hand, futureHands []string) []float64 {
 			}
 		}
 		fourOfAKindProb := 0.00
-		if alreadyFourOfAKind {
+		if canAddNumCards == 0 {
+			fourOfAKindProb = 0
+		} else if alreadyFourOfAKind {
 			fourOfAKindProb = 1.00
 		} else {
 			for i := 1; i < canAddNumCards; i++ {

@@ -1065,14 +1065,19 @@ func TestFutureProbabilityOnePair(t *testing.T) {
 			t.Log(probabilityArray[index])
 			t.Fatal("One Pair future probability is wrong at" + strconv.Itoa(index))
 		}
-		t.Log("One Pair future probability is all right")
+		t.Log(handArray[index])
 	}
+	t.Log("One Pair future probability is all right")
 }
 func FindFutureProbability(handLength int, canAddNumCards int) float64 {
 	probability := 0.0
-	for i := 1; i <= canAddNumCards; i++ {
-		notOnePairProb := math.Pow(float64(52-4*handLength)/float64(52-handLength), float64(canAddNumCards-i))
-		probability += float64(canAddNumCards) * notOnePairProb * math.Pow(float64(3*handLength)/float64(52-handLength), float64(i))
+	if canAddNumCards != 0 {
+		for i := 1; i <= canAddNumCards; i++ {
+			notOnePairProb := math.Pow(float64(52-4*handLength)/float64(52-handLength), float64(canAddNumCards-i))
+			probability += float64(canAddNumCards) * notOnePairProb * math.Pow(float64(3*handLength)/float64(52-handLength), float64(i))
+		}
+	} else {
+		probability = 0
 	}
 	return probability
 }
