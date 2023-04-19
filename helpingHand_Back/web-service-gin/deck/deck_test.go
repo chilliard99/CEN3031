@@ -911,8 +911,8 @@ func TestMassTest(t *testing.T) {
 		pair3Prob := 0.00
 		pair4Prob := 0.00
 		pair5Prob := 0.00
-		t.Log(cards)
-		t.Log(handTypes)
+		//t.Log(cards)
+		//t.Log(handTypes)
 		if deck.Contains(handTypes, "One Pair") {
 			pair1Prob = 1.00
 		} else {

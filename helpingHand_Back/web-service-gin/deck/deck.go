@@ -282,12 +282,18 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 			pairVals[card.Val]++
 		}
 		firstPair := -1
+		secondPair := -1
 		for index, count := range pairVals {
 			if count >= 2 && firstPair == -1 {
 				firstPair = index
 			}
+			if count >= 2 && firstPair != -1 {
+				secondPair = index
+			}
 		}
-		if canAddNumCards == 0 {
+		if secondPair != -1 {
+			twoPairProb = 1.00
+		} else if canAddNumCards == 0 {
 			twoPairProb = 0
 		} else if firstPair != -1 {
 			for i := 1; i <= canAddNumCards; i++ {
@@ -298,9 +304,16 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 		} else if firstPair == -1 {
 			for i := 1; i <= canAddNumCards; i++ {
 				//1 card only or at least 1 card but no pairs
-				notTwoPairProb := math.Pow(float64(52-4*len(hand))/float64(52-len(hand)), float64(canAddNumCards-i-2))
-				otherPairProb := Factorial(26-2*len(hand)) / (Factorial(2) * Factorial(26-2*len(hand)-2)) * (float64(52-4*len(hand)) / 2) / float64(52-len(hand))
-				twoPairProb += float64(canAddNumCards) * otherPairProb * notTwoPairProb * math.Pow(float64(3*len(hand))/float64(52-len(hand)), float64(i))
+				if canAddNumCards > 5 {
+					//1 card only
+					notTwoPairProb := math.Pow(float64(52-4*len(hand))/float64(52-len(hand)), float64(canAddNumCards-i-2))
+					otherPairProb := float64(1) / float64(52-len(hand))
+					twoPairProb += float64(canAddNumCards) * otherPairProb * notTwoPairProb * math.Pow(float64(3*len(hand))/float64(52-len(hand)), float64(i))
+				} else {
+					notTwoPairProb := math.Pow(float64(52-4*len(hand))/float64(52-len(hand)), float64(canAddNumCards-i-2))
+					otherPairProb := 1.00
+					twoPairProb += float64(canAddNumCards) * otherPairProb * notTwoPairProb * math.Pow(float64(3*len(hand))/float64(52-len(hand)), float64(i)+1)
+				}
 			}
 		} else {
 			//already 2 pairs in hand
@@ -350,6 +363,9 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 					//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
 					threeProb = float64(3) / float64(46)
 					break
+				} else {
+					//no pairs
+					threeProb += Factorial(52-len(hand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand)-canAddNumCards+i)) * float64(3) / float64(52-len(hand)) * float64(2) / float64(52-len(hand)) * math.Pow(float64(52-len(hand)-2)/float64(52-len(hand)), float64(canAddNumCards)-2)
 				}
 			}
 		}
@@ -402,6 +418,9 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 					//1 card left, but a full house is already there
 					fullProb = 1.00
 					break
+				} else {
+					fullProb = 0.00
+					break
 				}
 			}
 		}
@@ -414,12 +433,20 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 		}
 		firstTriple := -1
 		secondTriple := -1
+		firstPair := -1
+		secondPair := -1
 		alreadyFourOfAKind := false
 		for index, count := range tripleVals {
 			if count == 4 {
 				alreadyFourOfAKind = true
 				break
 			} else {
+				if count == 2 && firstPair == -1 {
+					firstPair = index
+				}
+				if count == 2 && firstPair != -1 {
+					secondPair = index
+				}
 				if count == 3 && firstTriple == -1 {
 					firstTriple = index
 				}
@@ -450,6 +477,30 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 						break
 					} else {
 						fourOfAKindProb = float64(0)
+						break
+					}
+				} else if firstPair == -1 {
+					if canAddNumCards <= 4 {
+						FourNotGottenProb := math.Pow(float64(52-len(hand)-3)/float64(52-len(hand)), float64(7-canAddNumCards+i))
+						fourOfAKindProb += Factorial(52-len(hand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand)-canAddNumCards+i)) * FourNotGottenProb * float64(3) / float64(52-len(hand)) * float64(2) / float64(52-len(hand)) * float64(1) / float64(52-len(hand))
+					} else {
+						fourOfAKindProb = 0.00
+						break
+					}
+				} else if secondPair == -1 {
+					if canAddNumCards <= 5 {
+						FourNotGottenProb := math.Pow(float64(52-len(hand)-3)/float64(52-len(hand)), float64(7-canAddNumCards+i))
+						fourOfAKindProb += Factorial(52-len(hand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand)-canAddNumCards+i)) * FourNotGottenProb * float64(2) / float64(52-len(hand)) * float64(1) / float64(52-len(hand))
+					} else {
+						fourOfAKindProb = 0.00
+						break
+					}
+				} else if secondPair != -1 {
+					if canAddNumCards <= 5 {
+						FourNotGottenProb := math.Pow(float64(52-len(hand)-3)/float64(52-len(hand)), float64(7-canAddNumCards+i))
+						fourOfAKindProb += 2 * Factorial(52-len(hand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand)-canAddNumCards+i)) * FourNotGottenProb * float64(2) / float64(52-len(hand)) * float64(1) / float64(52-len(hand))
+					} else {
+						fourOfAKindProb = 0.00
 						break
 					}
 				}
