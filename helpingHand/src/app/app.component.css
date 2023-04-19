@@ -275,3 +275,10 @@
     width: 400px;
     min-height: 400px;
 }
+
+.body {
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid black;
+}
