@@ -162,8 +162,74 @@ describe('AppComponent', () => {
   it('right click handler function should call addCard', () => {
     spyOn(app, 'addCard')
     app.handleRightClick(-1, -1 ,'test', event);
-    expect(app.addCard).toHaveBeenCalled(); 
+    expect(app.addCard).toHaveBeenCalled();  
   })
+
+  //Added in Sprint 4
+
+  it('toggle dark mode should should switch darkMode', () => {
+    app.darkMode = false;
+    app.toggleDarkMode();
+    expect(app.darkMode).toBeTruthy(); 
+  })
+
+  it('darkMode should not be displayed when darkmode is not activated', () => {
+    app.darkMode = false;
+    expect(fixture.debugElement.query(By.css('.holecardsdark'))).toBeNull();
+    expect(fixture.debugElement.query(By.css('.simulationNumsDark'))).toBeNull();
+    expect(fixture.debugElement.query(By.css('.moreInfoButtonDark'))).toBeNull();
+    expect(fixture.debugElement.query(By.css('.communitycardsdark'))).toBeNull();
+  })
+
+  it('darkMode should be displayed when darkmode is activated', () => {
+    app.darkMode = true;
+    expect(fixture.debugElement.query(By.css('.holecardsdark'))).toBeDefined();
+    expect(fixture.debugElement.query(By.css('.simulationNumsDark'))).toBeDefined();
+    expect(fixture.debugElement.query(By.css('.moreInfoButtonDark'))).toBeDefined();
+    expect(fixture.debugElement.query(By.css('.communitycardsdark'))).toBeDefined();
+  })
+
+  it('currentProb should have only 10 members (number of possible hands)', () => {
+    expect(app.currentProb.length).toBe(10);
+  })
+
+  it('currentProb should only have 0s in prob', () => {
+    let probSum = 0;
+    for(let i = 0; i < app.currentProb.length; i++) {
+      probSum += app.currentProb[i].Prob
+    }
+    expect(probSum).toBe(0);
+  })
+
+  it('checkForRepeats should return true if there is a repeat', () => {
+    app.currentHand[0].Suit = "Spade";
+    app.currentHand[0].Val = 0;
+    expect(app.checkForRepeats(1,"Spade")).toBeTruthy();
+  })
+
+  it('changeTab should set the tab', () => {
+    app.changeTab(0);
+    expect(app.selectedIndex).toBe(0);
+    app.changeTab(1);
+    expect(app.selectedIndex).toBe(1);
+  })
+
+  it('Passing in an illegal value into setVal should not call addCard', () => {
+    spyOn(app, 'addCard')
+    app.currentHand[0].Suit = "Spade";
+    app.currentHand[0].Val = 0;
+    app.Suit = "Spade";
+    app.setVal(1);
+    expect(app.addCard).not.toHaveBeenCalled();  
+  })
+
+
+
+
+
+  
+
+
 
 
 

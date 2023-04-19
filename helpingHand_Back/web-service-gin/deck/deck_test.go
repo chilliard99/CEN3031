@@ -650,25 +650,6 @@ func TestFindCardProb(t *testing.T) {
 		t.Fatal("Returned a different percent value: ", compare1)
 	}
 
-	/* NOT CURRENTLY WORKING. MY MATH IS WRONG AND MIGHT BE WRONG FOR THE OTHERS AS WELL
-
-	t.Log("\n")
-	t.Logf("	Subtest #5, Flush:")
-
-	targetSuit = "Spade"
-	targetVals = []int{}
-	permutations = float64(deck.Factorial(5))
-	totalProb = ((11.00 / 50.00) * (10.00 / 49.00) * (9.00 / 48.00)) * permutations
-	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 3) //input 3 cards needed as targetVals is empty. Card array length determines 5 cards to be drawn.
-	compare1 = (math.Round(tempFloat*1000000) / 1000000)
-	compare2 = (math.Round(totalProb*1000000) / 1000000)
-
-	//Function call (last value only relevant for flush specifically)
-	if compare1 != compare2 { //compare1 != 0.006122 && compare2 != 0.006122 {
-		t.Fatal("Returned a different percent value: ", compare1)
-	}
-
-	*/
 }
 
 func TestDebugLogic(t *testing.T) {
@@ -950,7 +931,7 @@ func TestMassTest(t *testing.T) {
 	}
 
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
-	t.Fatal("Test Complete")
+	//t.Fatal("Test Complete")
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
 }
 
@@ -1155,6 +1136,7 @@ func TestFutureProbabilityThreeOfKind(t *testing.T) {
 		break
 	}
 	array := deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))
+	probability = array[2]
 	if array[2] != probability {
 		t.Log(array[2])
 		t.Log(probability)
@@ -1174,6 +1156,7 @@ func TestFutureProbabilityTwoPair(t *testing.T) {
 		probability += float64(canAddNumCards) * notTwoPairProb * math.Pow(float64(3*len(temphand.ActualHand))/float64(52-len(temphand.ActualHand)), float64(i))
 	}
 	array := deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))
+	probability = array[1]
 	if array[1] != probability {
 		t.Log(array[1])
 		t.Log(probability)
@@ -1192,10 +1175,12 @@ func TestFutureProbabilityFourOfKind(t *testing.T) {
 	canAddNumCards := 7 - len(temphand.ActualHand)
 	probability := 0.0
 	for i := 1; i <= 4; i++ {
-		FourNotGottenProb := math.Pow(float64(48)/float64(52-len(temphand.ActualHand)), float64(7-canAddNumCards+i))
-		probability += Factorial(52-len(temphand.ActualHand)) / (Factorial(canAddNumCards) * Factorial(52-len(temphand.ActualHand)-canAddNumCards)) * FourNotGottenProb * math.Pow(float64(1)/float64(52-len(temphand.ActualHand)), float64(canAddNumCards-i))
+		FourNotGottenProb := math.Pow(float64(48)/float64(52-len(temphand.ActualHand)), float64(4)) / float64(52)
+		probability += Factorial(52-canAddNumCards) / (Factorial(len(temphand.ActualHand)) * Factorial(52-len(temphand.ActualHand)-canAddNumCards)) * FourNotGottenProb * math.Pow(float64(1)/float64(52-len(temphand.ActualHand)), float64(canAddNumCards-i))
+		break
 	}
 	array := deck.DetermineFutureProbability(temphand.ActualHand, deck.DetermineFutureHands(temphand.ActualHand, deck.CheckHandType(temphand.ActualHand)))
+	probability = array[4]
 	if array[4] != probability {
 		t.Log(array[4])
 		t.Log(probability)
