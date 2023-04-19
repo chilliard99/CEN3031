@@ -69,8 +69,9 @@ Backend API Documentation:
     - From looking at the network tab when inspecting elements on chrome, a sample POST request looks like: {"Suit":"club","Val":1,"Index":0}
     - On a successful POST, the network tab displayed that there was no response data to show. 
   - GET
-    - The URL parameters are /api/hand and /api/prob.
+    - The URL parameters are /api/hand and /api/prob and /api/removeALL.
     - The data parameters for this GET request is an array containing structs with an Index as an int, Suit as a string, and Val as an int.
     - The network tab shows that a GET request immediately the POST request above has the body: [{Val: 1, Suit: "club", Index: 0}].
     - The success response shows the same array: [{"Val":1,"Suit":"club","Index":0}] but now its strored as variable on the front end.
     - /api/prob shows the array of HandProb structs run through UpdateProb for each handtype.
+    - /api/removeAll resets all the the cards in the hand the a blank suit and val of 0.
