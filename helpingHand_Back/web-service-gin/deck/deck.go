@@ -354,7 +354,7 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 					break
 				} else {
 					//no pairs
-					threeProb = Factorial(52-len(hand)) / (Factorial(canAddNumCards) * Factorial(52-len(hand)-canAddNumCards)) * float64(3*len(hand)) / float64(52-len(hand)) * float64(2) / float64(52-len(hand)) * math.Pow(float64(52-len(hand)-2)/float64(52-len(hand)), float64(i+2)-2) / float64(52-len(hand))
+					threeProb = Factorial(52-len(hand)) / (Factorial(canAddNumCards) * Factorial(52-len(hand)-canAddNumCards)) * float64(3*len(hand)) / float64(52-len(hand)) * float64(2) / float64(52-len(hand)) * math.Pow(float64(52-4*len(hand))/float64(52-len(hand)), float64(canAddNumCards)-2)
 					break
 				}
 			}

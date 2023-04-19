@@ -14,6 +14,7 @@ Backend:
   - Enhanced RoyalFlush with probability calculations to give responses between 0.00 and 1.00.
   - Enhanced StraightCheck with probability calculations to give responses between 0.00 and 1.00.
   - Created and enhanced FlushCheck with probability calculations to give responses between 0.00 and 1.00.
+  - Finished DetermineFutureProbability to return probabilities for future hands between 0.00 and 1.00
   - Troubleshooted a wide variety of minor problems that we were unable to test for until this stage of development.
   - Cleaned comments
 
@@ -48,6 +49,9 @@ Backend Unit Tests:
     - TestTwoPairCheck test for checking if an array of cards can be identified as having a two pair (2 pairs, each 2 cards of the same number but not same suit) within it.
     - TestThreeFourFullCheck test for checking if an array of cards can be identified as having 3 of a kind (3 cards of the same number but not same suit), 4 of a kind (all 4 cards of the same number but not same suit), or full house (one 1 pair and one 3 of a kind within a hand) within it. These tests were performed within the same testing function for easier comprehension. 
     - TestFutureProbabilityFourOfKind test for checking if the future probability correctly returns for a hand containing only one three of a kind and nothing else.
+    - TestFutureProbabilityThreeOfKind test for checking if the future probability correctly returns for a hand containing only one One Pair and nothing else.
+    - TestFutureProbabilityTwoPair test for checking if the future probability correctly returns for a hand containing only one One Pair and nothing else.
+    - TestFutureProbabilityOnePair test for checking if the future probability correctly returns for a hand containing no pairs and nothing else.
     - Altered TestFutureHand test to accommodate GetHandArray function.
   
   - Hand:
