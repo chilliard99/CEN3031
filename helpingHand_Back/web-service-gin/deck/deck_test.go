@@ -940,7 +940,13 @@ func TestMassTest(t *testing.T) {
 			pair4Prob = futureHandProbs[4]
 		}
 
-		t.Log(pair1Prob, " \t", pair2Prob, " \t", pair3Prob, " \t", pair4Prob, "\t", pair5Prob, "\n")
+		p1Prob := (math.Round((pair1Prob)*10000000.0) / 10000000.0)
+		p2Prob := (math.Round((pair2Prob)*10000000.0) / 10000000.0)
+		p3Prob := (math.Round((pair3Prob)*10000000.0) / 10000000.0)
+		p4Prob := (math.Round((pair4Prob)*10000000.0) / 10000000.0)
+		p5Prob := (math.Round((pair5Prob)*10000000.0) / 10000000.0)
+
+		t.Log(p1Prob, " \t", p2Prob, " \t", p3Prob, " \t", p4Prob, "\t", p5Prob, "\n")
 	}
 
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
