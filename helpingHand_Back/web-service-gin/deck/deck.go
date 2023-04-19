@@ -80,7 +80,7 @@ func UpdateProb(cards_ []c.Card, deck Deck, currUserProb []HandProb) {
 	//fmt.Println(len(cards))
 
 	handTypes := CheckHandType(cards)
-	futureHandProbs := DetermineFutureProbability(cards, handTypes)
+	futureHandProbs := DetermineFutureProbability(cards, DetermineFutureHands(cards, handTypes))
 	deckCopy := RemoveCards(deck, cards)
 
 	straightProb, straightFlushProb := StraightCheck(deckCopy, cards)
@@ -352,6 +352,60 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 					//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
 					currentProb = float64(3) / float64(46)
 					break
+				}
+			}
+		}
+		futureProbs = append(futureProbs, currentProb)
+	}
+	if Contains(futureHands, "Full House") {
+		tripleVals := make([]int, 13)
+		for _, card := range hand {
+			tripleVals[card.Val]++
+		}
+		firstTriple := -1
+		secondTriple := -1
+		firstPair := -1
+		secondPair := -1
+		thirdPair := -1
+		currentProb := 0.00
+		for index, count := range tripleVals {
+			if count == 3 && firstTriple == -1 {
+				firstTriple = index
+			}
+			if count == 3 && firstTriple != -1 && index != firstTriple {
+				secondTriple = index
+			}
+			if count == 2 && firstPair == -1 && secondPair == -1 {
+				firstPair = index
+			}
+			if count == 2 && firstPair != -1 && secondPair == -1 {
+				secondPair = index
+			}
+			if count == 2 && firstPair != -1 && secondPair != -1 {
+				thirdPair = index
+			}
+		}
+		if firstPair != -1 && firstTriple != -1 {
+			currentProb = 1.00
+		} else {
+			for i := 1; i < canAddNumCards; i++ {
+				if firstPair == -1 && firstTriple == -1 {
+					//only 1 pair
+					ThreeNotGottenProb := math.Pow(float64(1)/float64(52-len(hand)), float64(7-canAddNumCards+i))
+					currentProb += Factorial(52-len(hand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand)-canAddNumCards+i)) * ThreeNotGottenProb * math.Pow(float64(1)/float64(52-len(hand)), float64(canAddNumCards-i))
+				} else if firstPair != -1 && secondPair == -1 && firstTriple == -1 {
+					//2 pairs, half 1 pair prob
+					currentProb += Factorial(52-len(hand)) / (Factorial(canAddNumCards-i) * Factorial(52-len(hand)-canAddNumCards+i)) * math.Pow(float64(1)/float64(52-len(hand)), float64(7-canAddNumCards+i)) * math.Pow(float64(1)/float64(52-len(hand)), float64(canAddNumCards-i)) / float64(2)
+				} else if secondPair != -1 && thirdPair == -1 && firstTriple == -1 {
+					//3 pairs aka 1 card left, so can hardcode value, need 1 of 3 cards when 46 left
+					currentProb = float64(3) / float64(46)
+					break
+				} else if thirdPair != -1 && firstTriple == -1 {
+					//6 cards in hand, can't make full house
+					currentProb = 0.00
+				} else if firstTriple != -1 && secondTriple != -1 {
+					//1 card left,
+					currentProb = 1.00
 				}
 			}
 		}
