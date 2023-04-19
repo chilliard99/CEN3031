@@ -425,6 +425,9 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 			}
 		}
 	}
+	if canAddNumCards == 7 {
+		fullProb = 0.00
+	}
 	futureProbs = append(futureProbs, fullProb)
 	if Contains(futureHands, "Four of a Kind") {
 		tripleVals := make([]int, 13)
