@@ -275,7 +275,6 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 			}
 		}
 	}
-	futureProbs = append(futureProbs, onePairProb)
 	if Contains(futureHands, "Two Pair") {
 		pairVals := make([]int, 13)
 		for _, card := range hand {
@@ -320,7 +319,6 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 			twoPairProb = 1.0
 		}
 	}
-	futureProbs = append(futureProbs, twoPairProb)
 	if Contains(futureHands, "Three of a Kind") {
 		//either 1 pair, 2 pair, 3 pair, or just single cards
 		pairVals := make([]int, 13)
@@ -370,7 +368,6 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 			}
 		}
 	}
-	futureProbs = append(futureProbs, threeProb)
 	if Contains(futureHands, "Full House") {
 		tripleVals := make([]int, 13)
 		for _, card := range hand {
@@ -425,10 +422,6 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 			}
 		}
 	}
-	if canAddNumCards == 7 {
-		fullProb = 0.00
-	}
-	futureProbs = append(futureProbs, fullProb)
 	if Contains(futureHands, "Four of a Kind") {
 		tripleVals := make([]int, 13)
 		for _, card := range hand {
@@ -510,6 +503,17 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 			}
 		}
 	}
+	if canAddNumCards == 7 {
+		fullProb = 0.00
+		onePairProb = 0.00
+		twoPairProb = 0.00
+		threeProb = 0.00
+		fourOfAKindProb = 0.00
+	}
+	futureProbs = append(futureProbs, onePairProb)
+	futureProbs = append(futureProbs, twoPairProb)
+	futureProbs = append(futureProbs, threeProb)
+	futureProbs = append(futureProbs, fullProb)
 	futureProbs = append(futureProbs, fourOfAKindProb)
 	return futureProbs
 }
