@@ -80,7 +80,12 @@ export class AppComponent implements OnInit {
     }
     console.log(this.currentHand.length)
     
-    this.newProbs = this.currentProb.slice();
+    this.newProbs = [];
+
+    for(let i = 0; i < this.currentProb.length;i++) {
+      this.newProbs.push({Prob: this.currentProb[i].Prob, Handname: this.currentProb[i].Handname})
+    }
+
     //taken from https://www.geeksforgeeks.org/bubble-sort-algorithms-by-using-javascript/
     for (var i = 0; i < this.newProbs.length; i++) {
       for (var j = 0; j < (this.newProbs.length - i - 1); j++) {
