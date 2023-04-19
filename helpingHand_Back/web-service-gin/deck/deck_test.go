@@ -840,7 +840,8 @@ func TestMassTest(t *testing.T) {
 
 	deckCopy := deck.NewDeck()
 
-	t.Logf("Str8 \tFlush\tStr8 F\tR Flush")
+	//t.Logf("Str8 \tFlush\tStr8 F\tR Flush")
+	t.Logf("Pair \t2Pair\t3Kind\t4Kind\tFullH")
 
 	for i := 0; i < 50; i++ {
 		var cardStrings []string
@@ -881,23 +882,64 @@ func TestMassTest(t *testing.T) {
 
 		t.Log(cardStrings[0], " ", cardStrings[1], " ", cardStrings[2], " ", cardStrings[3], " ", cardStrings[4])
 
-		straightProb, straightFlushProb := deck.StraightCheck(deckCopy, cards)
-		flushProb := deck.FlushCheck(deckCopy, cards)
-		royalProb := deck.RoyalFlush(deckCopy, cards)
+		/*
+			straightProb, straightFlushProb := deck.StraightCheck(deckCopy, cards)
+			flushProb := deck.FlushCheck(deckCopy, cards)
+			royalProb := deck.RoyalFlush(deckCopy, cards)
 
-		sProb := (math.Round(straightProb*10000000.0) / 10000000.0)
-		fProb := (math.Round(flushProb*10000000.0) / 10000000.0)
-		sfProb := 0.00
-		rProb := (math.Round(royalProb*10000000.0) / 10000000.0)
+			sProb := (math.Round(straightProb*10000000.0) / 10000000.0)
+			fProb := (math.Round(flushProb*10000000.0) / 10000000.0)
+			sfProb := 0.00
+			rProb := (math.Round(royalProb*10000000.0) / 10000000.0)
 
-		if straightProb <= 0.0000001 || flushProb <= 0.0000001 {
-			sfProb = 0.00
-		} else if straightFlushProb > 0.00 {
-			sfProb = (math.Round(straightFlushProb*10000000.0) / 10000000.0)
+			if straightProb <= 0.0000001 || flushProb <= 0.0000001 {
+				sfProb = 0.00
+			} else if straightFlushProb > 0.00 {
+				sfProb = (math.Round(straightFlushProb*10000000.0) / 10000000.0)
+			} else {
+				sfProb = (math.Round((straightProb*flushProb)*10000000.0) / 10000000.0)
+			}
+
+			t.Log(sProb, " \t", fProb, " \t", sfProb, " \t", rProb, "\n")
+		*/
+
+		handTypes := deck.CheckHandType(cards)
+		futureHandProbs := deck.DetermineFutureProbability(cards, deck.DetermineFutureHands(cards, handTypes))
+
+		pair1Prob := 0.00
+		pair2Prob := 0.00
+		pair3Prob := 0.00
+		pair4Prob := 0.00
+		pair5Prob := 0.00
+
+		if deck.Contains(handTypes, "One Pair") {
+			pair1Prob = 1.00
 		} else {
-			sfProb = (math.Round((straightProb*flushProb)*10000000.0) / 10000000.0)
+			pair1Prob = futureHandProbs[0]
 		}
-		t.Log(sProb, " \t", fProb, " \t", sfProb, " \t", rProb, "\n")
+		if deck.Contains(handTypes, "Two Pair") {
+			pair2Prob = 1.00
+		} else {
+			pair2Prob = futureHandProbs[1]
+		}
+		if deck.Contains(handTypes, "Three of a Kind") {
+			pair3Prob = 1.00
+		} else {
+			pair3Prob = futureHandProbs[2]
+		}
+		if deck.Contains(handTypes, "Full House") {
+			pair5Prob = 1.00
+		} else {
+			pair5Prob = futureHandProbs[3] //should be 3 after function is updated
+		}
+		if deck.Contains(handTypes, "Four of a Kind") {
+			pair4Prob = 1.00
+		} else {
+			//pair4Prob = futureHandProbs[4]	this would be 4
+			pair4Prob = futureHandProbs[3]
+		}
+
+		t.Log(pair1Prob, " \t", pair2Prob, " \t", pair3Prob, " \t", pair4Prob, "\t", pair5Prob, "\n")
 	}
 
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
