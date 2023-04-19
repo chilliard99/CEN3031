@@ -650,25 +650,6 @@ func TestFindCardProb(t *testing.T) {
 		t.Fatal("Returned a different percent value: ", compare1)
 	}
 
-	/* NOT CURRENTLY WORKING. MY MATH IS WRONG AND MIGHT BE WRONG FOR THE OTHERS AS WELL
-
-	t.Log("\n")
-	t.Logf("	Subtest #5, Flush:")
-
-	targetSuit = "Spade"
-	targetVals = []int{}
-	permutations = float64(deck.Factorial(5))
-	totalProb = ((11.00 / 50.00) * (10.00 / 49.00) * (9.00 / 48.00)) * permutations
-	tempFloat = deck.FindCardProb(cards, targetVals, targetSuit, 3) //input 3 cards needed as targetVals is empty. Card array length determines 5 cards to be drawn.
-	compare1 = (math.Round(tempFloat*1000000) / 1000000)
-	compare2 = (math.Round(totalProb*1000000) / 1000000)
-
-	//Function call (last value only relevant for flush specifically)
-	if compare1 != compare2 { //compare1 != 0.006122 && compare2 != 0.006122 {
-		t.Fatal("Returned a different percent value: ", compare1)
-	}
-
-	*/
 }
 
 func TestDebugLogic(t *testing.T) {
@@ -950,7 +931,7 @@ func TestMassTest(t *testing.T) {
 	}
 
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
-	t.Fatal("Test Complete")
+	//t.Fatal("Test Complete")
 	//********************************************************THIS LINE MUST BE UNCOMMENTED TO VIEW OUTPUT********************************************************
 }
 
