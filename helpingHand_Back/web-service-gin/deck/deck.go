@@ -243,6 +243,7 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 	threeProb := 0.00
 	twoPairChange := false
 	fourChange := false
+	hasPair := false
 	canAddNumCards := 7 - len(hand)
 	if Contains(futureHands, "One Pair") {
 		pairVals := make([]int, 13)
@@ -277,6 +278,7 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 		for index, count := range pairVals {
 			if count >= 2 && firstPair == -1 {
 				firstPair = index
+				hasPair = true
 			}
 			if count >= 2 && firstPair != -1 && firstPair != index {
 				secondPair = index
@@ -517,6 +519,10 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 		twoPairProb = 0.00
 		threeProb = 0.00
 		fourOfAKindProb = 0.00
+	} else if canAddNumCards == 0 && fourOfAKindProb != 0 && fourOfAKindProb != 1.00 {
+		fourOfAKindProb = 0.00
+	} else if canAddNumCards == 1 && twoPairProb != 0 && twoPairProb != 1.00 && hasPair == false {
+		twoPairProb = 0.00
 	}
 	if onePairProb > 1 {
 		for onePairProb > 1 {
