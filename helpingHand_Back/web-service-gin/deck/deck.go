@@ -517,6 +517,8 @@ func DetermineFutureProbability(hand []c.Card, futureHands []string) []float64 {
 		twoPairProb = 0.00
 		threeProb = 0.00
 		fourOfAKindProb = 0.00
+	} else if canAddNumCards == 0 && fourOfAKindProb != 0 {
+		fourOfAKindProb = 0.00
 	}
 	if onePairProb > 1 {
 		for onePairProb > 1 {
