@@ -28,6 +28,8 @@ Frontend Unit Tests:
   - Test to check if testForRepeats can detect a repeat face value card
   - Test to ensure that changeTab function switches the matTab
   - Test to check that addCard is not called if a repeat face card is passed into setVal.
+  - e2e test to make sure user can properly click the the show in simulation button on the handlist tab.
+  - e2e test to make sure user can properly view the poker terms tab.
 
 Backend Unit Tests:
 
